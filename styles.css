@@ -1,0 +1,61 @@
+/* Effect 5: 3d bar bottom */
+.block {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: 12px;
+	background: #ed4e6e;
+	-webkit-transform: translate3d(-53%, 0, 0);
+	transform: translate3d(-53%, 0, 0);
+	pointer-events: none;
+	-webkit-transition: -webkit-transform 1000ms ease-in, bottom 0.3s 2s;
+	transition: transform 1000ms ease-in, bottom 0.3s 2s;
+}
+
+.block::before,
+.block::after {
+	position: absolute;
+	content: '';
+}
+
+.block::before {
+	bottom: 100%;
+	left: -10%;
+	width: 110%;
+	height: 6px;
+	background: #fb738f;
+	-webkit-transform: skew(-45deg);
+	transform: skew(-45deg);
+	-webkit-transform-origin: 0 100%;
+	transform-origin: 0 100%;
+}
+
+.block::after {
+	top: 0;
+	left: 100%;
+	width: 6px;
+	height: 100%;
+	background: #d23d5b;
+	-webkit-transform: skew(0,-45deg);
+	transform: skew(0,-45deg);
+	-webkit-transform-origin: 0 0;
+	transform-origin: 0 0;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.animate {
+	bottom: -20px;
+	z-index: 100;
+	
+/* 	-webkit-transition: -webkit-transform 1s ease-in, bottom 0.3s 1.7s; */
+	-webkit-transition: -webkit-transform 1s ease-in, bottom 0.3s 2s;
+
+/* 	transition: transform 1s ease-in, bottom 0.3s 1.7s; */
+	transition: transform 1s ease-in, bottom 0.3s 2s;
+	
+/* 	-webkit-transform: translate3d(0%, 0, 0);
+	transform: translate3d(0%, 0, 0); */
+}
