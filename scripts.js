@@ -2,27 +2,32 @@ var body = document.body,
     color1 = Math.max(Math.floor(Math.random()*255), 0),
     color2 = Math.max(Math.floor(Math.random()*255), 0),
     color3 = Math.max(Math.floor(Math.random()*255), 0),
-    rgbStr = 'rgb(' + color1 + ',' + color2 + ',' + color3 + ')';
+    rgbStr = 'rgb(' + color1 + ',' + color2 + ',' + color3 + ')',
+    amplitudes = [1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1],
+    currentAmp = 0;
 
-for (var i = 0; i < 45; i++) {
-    var block = document.createElement('div'),
-        beforeStr = '.block:nth-of-type(' + (i + 1) + '):before { background-color: ' + lighterColor(rgbStr, 0.1) + '; }',
-        afterStr = '.block:nth-of-type(' + (i + 1) + '):after { background-color: ' + darkerColor(rgbStr, 0.1) + '; }',
-        blockStr = '.block:nth-of-type(' + (i + 1) + ') { background-color: ' + darkerColor(rgbStr, 0.2) + '; }';
+
+function createBlocks() {
+    for (var i = 0; i < 45; i++) {
+        var block = document.createElement('div'),
+            beforeStr = '.block:nth-of-type(' + (i + 1) + '):before { background-color: ' + lighterColor(rgbStr, 0.1) + '; }',
+            afterStr = '.block:nth-of-type(' + (i + 1) + '):after { background-color: ' + darkerColor(rgbStr, 0.1) + '; }',
+            blockStr = '.block:nth-of-type(' + (i + 1) + ') { background-color: ' + darkerColor(rgbStr, 0.2) + '; }';
+            
+        block.className = 'block';
+        block.style.bottom = i*14 + "px";
+        block.style['-webkit-transform'] = "translate3d(" + ((Math.sin(i/10)*15) - 50) + "%, 0, 0)";
         
-    block.className = 'block';
-    block.style.bottom = i*14 + "px";
-    block.style['-webkit-transform'] = "translate3d(" + ((Math.sin(i/10)*15) - 50) + "%, 0, 0)";
-    
-    console.log((Math.sin(i/10)*15) + 50);
-    
-    document.styleSheets[0].insertRule(beforeStr, 0);
-    document.styleSheets[0].insertRule(afterStr, 0);
-    document.styleSheets[0].insertRule(blockStr, 0);
-    
-    body.appendChild(block);
-    
-    rgbStr =  lighterColor(rgbStr, 0.01);
+        console.log((Math.sin(i/10)*15) + 50);
+        
+        document.styleSheets[0].insertRule(beforeStr, 0);
+        document.styleSheets[0].insertRule(afterStr, 0);
+        document.styleSheets[0].insertRule(blockStr, 0);
+        
+        body.appendChild(block);
+        
+        rgbStr = lighterColor(rgbStr, 0.01);
+    }
 }
 
 function animateErryTing() {
@@ -30,12 +35,21 @@ function animateErryTing() {
     
     console.warn('what the shit');
     
-    for (var i = 0; i < blocks.length; i++) {
-        blocks[i].style['-webkit-transform'] = "translate3d(" + ((Math.sin(i/10)*15) - 50) + "%, 0, 0)";
+    for (var j = 0; j < blocks.length; j++) {
+        blocks[j].style['-webkit-transform'] = "translate3d(" + ((Math.sin(j*currentAmp/10)*15) - 50) + "%, 0, 0)";
     }
+    
+    currentAmp++;
+    
 }
 
-// setInterval(animateErryTing, 1000);
+createBlocks();
+setInterval(animateErryTing, 100);
+
+
+
+
+
 
 function pad(num, totalChars) {
     var pad = '0';

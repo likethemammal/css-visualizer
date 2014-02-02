@@ -10,8 +10,8 @@
 	-webkit-transform: translate3d(-53%, 0, 0);
 	transform: translate3d(-53%, 0, 0);
 	pointer-events: none;
-	-webkit-transition: -webkit-transform 1000ms ease-in, bottom 0.3s 2s;
-	transition: transform 1000ms ease-in, bottom 0.3s 2s;
+	-webkit-transition: -webkit-transform 100ms ease-in, bottom 0.3s 2s;
+	transition: transform 100ms ease-in, bottom 0.3s 2s;
 }
 
 .block::before,
