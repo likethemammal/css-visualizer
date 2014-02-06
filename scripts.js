@@ -17,9 +17,7 @@ function createBlocks() {
         block.className = 'block';
         block.style.bottom = i*14 + "px";
         block.style['-webkit-transform'] = "translate3d(" + ((Math.sin(i/10)*15) - 50) + "%, 0, 0)";
-        
-        console.log((Math.sin(i/10)*15) + 50);
-        
+                
         document.styleSheets[0].insertRule(beforeStr, 0);
         document.styleSheets[0].insertRule(afterStr, 0);
         document.styleSheets[0].insertRule(blockStr, 0);
@@ -32,9 +30,7 @@ function createBlocks() {
 
 function animateErryTing() {
     var blocks = document.getElementsByClassName('block');
-    
-    console.warn('what the shit');
-    
+        
     for (var j = 0; j < blocks.length; j++) {
         blocks[j].style['-webkit-transform'] = "translate3d(" + ((Math.sin(j*currentAmp/10)*15) - 50) + "%, 0, 0)";
     }
@@ -44,7 +40,7 @@ function animateErryTing() {
 }
 
 createBlocks();
-setInterval(animateErryTing, 100);
+setInterval(animateErryTing, 200);
 
 
 
