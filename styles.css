@@ -1,3 +1,9 @@
+body {
+	background: #000;
+	overflow: hidden;
+/* 	display: none; */
+}
+
 /* Effect 5: 3d bar bottom */
 .block {
 	position: fixed;
@@ -62,28 +68,19 @@
 
 
 
-
-
-
-.container {
-	position: relative;
-	-webkit-filter: blur(10px);
-	width: 110%;
-	height: 110%;
-	z-index: 2;
-}
-
-.container2 {
-	position: relative;
-	-webkit-filter: blur(20px);
-	width: 110%;
-	height: 110%;
-	z-index: 1;
+.hex-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	-webkit-animation: rotateContainer 20s ease-in-out infinite alternate;
+	-webkit-transform: rotate(-180deg) translate(350px, 200px);
 }
 
 .hex-wrapper {
     position: absolute;
-	z-index: 5;
+	opacity: 0.2;
 	-webkit-transition: -webkit-transform 50ms ease-in-out;
 }
 
@@ -98,16 +95,30 @@
 
 }
 .hex:before, .hex:after {
-    content:"";
+    content:" ";
     border-left: 104px solid transparent;
     border-right: 104px solid transparent;
     position: absolute;
 }
 .hex:before {
-    top: -59px;
+    top: -60px;
     border-bottom: 60px solid #6C6;
 }
 .hex:after {
-    bottom: -59px;
+    bottom: -60px;
     border-top: 60px solid #6C6;
+}
+
+@-webkit-keyframes rotateContainer {
+	0% {
+		-webkit-transform: rotate(-180deg) translate(350px, 200px);
+	}
+	
+	50% {
+		-webkit-transform: rotate(-360deg) translate(150px, 200px);
+	}
+	
+	100% {
+		-webkit-transform: rotate(0deg) translate(0, 200px);
+	}
 }
