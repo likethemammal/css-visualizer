@@ -1,26 +1,34 @@
 var Visualizers = Visualizers || {}
 
-Visualizers.Base = {
-    
-};
-
-var dancer = new Dancer();
-var a = new Audio();
-a.src = 'http://opengameart.org/sites/default/files/numbers.mp3';
-dancer.load(a);
-dancer.play();
-
-Visualizers.Hexagons = _.extend(Visualizers.Base, {
-    visualizer: document.getElementById('visualizer'),
-    hexContainer: document.createElement('div'),
-
+Visualizers.Hexagons = _.extend({
     hexs: [],
-    numOfHexs: 7,
+    numOfHexs: 15,
     hexDefaultTransformStr: 'rotate(0deg)',
 
     init: function() {
-        this.hexContainer.className = 'hex-container';
-        this.visualizer.appendChild(this.hexContainer);
+        this.setupElements();
+        this.setShading();
+        this.setColors();
+    },
+    
+    setupElements: function() {
+        var hexContainer = document.createElement('div'),
+            overlayContainer = document.createElement('div'),
+            colorOverlay = document.createElement('div'),
+            gradientOverlay = document.createElement('div');
+        
+        hexContainer.id = 'hex-container';
+        overlayContainer.id = 'overlay-container';
+        colorOverlay.id = 'color-overlay';
+        gradientOverlay.id = 'gradient-overlay';
+        colorOverlay.className = 'overlay';
+        gradientOverlay.className = 'overlay';
+        
+        overlayContainer.appendChild(gradientOverlay);
+        overlayContainer.appendChild(colorOverlay);
+        
+        this.visualizer.appendChild(overlayContainer);
+        this.visualizer.appendChild(hexContainer);
         
         for (var i = 0; i < this.numOfHexs; i++) {
             var hexWrapper = document.createElement('div'),
@@ -32,17 +40,19 @@ Visualizers.Hexagons = _.extend(Visualizers.Base, {
             hexWrapper.className += ' hex-wrapper';
             hex.className += ' hex';
             
-            this.hexContainer.appendChild(hexWrapper);
+            hexContainer.appendChild(hexWrapper);
         }
         
+        this.hexContainer = hexContainer;
+        this.overlayContainer = overlayContainer;
+        this.colorOverlay = colorOverlay;
+        this.gradientOverlay = gradientOverlay;
+        
         this.hexs = document.getElementsByClassName('hex');
-                
-        this.setColors();
-        setInterval(_.bind(this.onSpectrum, this), 50);
     },
     
-    setColors: function() {
-        var color = 'rgb(200,200,200)';
+    setShading: function() {
+        var color = 'rgba(255,255,255,0.08)';
                 
         for (var j = 0; j < this.numOfHexs; j++) {
             var beforeStr = '#hex' + j + ':before { border-bottom-color : ' + color + '}';
@@ -53,20 +63,19 @@ Visualizers.Hexagons = _.extend(Visualizers.Base, {
             document.styleSheets[0].insertRule(beforeStr, 0);
             document.styleSheets[0].insertRule(afterStr, 0);
             
-            color = lighterColor(color, 0.1);
-
         }
     },
     
-    onSpectrum: function() {
-        var spectrum = float32ToArray(dancer.getSpectrum()),
-            sampleAvgs = sampleArray(spectrum, this.numOfHexs);
+    setColors: function() {
+        this.gradientOverlay.style['background'] = "-webkit-linear-gradient(-30deg, " + randomColor() + " 0%," + randomColor() + " 50%," + randomColor() + " 100%)"
+    },
+    
+    onSpectrum: function(spectrum) {
+        var sampleAvgs = sampleArray(spectrum, this.numOfHexs);
         
         for (var i = 0; i < this.numOfHexs; i++) {
-            this.hexs[i].parentNode.style['-webkit-transform'] = this.hexDefaultTransformStr + ' scale(' + (Math.random()*sampleAvgs[i]*100 + 1) + ')';
+            this.hexs[i].parentNode.style['-webkit-transform'] = this.hexDefaultTransformStr + ' scale(' + (sampleAvgs[i]*100 + 1) + ')';
         }
     }
     
-});
-
-Visualizers.Hexagons.init();
+}, Visualizers.Base);

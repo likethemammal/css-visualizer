@@ -6,15 +6,30 @@
 </head>
 <body>
     <div id="visualizer"></div>
+    <div id="ui-container">
+        <div id="ui">
+            <select id="chooser">
+                <option id="hexagons">Hexagons</option>
+                <option id="bars">Bars</option>
+                <option id="circles">Circles</option>
+            </select>
+        </div>
+    </div>
 </body>
 
-<script src="../libs/dancer.min.js"></script>
-<script src="../libs/underscore.min.js"></script>
+
+<!-- Dev -->
+<!-- <script src="../libs/dancer.min.js"></script> -->
+<!-- <script src="../libs/underscore.min.js"></script> -->
+
+<!-- Production -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.3.1/dancer.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 
 <script src="utils.js" ></script>
-<!-- <script src="base.js" ></script> -->
+<script src="app.js" ></script>
+<script src="base.js" ></script>
 <script src="hexagons.js" ></script>
-<!-- <script src="bars.js" ></script> -->
+<script src="bars.js" ></script> -->
 <!-- <script src="circles.js" ></script> -->
-<!-- <script src="hexagon.js"> </script> -->
 </html>

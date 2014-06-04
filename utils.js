@@ -99,10 +99,6 @@ function sampleArray(arrayToSample, numOfSamples) {
                 
         for (var i = 0; i < sampleLength; i++) {
             sample += Math.abs(arrayToSample[(j * sampleLength) + i]);
-            
-//             if (i % 2 === 0) {
-//                 console.log(arrayToSample[(j * sampleLength) + i], (j * sampleLength) + i, j, sampleLength);
-//             }
         }
                 
         sample /= sampleLength;
