@@ -10,15 +10,17 @@ Visualizers.Base = {
         
         this.init();
         Timer = setInterval(_.bind(function() {
-            var spectrum, waveform;
-            if (this.onSpectrum) {
-                spectrum = float32ToArray(dancer.getSpectrum());
-                this.onSpectrum(spectrum);
-            }
-            
-            if (this.onWaveform) {
-                waveform = float32ToArray(dancer.getWaveform());
-                this.onWaveform(waveform);
+            if (dancer.isPlaying()) {
+                var spectrum, waveform;
+                if (this.onSpectrum) {
+                    spectrum = float32ToArray(dancer.getSpectrum());
+                    this.onSpectrum(spectrum);
+                }
+                
+                if (this.onWaveform) {
+                    waveform = float32ToArray(dancer.getWaveform());
+                    this.onWaveform(waveform);
+                }
             }
         }, this), 50); 
     },

@@ -15,7 +15,10 @@
                     <option id="circles">Circles</option>
                 </select>
                 <button id="fullscreen">Fullscreen</button>
+                <input id="search-input" type="search"></input>
+                <button id="search">Search</button>
             </div>
+            <audio id="audio"></audio>
         </div>
     </div>
 </body>
@@ -28,6 +31,20 @@
 <!-- Production -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.3.1/dancer.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+
+
+<script src="http://connect.soundcloud.com/sdk.js"></script>
+<script>
+var clientID = '587aa2d384f7333a886010d5f52f302a';
+
+SC.initialize({
+  client_id: clientID
+});
+
+var loadFromSC = true;
+
+</script>
+
 
 <script src="utils.js" ></script>
 <script src="app.js" ></script>
