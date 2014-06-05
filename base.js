@@ -9,20 +9,14 @@ Visualizers.Base = {
         Visualizers.currentVisualizer = this;
         
         this.init();
-        Timer = setInterval(_.bind(function() {
-            if (dancer.isPlaying()) {
-                var spectrum, waveform;
-                if (this.onSpectrum) {
-                    spectrum = float32ToArray(dancer.getSpectrum());
-                    this.onSpectrum(spectrum);
-                }
-                
-                if (this.onWaveform) {
-                    waveform = float32ToArray(dancer.getWaveform());
-                    this.onWaveform(waveform);
-                }
-            }
-        }, this), 50); 
+        
+        var fps = 60
+        if (this.fps) {
+            var fps = this.fps;
+        }
+        
+        Timer = setInterval(_.bind(this.getData, this), 50 + (60 - this.fps));
+//         Timer = requestAnimationFrame(_.bind(this.getData, this));
     },
     
     clear: function() {
@@ -30,11 +24,28 @@ Visualizers.Base = {
         if (styleSheet) {
             document.head.removeChild(styleSheet);
         }
-        clearInterval(Timer);
         this.visualizer.innerHTML = '';
     },
     
+    getData: function() {
+        if (dancer.isPlaying()) {
+            var spectrum, waveform;
+            if (this.onSpectrum) {
+                spectrum = float32ToArray(dancer.getSpectrum());
+                this.onSpectrum(spectrum);
+            }
+            
+            if (this.onWaveform) {
+                waveform = float32ToArray(dancer.getWaveform());
+                this.onWaveform(waveform);
+            }
+        }
+//         requestAnimationFrame(_.bind(this.getData, this));
+    },
+    
     destroy: function() {
+        clearInterval(Timer);
+//         cancelAnimationFrame(Timer);
         if (this.onDestroy) {
             this.onDestroy();
         }

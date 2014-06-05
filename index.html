@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<link rel="stylesheet" type="text/css" href="styles.css">
+<link rel="stylesheet" type="t=ext/css" href="styles.css">
 
 </head>
 <body>
@@ -10,13 +10,13 @@
         <div id="ui-container">
             <div id="ui">
                 <select id="chooser">
-                    <option id="hexagons">Hexagons</option>
                     <option id="bars">Bars</option>
-                    <option id="circles">Circles</option>
+                    <option id="hexagons">Hexagons</option>
                 </select>
+                <button id="pause">Pause</button>
                 <button id="fullscreen">Fullscreen</button>
-                <input id="search-input" type="search"></input>
-                <button id="search">Search</button>
+                <input id="search-input" type="search">
+                <button id="search-btn">Search</button>
             </div>
             <audio id="audio"></audio>
         </div>
@@ -25,23 +25,26 @@
 
 
 <!-- Dev -->
-<!-- <script src="../libs/dancer.min.js"></script> -->
-<!-- <script src="../libs/underscore.min.js"></script> -->
+<script src="../libs/dancer.min.js"></script>
+<script src="../libs/underscore.min.js"></script>
 
 <!-- Production -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.3.1/dancer.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.3.1/dancer.min.js"></script> -->
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script> -->
 
+<!-- Request Anim Gist -->
+<!-- https://gist.github.com/paulirish/1579671 -->
+<!-- <script src="libs/rAF.js"></script> -->
 
-<script src="http://connect.soundcloud.com/sdk.js"></script>
+<!-- <script src="http://connect.soundcloud.com/sdk.js"></script> -->
 <script>
-var clientID = '587aa2d384f7333a886010d5f52f302a';
+// var clientID = '587aa2d384f7333a886010d5f52f302a';
 
-SC.initialize({
-  client_id: clientID
-});
+// SC.initialize({
+//   client_id: clientID
+// });
 
-var loadFromSC = true;
+var loadFromSC = false;
 
 </script>
 

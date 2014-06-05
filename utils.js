@@ -89,8 +89,33 @@ function darkerColor(color, ratio) {
     return changeColor(color, ratio, true);
 };
 
+function fadeToColor(rgbColor1, rgbColor2, ratio) {
+    var colors1 = getNumsFromRGB(rgbColor1),
+        colors2 = getNumsFromRGB(rgbColor2),
+        newColors = [];
+        
+    for (var i = 0; i < colors1.length; i++) {
+        var color1 = parseInt(colors1[i], 10);
+        var color2 = parseInt(colors2[i], 10);
+        newColors.push(Math.round(Math.abs(color1 + ((color2 - color1)*ratio))));
+    }
+        
+    function getNumsFromRGB(rgbColor) {
+        var colors = rgbColor.split(',');
+
+        var colorA = colors[0].substring(4, colors[0].length),
+            colorB = colors[1],
+            colorC = colors[2].substring(0, colors[2].length - 1);
+
+        return [colorA, colorB, colorC];
+    }
+    
+    return 'rgb(' + newColors + ')';
+
+}
+
 function sampleArray(arrayToSample, numOfSamples) {
-    var sampleLength = Math.floor(arrayToSample.length / numOfSamples),
+    var sampleLength = Math.floor((arrayToSample.length/2) / numOfSamples),
         sampleAvgs = [],
         sample;
         
@@ -99,9 +124,10 @@ function sampleArray(arrayToSample, numOfSamples) {
                 
         for (var i = 0; i < sampleLength; i++) {
             sample += Math.abs(arrayToSample[(j * sampleLength) + i]);
+            sample += Math.abs(arrayToSample[(j * sampleLength) + i + (arrayToSample.length/2)]);
         }
                 
-        sample /= sampleLength;
+        sample /= sampleLength*2;
                 
         sampleAvgs.push(sample);
     }
