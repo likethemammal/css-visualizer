@@ -4,11 +4,13 @@ Visualizers.Hexagons = _.extend({
     hexs: [],
     numOfHexs: 15,
     hexDefaultTransformStr: 'rotate(0deg)',
+    currentOverlay: '',
 
     init: function() {
         this.setupElements();
         this.setShading();
         this.setColors();
+        this.ColorTimer = setInterval(_.bind(this.setColors, this), 10000);
     },
     
     setupElements: function() {
@@ -67,7 +69,25 @@ Visualizers.Hexagons = _.extend({
     },
     
     setColors: function() {
-        this.gradientOverlay.style['background'] = "-webkit-linear-gradient(-30deg, " + randomColor() + " 0%," + randomColor() + " 50%," + randomColor() + " 100%)"
+        // todo: Add cross-browser support for opacity and gradients
+        
+        var gradientStr = "-webkit-linear-gradient(-30deg, " + randomColor() + " 0%," + randomColor() + " 50%," + randomColor() + " 100%)";
+        if (this.currentOverlay === 'gradient') {
+            this.colorOverlay.style['background'] = randomColor();
+            this.colorOverlay.style.opacity = 1;
+            this.gradientOverlay.style.opacity = 0;
+            this.currentOverlay = 'color';
+        } else if (this.currentOverlay === 'color') {
+            this.gradientOverlay.style['background'] = gradientStr;
+            this.colorOverlay.style.opacity = 0;
+            this.gradientOverlay.style.opacity = 1;
+            this.currentOverlay = 'gradient';
+        } else {
+            this.colorOverlay.style.opacity = 0;
+            this.gradientOverlay.style['background'] = gradientStr;
+            this.currentOverlay = 'gradient';
+        }
+        
     },
     
     onSpectrum: function(spectrum) {
@@ -76,6 +96,10 @@ Visualizers.Hexagons = _.extend({
         for (var i = 0; i < this.numOfHexs; i++) {
             this.hexs[i].parentNode.style['-webkit-transform'] = this.hexDefaultTransformStr + ' scale(' + (sampleAvgs[i]*100 + 1) + ')';
         }
+    },
+    
+    onDestroy: function() {
+        clearInterval(this.ColorTimer);
     }
     
 }, Visualizers.Base);

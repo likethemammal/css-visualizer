@@ -1,5 +1,6 @@
 body {
-	background: #000;
+	margin: 0;
+	background: #000000;
 	overflow: hidden;
 /* 	display: none; */
 }
@@ -31,6 +32,14 @@ body {
 	padding: 0 0 0 5px;
 	margin: 0;
 	border-radius: 2px 0 0 2px;
+}
+
+#fullscreen {
+	height: 100%;
+	margin: 0;
+	background: #fff;
+	border: none;
+	cursor: pointer;
 }
 
 
@@ -96,14 +105,15 @@ body {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	-webkit-transition: opacity 500ms;
 }
 
 #hex-container {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	opacity: 0.7;
-	margin: 0 auto;	
+	opacity: 0.9;
+	margin: 0 auto;
 	
 	-webkit-animation: ambientMovement 30s ease-in-out infinite alternate;
 	-webkit-transform: rotate(-180deg) translate(350px, 200px);

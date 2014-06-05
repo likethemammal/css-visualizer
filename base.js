@@ -6,7 +6,7 @@ Visualizers.Base = {
     run: function() {
         this.clear();
         
-        Visualizers.currentVis = this;
+        Visualizers.currentVisualizer = this;
         
         this.init();
         Timer = setInterval(_.bind(function() {
@@ -30,5 +30,11 @@ Visualizers.Base = {
         }
         clearInterval(Timer);
         this.visualizer.innerHTML = '';
+    },
+    
+    destroy: function() {
+        if (this.onDestroy) {
+            this.onDestroy();
+        }
     }
 };
