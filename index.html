@@ -1,28 +1,33 @@
 <html>
 <head>
+    <title>CSS Visualizers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<link rel="stylesheet" type="t=ext/css" href="styles.css">
-
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <div id="visualizer-container">
         <div id="visualizer"></div>
         <div id="ui-container">
             <div id="ui">
-                <div id="controls" class="ui-box">
-                    <select id="chooser">
-                        <option id="hexagons">Hexagons</option>
-                        <option id="bars">Bars</option>
-                    </select>
-                    <button id="play-pause" class="ui-btn"></button>
-                    <button id="next" class="ui-btn"></button>
-                    <button id="fullscreen" class="ui-btn"></button>
-                    <input id="search-input" type="search">
-                    <button id="search-btn" class="ui-btn"></button>
+                <div id="controls" class="ui-outer">
+                  <div class="ui-inner cf">
+                      <select id="chooser" title="Select a type of visualizer">
+                          <option id="hexagons">Hexagons</option>
+                          <option id="bars">Bars</option>
+                      </select>
+                      <button id="play-pause" class="ui-btn" title="Play/Pause"></button>
+                      <button id="next" class="ui-btn" title="Next"></button>
+                      <button id="fullscreen" class="ui-btn" title="Fullscreen"></button>
+                      <input id="search-input" type="search" title="Enter song name, genre, or artist">
+                      <button id="search-btn" class="ui-btn" title="Search"></button>
+                  </div>
                 </div>
-                <div id="meta-data" class="ui-box">
-                    <h3 id="artist"></h3>
-                    <h4 id="title"></h4>
+                <div id="meta-data" class="ui-outer">
+                  <div class="ui-inner">
+                      <h3 id="artist" class="meta-data-words"></h3>
+                      <h4 id="title" class="meta-data-words"></h4>
+                  </div>
                 </div>
             </div>
             <audio id="audio"></audio>
@@ -32,12 +37,12 @@
 
 
 <!-- Dev -->
-<!-- <script src="../libs/dancer.min.js"></script> -->
-<!-- <script src="../libs/underscore.min.js"></script> -->
+<!--<script src="../libs/dancer.min.js"></script>-->
+<!--<script src="../libs/underscore.min.js"></script>-->
 
 <!-- Production -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.3.1/dancer.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.3.1/dancer.min.js"></script> 
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script> 
 
 <!-- Request Anim Gist -->
 <!-- https://gist.github.com/paulirish/1579671 -->

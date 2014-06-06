@@ -14,6 +14,10 @@ var App = {
         
     IdleTimer: 0,
     
+    audio: new Audio(),
+    audioLoaded: false,
+    autoplayRandom: false,
+    
     tracksCache: [
         {
             artist: 'Alex Metric',
@@ -100,7 +104,7 @@ var App = {
     },
     
     init: function() {
-        this.runDancer();
+        this.setupMusic();
         this.events();
         
         this.setupFullscreen();
@@ -110,7 +114,10 @@ var App = {
         }, 10);
     },
     
-    runDancer: function() {        
+    setupMusic: function() {        
+        if (this.autoplayRandom) {
+            this.currentTrack = Math.round(Math.random()*this.tracksCache.length);
+        }        
         if (!loadFromSC) {
             this.nextSongFromCache();
         }
@@ -183,47 +190,48 @@ var App = {
     
     nextSongFromCache: function() {
         // todo: fix error for "Failed to execute 'createMediaElementSource' on 'AudioContext'", might be a Chrome bug;
-        var newAudio = false,
-            trackInfo; 
+        var trackInfo; 
             
         dancer.pause();
-        
-        var getRandomTrack = _.bind(function() {
-            if (this.tracksListenedTo.length !== this.tracksCache.length) {
-                var randomNum = Math.ceil(Math.random()*this.tracksCache.length - 1);
-                if (this.tracksListenedTo.indexOf(randomNum) < 0) {
-                    return randomNum;
-                } else {
-                    return getRandomTrack();
-                }
-            } else {
-                this.tracksListenedTo = [];
-            }
-        }, this);
-        
-        if (!this.a) {
-            this.a = new Audio();
-            newAudio = true;
-        }
-        
+                
         trackInfo = this.tracksCache[this.currentTrack];
         
-        this.a.src = trackInfo.url;
+        this.audio.src = trackInfo.url;
         this.attachMetaData(trackInfo.artist, trackInfo.title);
         this.ui.style.opacity = 1;
         
         this.tracksListenedTo.push(this.currentTrack);
-        this.currentTrack = getRandomTrack();
+        this.currentTrack = this.getRandomTrackNum();
         
-        this.a.onended = _.bind(this.nextSongFromCache, this);
-                
-        if (newAudio) {
-            dancer.load(this.a);
+        this.audio.onended = _.bind(this.nextSongFromCache, this);
+
+        if (!this.audioLoaded) {
+            dancer.load(this.audio);
+            this.audioLoaded = true;
         }
-        
         
         dancer.play();
         
+    },
+    
+    getRandomTrackNum: function() {
+        var randomNum;
+        
+        if (this.tracksListenedTo.length !== this.tracksCache.length) {
+            
+            randomNum = Math.ceil(Math.random()*this.tracksCache.length - 1);
+            
+            if (this.tracksListenedTo.indexOf(randomNum) < 0) {
+                return randomNum;
+            } else {
+                return this.getRandomTrackNum();
+            }
+            
+        } else {
+            this.tracksListenedTo = [];
+            
+            return 0;
+        }
     },
     
     attachMetaData: function(artistStr, titleStr) {
