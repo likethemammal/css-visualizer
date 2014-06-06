@@ -2,15 +2,24 @@ body {
 	margin: 0;
 	background: #000000;
 	overflow: hidden;
-/* 	display: none; */
 }
 
-#ui-container {
+#visualizer {
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
+	z-index: 1;
+}
+
+#ui-container {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
 }
 
 #ui {
@@ -18,15 +27,17 @@ body {
 	width: 200px;
 	height: 30px;
 	border-radius: 2px;
-	background: #fff;
+	background: #ddd;
 	box-shadow: 0px 2px 10px #000;
 	
 	-webkit-transition: 200ms;
 }
 
 #chooser {
+	display: block;
 	background: #fff;
 	height: 100%;
+	float: left;
 	border: none;
 	border-right: 1px solid #999;
 	padding: 0 0 0 5px;
@@ -34,12 +45,45 @@ body {
 	border-radius: 2px 0 0 2px;
 }
 
+#play-pause {
+	background-image: url('imgs/glyphicons_174_pause.png');
+}
+
+#next {
+	background-image: url('imgs/glyphicons_178_step_forward.png');
+}
+
 #fullscreen {
+	background-image: url('imgs/glyphicons_215_resize_full.png');
+}
+
+#fullscreen:hover {
+	-webkit-animation: toggleFullscreen 1s linear infinite alternate;
+}
+
+#search-input {
+	display: none;
+}
+
+#search-btn {
+	display: none;
+	background-image: url('imgs/glyphicons_027_search.png');
+}
+
+.ui-btn {
+	display: block;
+	float: left;
 	height: 100%;
+	width: 30px;
 	margin: 0;
-	background: #fff;
 	border: none;
+	background: #fff;
 	cursor: pointer;
+	background: #ccc no-repeat center center;
+}
+
+.ui-btn:hover {
+	opacity: 0.7;
 }
 
 
@@ -52,14 +96,15 @@ body {
 	bottom: 0;
 	z-index: 10;
 	opacity: 0.5;
-background: transparent; /* Old browsers */
-background: -moz-linear-gradient(top, transparent 50%, #000000 50%, #000000 50%, transparent 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,transparent), color-stop(50%,#000000), color-stop(50%,#000000), color-stop(100%,transparent)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* IE10+ */
-background: linear-gradient(to bottom, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='transparent', endColorstr='transparent',GradientType=0 ); /* IE6-9 */}
+	background: transparent; /* Old browsers */
+	background: -moz-linear-gradient(top, transparent 50%, #000000 50%, #000000 50%, transparent 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,transparent), color-stop(50%,#000000), color-stop(50%,#000000), color-stop(100%,transparent)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* IE10+ */
+	background: linear-gradient(to bottom, transparent 50%,#000000 50%,#000000 50%,transparent 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='transparent', endColorstr='transparent',GradientType=0 ); /* IE6-9 */
+}
 
 .bar-wrapper {
 	height: 100%;
@@ -182,5 +227,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='transparent',
 		-webkit-transform: rotate(0deg);
 		top: 90%;
 		left: 10%;
+	}
+}
+
+@-webkit-keyframes toggleFullscreen {
+	0% {
+		background-image: url('imgs/glyphicons_215_resize_full.png');
+	}
+	
+	100% {
+		background-image: url('imgs/glyphicons_214_resize_small.png');
 	}
 }

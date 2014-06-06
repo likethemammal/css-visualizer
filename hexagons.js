@@ -5,6 +5,7 @@ Visualizers.Hexagons = _.extend({
     numOfHexs: 15,
     hexDefaultTransformStr: 'rotate(0deg)',
     currentOverlay: '',
+    fps: 70,
 
     init: function() {
         this.setupElements();

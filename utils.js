@@ -140,6 +140,8 @@ function float32ToArray(array) {
 }
 
 function toggleFullscreen(el) {
+    var isFullscreen;
+    
     if (
         document.fullscreenElement ||
         document.webkitFullscreenElement ||
@@ -155,6 +157,7 @@ function toggleFullscreen(el) {
         } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
         }
+        isFullscreen = false;
     } else {
         if (el.requestFullscreen) {
             el.requestFullscreen();
@@ -165,5 +168,16 @@ function toggleFullscreen(el) {
         } else if (el.msRequestFullscreen) {
             el.msRequestFullscreen();
         }
+        isFullscreen = true;
     }
+    
+    return isFullscreen;
+}
+
+function getIsFullscreen() {
+    return document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+ 
 }

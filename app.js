@@ -6,23 +6,41 @@ var App = {
     
     visualizerContainer: document.getElementById('visualizer-container'),
     chooser: document.getElementById('chooser'),
+    uiContainer: document.getElementById('ui-container'),
     ui: document.getElementById('ui'),
-    pause: document.getElementById('pause'),
+    playPause: document.getElementById('play-pause'),
+    next: document.getElementById('next'),
     searchBtn: document.getElementById('search-btn'),
+        
+    IdleTimer: 0,
     
-    tracksCache: [],
+    tracksCache: [
+        '../Kygo - Sexual Healing (Remix).mp3',
+        '../Bondax - All Inside.mp3',
+        '../Ludovico Einaudi Fly2.wav',
+        'https:api.soundcloud.com/tracks/149098250/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b',
+        'https:www.dropbox.com/meta_dl/eyJzdWJfcGF0aCI6ICIiLCAidGVzdF9saW5rIjogZmFsc2UsICJzZXJ2ZXIiOiAiZGwuZHJvcGJveHVzZXJjb250ZW50LmNvbSIsICJpdGVtX2lkIjogbnVsbCwgImlzX2RpciI6IGZhbHNlLCAidGtleSI6ICJsNHp3Y3FnN2FyYnF2d3UifQ/AAJLDGi7mwiHsD0sYqnpqnFw002twFjlKlagMFXB-cFAJw?dl=1',
+        'https:api.soundcloud.com/tracks/150431004/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b',
+        'https:api.soundcloud.com/tracks/130504908/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b',
+    ],
+    
+    currentTrack: 0,
     
     events: function() {
         this.chooser.onchange = this.switchVisualizers;
-        this.searchBtn.onclick = this.search;
-        this.pause.onclick = _.bind(dancer.pause, dancer);
+        if (loadFromSC) {
+            this.searchBtn.onclick = this.search;
+        }
+        this.playPause.onclick = _.bind(this.togglePlayPause, this);
+        this.next.onclick = _.bind(this.nextSongFromCache, this);
         
+        document.body.onclick = _.bind(this.toggleUI, this);
         document.body.onmousemove = _.bind(this.toggleUI, this);
         document.body.onkeyup = _.bind(this.toggleUI, this);
     },
     
     init: function() {
-        this.setupDancer();
+        this.runDancer();
         this.events();
         
         this.setupFullscreen();
@@ -32,19 +50,9 @@ var App = {
         }, 10);
     },
     
-    setupDancer: function() {        
+    runDancer: function() {        
         if (!loadFromSC) {
-            a = new Audio();
-//             a.src = 'https:api.soundcloud.com/tracks/150431004/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b';
-//             a.src = 'https:api.soundcloud.com/tracks/130504908/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b';
-//             a.src = 'https:api.soundcloud.com/tracks/143665938/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b';
-            // a.src = '../Ludovico Einaudi Fly2.wav';
-//             a.src = '../CoreBass4 Rendered.mp3'
-            a.src = '../Bondax - All Inside.mp3';
-            // a.src = 'https:api.soundcloud.com/tracks/149098250/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b'
-            // a.src = 'https:www.dropbox.com/meta_dl/eyJzdWJfcGF0aCI6ICIiLCAidGVzdF9saW5rIjogZmFsc2UsICJzZXJ2ZXIiOiAiZGwuZHJvcGJveHVzZXJjb250ZW50LmNvbSIsICJpdGVtX2lkIjogbnVsbCwgImlzX2RpciI6IGZhbHNlLCAidGtleSI6ICJsNHp3Y3FnN2FyYnF2d3UifQ/AAJLDGi7mwiHsD0sYqnpqnFw002twFjlKlagMFXB-cFAJw?dl=1';
-            dancer.load(a);
-            dancer.play();
+            this.nextSongFromCache();
         }
     },
     
@@ -56,14 +64,13 @@ var App = {
     },
     
     toggleUI: _.throttle(function() {
-        var IdleTimer;
         
         this.visualizerContainer.style.cursor = 'auto';
         this.ui.style.opacity = 1;
         
-        clearInterval(IdleTimer);
+        clearInterval(this.IdleTimer);
         
-        IdleTimer = setInterval(_.bind(function() {
+        this.IdleTimer = setInterval(_.bind(function() {
             this.ui.style.opacity = 0;
             this.visualizerContainer.style.cursor = 'none';
         }, this), 2000);
@@ -87,6 +94,16 @@ var App = {
         
     }, this),
     
+    togglePlayPause: function() {
+        if (dancer.isPlaying()) {
+            dancer.pause();
+            this.playPause.style['background-image'] = "url('imgs/glyphicons_173_play.png')";
+        } else {
+            dancer.play();
+            this.playPause.style['background-image'] = "url('imgs/glyphicons_174_pause.png')";
+        }
+    },
+    
     setupFullscreen: function() {
         var fullscreen = document.getElementById('fullscreen');
         
@@ -98,6 +115,7 @@ var App = {
         ) {
             fullscreen.onclick = _.bind(function() {
                 toggleFullscreen(this.visualizerContainer);
+                var isFullscreen = getIsFullscreen();
             }, this);
         } else {
             fullscreen.style.display = 'none';
@@ -105,19 +123,24 @@ var App = {
     },
     
     nextSongFromCache: function() {
-        var audioTag = document.getElementById('audio'),
-            currentSrc = audioTag.src;
+        // todo: fix error for "Failed to execute 'createMediaElementSource' on 'AudioContext'", might be a Chrome bug;
+        var newAudio = false;
+            dancer.pause();        
         
-        dancer.pause();
-    
-        audioTag.src = this.tracksCache[0].url;
-        
-        this.tracksCache.shift();
-        if (!currentSrc) {
-            dancer.load(audioTag);
+        if (!this.a) {
+            this.a = new Audio();
+            newAudio = true;
         }
-    
-        audioTag.onended = _.bind(this.nextSongFromCache, this);
+        
+        this.a.src = this.tracksCache[this.currentTrack];
+        this.currentTrack++;
+        
+        this.a.onended = _.bind(this.nextSongFromCache, this);
+                
+        if (newAudio) {
+            dancer.load(this.a);
+        }
+        
         dancer.play();
     }
 };
