@@ -15,16 +15,76 @@ var App = {
     IdleTimer: 0,
     
     tracksCache: [
-        '../Kygo - Sexual Healing (Remix).mp3',
-        '../Bondax - All Inside.mp3',
-        '../Ludovico Einaudi Fly2.wav',
-        'https:api.soundcloud.com/tracks/149098250/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b',
-        'https:www.dropbox.com/meta_dl/eyJzdWJfcGF0aCI6ICIiLCAidGVzdF9saW5rIjogZmFsc2UsICJzZXJ2ZXIiOiAiZGwuZHJvcGJveHVzZXJjb250ZW50LmNvbSIsICJpdGVtX2lkIjogbnVsbCwgImlzX2RpciI6IGZhbHNlLCAidGtleSI6ICJsNHp3Y3FnN2FyYnF2d3UifQ/AAJLDGi7mwiHsD0sYqnpqnFw002twFjlKlagMFXB-cFAJw?dl=1',
-        'https:api.soundcloud.com/tracks/150431004/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b',
-        'https:api.soundcloud.com/tracks/130504908/download?client_id=b45b1aa10f1ac2941910a7f0d10f8e28&oauth_token=1-16343-49735712-69955a658d6fa5b',
+        {
+            artist: 'Alex Metric',
+            title: 'Scandalism',
+            format: 'mp3',
+            url: 'music/Alex Metric - Scandalism.mp3'
+        },
+        {
+            artist: 'Kygo',
+            title: 'Sexual Healing (Remix)',
+            format: 'mp3',
+            url: 'music/Kygo - Sexual Healing (Remix).mp3'
+        },
+        {
+            artist: 'Bondax',
+            title: 'All Inside',
+            format: 'mp3',
+            url: 'music/Bondax - All Inside.mp3'
+        },
+        {
+            artist: 'Estelle Miller',
+            title: 'Jacknjill',
+            format: 'mp3',
+            url: 'music/Estelle Miller - Jacknjill.mp3'
+        },
+        {
+            artist: 'Estelle Miller',
+            title: 'Delicate Words',
+            format: 'mp3',
+            url: 'music/Estelle Miller - Delicate Words.mp3'
+        },
+        {
+            artist: 'Nobuo Uematsu',
+            title: 'To Zanarkand',
+            format: 'mp3',
+            url: 'music/Nobuo Uematsu - To Zanarkand.mp3'
+        },
+        {
+            artist: 'Koji Kondo',
+            title: 'Song of Storms',
+            format: 'mp3',
+            url: 'music/Koji Kondo - Song of Storms.mp3'
+        },
+        {
+            artist: 'Carl Douglas',
+            title: 'Kung Fu Fighting 1974 Disco',
+            format: 'mp3',
+            url: 'music/Carl Douglas - Kung Fu Fighting 1974 Disco.mp3'
+        },
+        {
+            artist: 'Ella Fitzgerald',
+            title: 'Someone To Watch Over Me',
+            format: 'mp3',
+            url: 'music/Ella Fitzgerald - Someone To Watch Over Me.mp3'
+        },
+        {
+            artist: 'Neon Indian',
+            title: 'Polish Girl',
+            format: 'mp3',
+            url: 'music/Neon Indian - Polish Girl.mp3'
+        },
+        {
+            artist: 'George Michael',
+            title: 'Careless Whisper',
+            format: 'mp3',
+            url: 'music/George Michael - Careless Whisper.mp3'
+        },
     ],
     
     currentTrack: 0,
+    tracksListenedTo: [],
     
     events: function() {
         this.chooser.onchange = this.switchVisualizers;
@@ -64,7 +124,6 @@ var App = {
     },
     
     toggleUI: _.throttle(function() {
-        
         this.visualizerContainer.style.cursor = 'auto';
         this.ui.style.opacity = 1;
         
@@ -124,16 +183,37 @@ var App = {
     
     nextSongFromCache: function() {
         // todo: fix error for "Failed to execute 'createMediaElementSource' on 'AudioContext'", might be a Chrome bug;
-        var newAudio = false;
-            dancer.pause();        
+        var newAudio = false,
+            trackInfo; 
+            
+        dancer.pause();
+        
+        var getRandomTrack = _.bind(function() {
+            if (this.tracksListenedTo.length !== this.tracksCache.length) {
+                var randomNum = Math.ceil(Math.random()*this.tracksCache.length - 1);
+                if (this.tracksListenedTo.indexOf(randomNum) < 0) {
+                    return randomNum;
+                } else {
+                    return getRandomTrack();
+                }
+            } else {
+                this.tracksListenedTo = [];
+            }
+        }, this);
         
         if (!this.a) {
             this.a = new Audio();
             newAudio = true;
         }
         
-        this.a.src = this.tracksCache[this.currentTrack];
-        this.currentTrack++;
+        trackInfo = this.tracksCache[this.currentTrack];
+        
+        this.a.src = trackInfo.url;
+        this.attachMetaData(trackInfo.artist, trackInfo.title);
+        this.ui.style.opacity = 1;
+        
+        this.tracksListenedTo.push(this.currentTrack);
+        this.currentTrack = getRandomTrack();
         
         this.a.onended = _.bind(this.nextSongFromCache, this);
                 
@@ -141,7 +221,17 @@ var App = {
             dancer.load(this.a);
         }
         
+        
         dancer.play();
+        
+    },
+    
+    attachMetaData: function(artistStr, titleStr) {
+        var artist = document.getElementById('artist');
+        var title = document.getElementById('title');
+        
+        artist.innerHTML = artistStr;
+        title.innerHTML = titleStr;
     }
 };
 

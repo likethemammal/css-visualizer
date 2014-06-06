@@ -9,15 +9,21 @@
         <div id="visualizer"></div>
         <div id="ui-container">
             <div id="ui">
-                <select id="chooser">
-                    <option id="bars">Bars</option>
-                    <option id="hexagons">Hexagons</option>
-                </select>
-                <button id="play-pause" class="ui-btn"></button>
-                <button id="next" class="ui-btn"></button>
-                <button id="fullscreen" class="ui-btn"></button>
-                <input id="search-input" type="search">
-                <button id="search-btn" class="ui-btn"></button>
+                <div id="controls" class="ui-box">
+                    <select id="chooser">
+                        <option id="hexagons">Hexagons</option>
+                        <option id="bars">Bars</option>
+                    </select>
+                    <button id="play-pause" class="ui-btn"></button>
+                    <button id="next" class="ui-btn"></button>
+                    <button id="fullscreen" class="ui-btn"></button>
+                    <input id="search-input" type="search">
+                    <button id="search-btn" class="ui-btn"></button>
+                </div>
+                <div id="meta-data" class="ui-box">
+                    <h3 id="artist"></h3>
+                    <h4 id="title"></h4>
+                </div>
             </div>
             <audio id="audio"></audio>
         </div>

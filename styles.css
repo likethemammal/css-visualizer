@@ -2,6 +2,7 @@ body {
 	margin: 0;
 	background: #000000;
 	overflow: hidden;
+	font-family: "Helvetica Neue", sans-serif;
 }
 
 #visualizer {
@@ -23,26 +24,35 @@ body {
 }
 
 #ui {
-	margin: 30px;
-	width: 200px;
-	height: 30px;
-	border-radius: 2px;
-	background: #ddd;
-	box-shadow: 0px 2px 10px #000;
-	
+	width: 100%;
+	height: 100%;
+	padding: 30px;
 	-webkit-transition: 200ms;
+	box-sizing: border-box;
+}
+
+#controls {
+	width: 300px;
+	height: 45px;
 }
 
 #chooser {
 	display: block;
-	background: #fff;
+	background: #212121;
+	color: #fff;
 	height: 100%;
 	float: left;
 	border: none;
-	border-right: 1px solid #999;
-	padding: 0 0 0 5px;
+	font-size: 15px;
+	padding: 0 10px 0 15px;
 	margin: 0;
+	margin-right: -1px;
 	border-radius: 2px 0 0 2px;
+	cursor: pointer;
+}
+
+#chooser:hover {
+	background-color: #111;
 }
 
 #play-pause {
@@ -74,16 +84,60 @@ body {
 	display: block;
 	float: left;
 	height: 100%;
-	width: 30px;
+	width: 45px;
 	margin: 0;
 	border: none;
-	background: #fff;
 	cursor: pointer;
-	background: #ccc no-repeat center center;
+	background: #212121 no-repeat center center;
 }
 
 .ui-btn:hover {
-	opacity: 0.7;
+	background-color: #111;
+}
+
+.ui-btn:last-child {
+	border-radius: 0 2px 2px 0;
+}
+
+.ui-box {
+	border-radius: 2px;
+	background: #212121;
+	box-shadow: 0px 3px 5px #000;
+	color: #fff;
+	box-sizing: border-box;
+	opacity: 0.6;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-transition: opacity 100ms linear;
+}
+
+.ui-box:hover {
+	opacity: 1;
+}
+
+#meta-data {
+	position: absolute;
+	bottom: 30px;
+	max-width: 300px;
+	width: 100%;
+	height: 75px;
+	padding: 15px;
+}
+
+#artist {
+	text-transform: uppercase;
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 5px;
+}
+
+#title {
+	font-weight: normal;
+	opacity: 0.8;
+	padding: 0;
+	margin: 0;
 }
 
 
