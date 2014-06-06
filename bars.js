@@ -46,7 +46,7 @@ Visualizers.Bars = _.extend({
         var bars = this.bars;
     
         for (var j = 0; j < this.numOfBars; j++) {
-            bars[j].parentNode.style['-webkit-transform'] = ["scaleY(", (Math.floor(sampleAvgs[j]*1000)/1000), ") translate3d(0,0,0)"].join("");
+            bars[j].parentNode.style[prefix.css + 'transform'] = ["scaleY(", (Math.floor(sampleAvgs[j]*1000)/1000), ") translate3d(0,0,0)"].join("");
         }
     }
 }, Visualizers.Base);

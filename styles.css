@@ -27,7 +27,14 @@ body {
 	width: 100%;
 	height: 100%;
 	padding: 30px;
-	-webkit-transition: 200ms;
+	
+	-webkit-transition: opacity 200ms;
+    -moz-transition: opacity 200ms;
+    -o-transition: opacity 200ms;
+    transition: opacity 200ms;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -47,8 +54,11 @@ body {
 	padding: 0 10px 0 15px;
 	margin: 0;
 	margin-right: -1px;
-	border-radius: 2px 0 0 2px;
 	cursor: pointer;
+	
+	-webkit-border-radius: 2px 0 0 2px;
+	-moz-border-radius: 2px 0 0 2px;
+	border-radius: 2px 0 0 2px;
 }
 
 #chooser:hover {
@@ -69,6 +79,9 @@ body {
 
 #fullscreen:hover {
 	-webkit-animation: toggleFullscreen 1s linear infinite alternate;
+	-moz-animation: toggleFullscreen 1s linear infinite alternate;
+	-o-animation: toggleFullscreen 1s linear infinite alternate;
+	animation: toggleFullscreen 1s linear infinite alternate;
 }
 
 #search-input {
@@ -96,20 +109,36 @@ body {
 }
 
 .ui-btn:last-child {
+	-webkit-border-radius: 0 2px 2px 0;
+	-moz-border-radius: 0 2px 2px 0;
 	border-radius: 0 2px 2px 0;
 }
 
 .ui-box {
-	border-radius: 2px;
 	background: #212121;
-	box-shadow: 0px 3px 5px #000;
 	color: #fff;
-	box-sizing: border-box;
 	opacity: 0.6;
+	
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	
 	-webkit-transition: opacity 100ms linear;
+    -moz-transition: opacity 100ms linear;
+    -o-transition: opacity 100ms linear;
+    transition: opacity 100ms linear;
+	
+	-webkit-box-shadow: 0px 3px 5px #000;
+  	-moz-box-shadow: 0px 3px 5px #000;
+  	box-shadow: 0px 3px 5px #000;
+	
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .ui-box:hover {
@@ -150,6 +179,7 @@ body {
 	bottom: 0;
 	z-index: 10;
 	opacity: 0.5;
+	
 	background: transparent; /* Old browsers */
 	background: -moz-linear-gradient(top, transparent 50%, #000000 50%, #000000 50%, transparent 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,transparent), color-stop(50%,#000000), color-stop(50%,#000000), color-stop(100%,transparent)); /* Chrome,Safari4+ */
@@ -163,8 +193,11 @@ body {
 .bar-wrapper {
 	height: 100%;
 	position: absolute;
+	
 	-webkit-transition: -webkit-transform 50ms linear;
-	transition: transform 50ms linear;
+    -moz-transition: -moz-transform 50ms linear;
+    -o-transition: -o-transform 50ms linear;
+    transition: transform 50ms linear;
 }
 
 .bar {
@@ -183,7 +216,10 @@ body {
 	left: -6px;
 	width: 6px;
 	height: 100%;
+	
 	-webkit-transform: skew(0,45deg);
+	-moz-transform: skew(0,45deg);
+	-o-transform: skew(0,45deg);
 	transform: skew(0,45deg);
 }
 
@@ -192,7 +228,10 @@ body {
 	left: -4px;
 	width: 100%;
 	height: 6px;
+
 	-webkit-transform: skew(45deg);
+	-moz-transform: skew(45deg);
+	-o-transform: skew(45deg);
 	transform: skew(45deg);
 }
 
@@ -202,6 +241,7 @@ body {
 
 #overlay-container {
 	-webkit-filter: saturate(140%);
+	filter: saturate(140%);
 }
 
 .overlay {
@@ -210,7 +250,12 @@ body {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	
 	-webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+
 }
 
 #hex-container {
@@ -221,13 +266,24 @@ body {
 	margin: 0 auto;
 	
 	-webkit-animation: ambientMovement 30s ease-in-out infinite alternate;
+	-moz-animation: ambientMovement 30s ease-in-out infinite alternate;
+	-o-animation: ambientMovement 30s ease-in-out infinite alternate;
+	animation: ambientMovement 30s ease-in-out infinite alternate;
+	
 	-webkit-transform: rotate(-180deg) translate(350px, 200px);
+	-moz-transform: rotate(-180deg) translate(350px, 200px);
+	-o-transform: rotate(-180deg) translate(350px, 200px);
+	transform: rotate(-180deg) translate(350px, 200px);
 }
 
 .hex-wrapper {
     position: absolute;
 	margin-left: -100px;
+	
 	-webkit-transition: -webkit-transform 50ms ease-in-out;
+    -moz-transition: -moz-transform 50ms ease-in-out;
+    -o-transition: -o-transform 50ms ease-in-out;
+    transition: transform 50ms ease-in-out;
 }
 
 .hex {
@@ -253,6 +309,9 @@ body {
     border-top: 60px solid #6C6;
 }
 
+
+
+
 @-webkit-keyframes ambientMovement {
 	0% {
 		-webkit-transform: rotate(-180deg);
@@ -269,7 +328,96 @@ body {
 		-webkit-transform: rotate(-360deg);
 		top: 60%;
 		left: 70%;
+	}
+	
+	75% {
+		top: 20%;
+		left: 30%;
+	}
+	
+	100% {
+		-webkit-transform: rotate(0deg);
+		top: 90%;
+		left: 10%;
+	}
+}
 
+@-moz-keyframes ambientMovement {
+	0% {
+		-webkit-transform: rotate(-180deg);
+		top: 50%;
+		left: 50%;
+	}
+	
+	25% {
+		top: 10%;
+		left: 90%;
+	}
+	
+	50% {
+		-webkit-transform: rotate(-360deg);
+		top: 60%;
+		left: 70%;
+	}
+	
+	75% {
+		top: 20%;
+		left: 30%;
+	}
+	
+	100% {
+		-webkit-transform: rotate(0deg);
+		top: 90%;
+		left: 10%;
+	}
+}
+
+@-o-keyframes ambientMovement {
+	0% {
+		-webkit-transform: rotate(-180deg);
+		top: 50%;
+		left: 50%;
+	}
+	
+	25% {
+		top: 10%;
+		left: 90%;
+	}
+	
+	50% {
+		-webkit-transform: rotate(-360deg);
+		top: 60%;
+		left: 70%;
+	}
+	
+	75% {
+		top: 20%;
+		left: 30%;
+	}
+	
+	100% {
+		-webkit-transform: rotate(0deg);
+		top: 90%;
+		left: 10%;
+	}
+}
+
+@keyframes ambientMovement {
+	0% {
+		-webkit-transform: rotate(-180deg);
+		top: 50%;
+		left: 50%;
+	}
+	
+	25% {
+		top: 10%;
+		left: 90%;
+	}
+	
+	50% {
+		-webkit-transform: rotate(-360deg);
+		top: 60%;
+		left: 70%;
 	}
 	
 	75% {
@@ -285,6 +433,36 @@ body {
 }
 
 @-webkit-keyframes toggleFullscreen {
+	0% {
+		background-image: url('imgs/glyphicons_215_resize_full.png');
+	}
+	
+	100% {
+		background-image: url('imgs/glyphicons_214_resize_small.png');
+	}
+}
+
+@-moz-keyframes toggleFullscreen {
+	0% {
+		background-image: url('imgs/glyphicons_215_resize_full.png');
+	}
+	
+	100% {
+		background-image: url('imgs/glyphicons_214_resize_small.png');
+	}
+}
+
+@-o-keyframes toggleFullscreen {
+	0% {
+		background-image: url('imgs/glyphicons_215_resize_full.png');
+	}
+	
+	100% {
+		background-image: url('imgs/glyphicons_214_resize_small.png');
+	}
+}
+
+@keyframes toggleFullscreen {
 	0% {
 		background-image: url('imgs/glyphicons_215_resize_full.png');
 	}

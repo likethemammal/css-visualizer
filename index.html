@@ -56,6 +56,28 @@ var loadFromSC = false;
 </script>
 
 
+<!-- Detect Browser Prefixes; From http://davidwalsh.name/vendor-prefix -->
+<script>
+
+var prefix = (function () {
+  var styles = window.getComputedStyle(document.documentElement, ''),
+    pre = (Array.prototype.slice
+      .call(styles)
+      .join('') 
+      .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+    )[1],
+    dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+  return {
+    dom: dom,
+    lowercase: pre,
+    css: '-' + pre + '-',
+    js: pre[0].toUpperCase() + pre.substr(1)
+  };
+})();
+
+</script>
+
+
 <script src="utils.js" ></script>
 <script src="app.js" ></script>
 <script src="base.js" ></script>
