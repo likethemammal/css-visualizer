@@ -1,7 +1,7 @@
 var Visualizers = Visualizers || {}
 
 Visualizers.Bars = _.extend({
-    numOfBars: Math.ceil(window.innerWidth/24),
+    numOfBars: 0,
     currentAmp: 0,
     fps: 40,
     init: function() {
@@ -13,7 +13,9 @@ Visualizers.Bars = _.extend({
             
         reflectionOverlay.id = "reflection-overlay";
         this.visualizer.appendChild(reflectionOverlay);
-            
+        
+        this.numOfBars = Math.ceil(window.innerWidth/24);
+        
         for (var i = 0; i < this.numOfBars; i++) {
             var startOfSelectorStr = '.bar-wrapper:nth-of-type(' + (i + 2) + ') .bar', // Its '+ 2' because reflectionOverlay is first-child
                 bar = document.createElement('div'),

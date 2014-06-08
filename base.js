@@ -2,6 +2,7 @@ var Visualizers = Visualizers || {}
 
 Visualizers.Base = {
     visualizer: document.getElementById('visualizer'),
+    AnimationTimer: '',
     
     run: function() {
         this.clear();
@@ -15,8 +16,7 @@ Visualizers.Base = {
             var fps = this.fps;
         }
         
-        Timer = setInterval(_.bind(this.getData, this), 50 + (60 - this.fps));
-//         Timer = requestAnimationFrame(_.bind(this.getData, this));
+        this.AnimationTimer = setInterval(_.bind(this.getData, this), 50 + (60 - this.fps));
     },
     
     clear: function() {
@@ -40,12 +40,10 @@ Visualizers.Base = {
                 this.onWaveform(waveform);
             }
         }
-//         requestAnimationFrame(_.bind(this.getData, this));
     },
     
     destroy: function() {
-        clearInterval(Timer);
-//         cancelAnimationFrame(Timer);
+        clearInterval(this.AnimationTimer);
         if (this.onDestroy) {
             this.onDestroy();
         }

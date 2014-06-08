@@ -1,5 +1,4 @@
 var Visualizers = Visualizers || {},
-    Timer,
     dancer = new Dancer();
 
 var App = {
@@ -91,16 +90,16 @@ var App = {
     tracksListenedTo: [],
     
     events: function() {
-        this.chooser.onchange = this.switchVisualizers;
+        this.chooser.addEventListener('change', this.switchVisualizers);
         if (loadFromSC) {
-            this.searchBtn.onclick = this.search;
+            this.searchBtn.addEventListener('click', this.search);
         }
-        this.playPause.onclick = _.bind(this.togglePlayPause, this);
-        this.next.onclick = _.bind(this.nextSongFromCache, this);
+        this.playPause.addEventListener('click', _.bind(this.togglePlayPause, this));
+        this.next.addEventListener('click', _.bind(this.nextSongFromCache, this));
         
-        document.body.onclick = _.bind(this.toggleUI, this);
-        document.body.onmousemove = _.bind(this.toggleUI, this);
-        document.body.onkeyup = _.bind(this.toggleUI, this);
+        document.body.addEventListener('click', _.bind(this.toggleUI, this));
+        document.body.addEventListener('mousemove', _.bind(this.toggleUI, this));
+        document.body.addEventListener('keyup', _.bind(this.toggleUI, this));
     },
     
     init: function() {
@@ -109,9 +108,9 @@ var App = {
         
         this.setupFullscreen();
         
-        setTimeout(function() {
+        document.addEventListener('DOMContentLoaded', function () {
             Visualizers[chooser.firstElementChild.value].run();
-        }, 10);
+        });
     },
     
     setupMusic: function() {        
@@ -179,10 +178,10 @@ var App = {
             document.mozFullScreenEnabled ||
             document.msFullscreenEnabled
         ) {
-            fullscreen.onclick = _.bind(function() {
-                toggleFullscreen(this.visualizerContainer);
+            fullscreen.addEventListener('click', _.bind(function() {
+                toggleFullscreen(document.body);
                 var isFullscreen = getIsFullscreen();
-            }, this);
+            }, this));
         } else {
             fullscreen.style.display = 'none';
         }
@@ -203,7 +202,7 @@ var App = {
         this.tracksListenedTo.push(this.currentTrack);
         this.currentTrack = this.getRandomTrackNum();
         
-        this.audio.onended = _.bind(this.nextSongFromCache, this);
+        this.audio.addEventListener('ended', _.bind(this.nextSongFromCache, this));
 
         if (!this.audioLoaded) {
             dancer.load(this.audio);

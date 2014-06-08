@@ -28,7 +28,7 @@ body {
 }
 
 #ui-container {
-	position: relative;
+	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -123,6 +123,10 @@ body {
 
 #fullscreen {
 	background-image: url('imgs/glyphicons_215_resize_full.png');
+}
+
+#about {
+	background-image: url('imgs/glyphicons_194_circle_question_mark.png');
 }
 
 #fullscreen:hover {
