@@ -2,7 +2,7 @@
 
 ## About
 
-This is a set of visualizers that are made entirely using DOM elements and CSS3 Animations and Transforms. **There is no SVG, Canvas, WebGL, or visual plug-in used.** It takes quite a bit of tweaking to reduce compositing and optimze rendering layers but this is the kind of stuff CSS can do now a days.
+This is a set of visualizers that are made entirely using DOM elements and CSS3 Animations and Transforms. **There is no SVG, Canvas, WebGL, or visual plug-in used.** It takes quite a bit of tweaking to reduce compositing and optimize rendering layers but this is the kind of stuff CSS can do now a days.
 
 [**Live Demo**](http://likethemammal.github.io/css-visualizer)
 
