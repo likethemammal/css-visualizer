@@ -46,18 +46,18 @@
         <div id="ui-container">
             <div id="ui">
                 <div id="controls" class="ui-outer">
-                  <nav class="ui-inner cf">
-                      <select id="chooser" title="Select a type of visualizer">
-                          <option id="hexagons">Hexagons</option>
-                          <option id="bars">Bars</option>
-                      </select>
-                      <button id="play-pause" class="ui-btn" title="Play/Pause"></button>
-                      <button id="next" class="ui-btn" title="Next"></button>
-                      <button id="fullscreen" class="ui-btn" title="Fullscreen"></button>
-<!--                  <input id="search-input" type="search" title="Enter song name, genre, or artist"> -->
-<!--                  <button id="search-btn" class="ui-btn" title="Search"></button> -->
-                      <a target="_blank" id="about" href="http://github.com/likethemammal/css-visualizer" title="About, Github page" class="ui-btn"></a>
-                  </nav>
+                    <nav class="ui-inner cf">
+                        <select id="chooser" title="Select a type of visualizer">
+                            <option id="hexagons">Hexagons</option>
+                            <option id="bars">Bars</option>
+                        </select>
+                        <button id="play-pause" class="ui-btn" title="Play/Pause"></button>
+                        <button id="next" class="ui-btn" title="Next"></button>
+                        <button id="fullscreen" class="ui-btn" title="Fullscreen"></button>
+                        <input id="search-input" type="search" title="Enter song name, genre, or artist">
+                        <button id="search-btn" class="ui-btn" title="Search"></button>
+                        <a target="_blank" id="about" href="http://github.com/likethemammal/css-visualizer" title="About, Github page" class="ui-btn"></a>
+                    </nav>
                 </div>
                 <div id="meta-data" class="ui-outer">
                   <div class="ui-inner">
@@ -69,30 +69,29 @@
             <audio id="audio"></audio>
         </div>
     </div>
-</body>
-
 
 <!-- Dev -->
 <!--<script src="../libs/dancer.min.js"></script>-->
 <!--<script src="../libs/underscore.min.js"></script>-->
 
 <!-- Production -->
- <script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.4.0/dancer.min.js"></script>
- <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script> 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.4.0/dancer.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/q.js/1.1.1/q.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 
 <!-- Request Anim Gist -->
 <!-- https://gist.github.com/paulirish/1579671 -->
 <!-- <script src="libs/rAF.js"></script> -->
 
-<!-- <script src="http://connect.soundcloud.com/sdk.js"></script> -->
+<script src="http://connect.soundcloud.com/sdk.js"></script>
 <script>
-// var clientID = '587aa2d384f7333a886010d5f52f302a';
+var clientID = '587aa2d384f7333a886010d5f52f302a';
 
-// SC.initialize({
-//   client_id: clientID
-// });
+SC.initialize({
+    client_id: clientID
+});
 
-var loadFromSC = false;
+var loadFromSC = true;
 
 </script>
 
@@ -125,4 +124,6 @@ var prefix = (function () {
 <script src="hexagons.js" ></script>
 <script src="bars.js" ></script>
 <!-- <script src="circles.js" ></script> -->
+</body>
+
 </html>

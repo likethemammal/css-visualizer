@@ -181,3 +181,10 @@ function getIsFullscreen() {
         document.msFullscreenElement;
  
 }
+
+//Modified from: http://stackoverflow.com/questions/736513/how-do-i-parse-a-url-into-hostname-and-path-in-javascript
+function getLocation(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l.hostname;
+}

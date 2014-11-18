@@ -10,7 +10,8 @@ var App = {
     playPause: document.getElementById('play-pause'),
     next: document.getElementById('next'),
     searchBtn: document.getElementById('search-btn'),
-        
+    searchInput: document.getElementById('search-input'),
+
     IdleTimer: 0,
     
     audio: new Audio(),
@@ -83,7 +84,7 @@ var App = {
             title: 'Careless Whisper',
             format: 'mp3',
             url: 'music/George Michael - Careless Whisper.mp3'
-        },
+        }
     ],
     
     currentTrack: 0,
@@ -92,7 +93,12 @@ var App = {
     events: function() {
         this.chooser.addEventListener('change', this.switchVisualizers);
         if (loadFromSC) {
-            this.searchBtn.addEventListener('click', this.search);
+            this.searchBtn.addEventListener('click', _.bind(this.search, this));
+            this.searchInput.addEventListener('keyup', _.bind(function(e) {
+                if (e.keyCode === 13) {
+                    this.search();
+                }
+            }, this));
         }
         this.playPause.addEventListener('click', _.bind(this.togglePlayPause, this));
         this.next.addEventListener('click', _.bind(this.nextSongFromCache, this));
@@ -108,18 +114,16 @@ var App = {
         
         this.setupFullscreen();
         
-        document.addEventListener('DOMContentLoaded', function () {
-            Visualizers[chooser.firstElementChild.value].run();
-        });
+        document.addEventListener('DOMContentLoaded', _.bind(function () {
+            Visualizers[this.chooser.firstElementChild.value].run();
+        }, this));
     },
     
     setupMusic: function() {        
         if (this.autoplayRandom) {
             this.currentTrack = Math.round(Math.random()*this.tracksCache.length);
         }        
-        if (!loadFromSC) {
-            this.nextSongFromCache();
-        }
+        this.nextSongFromCache();
     },
     
     switchVisualizers: function(ev) {
@@ -141,23 +145,71 @@ var App = {
         }, this), 2000);
     }),
     
-    search: _.bind(function() {
-             
-        var input = document.getElementById('search-input');
+    search: function() {
+        var hostname = getLocation(this.searchInput.value);
+        var dotlocation = hostname.indexOf('.');
 
-        SC.get("/playlists", {q: input.value}, _.bind(function(playlists){
-            var playlist = playlists[0],
-                track;
+        hostname = hostname.substr(0, dotlocation);
 
-            for (var i = 0; i < playlist.tracks.length; i++) {
-                track = playlist.tracks[i];
-                this.tracksCache.push({url: track.uri + '/stream?client_id=' + clientID, length: track.duration});
+        if (hostname === 'soundcloud') {
+            var deferred = Q.defer();
+            var promise = deferred.promise;
+
+            SC.get('/resolve', { url: this.searchInput.value }, _.bind(function(urlData) {
+                var userID = urlData.id;
+                var fetchingURL = '';
+
+                this.resetTracks();
+
+                switch (urlData.kind) {
+                    case "user":
+                        fetchingURL = '/users/' + userID + '/tracks';
+                        this.getMultipleTracks(fetchingURL, deferred);
+                        break;
+
+                    case "track":
+                        this.addTrack(urlData);
+                        deferred.resolve();
+                        break;
+
+                    case "playlist":
+                        fetchingURL = '/playlist/' + userID + '/tracks';
+                        this.getMultipleTracks(fetchingURL, deferred);
+                        break;
+                }
+
+                promise.then(_.bind(function() {
+                    console.log(this.tracksCache)
+                    this.nextSongFromCache();
+                }, this));
+
+            }, this));
+        } else if (hostname === 'grooveshark') {
+            console.log('grooveshark url');
+        }
+    },
+
+    getMultipleTracks: function(fetchingURL, deferred) {
+        SC.get(fetchingURL, _.bind(function(tracks) {
+            for (var i = 0; i < tracks.length; i++) {
+                var track = tracks[i];
+                this.addTrack(track);
             }
 
-            this.nextSongFromCache();
+            if (deferred) {
+                deferred.resolve();
+            }
         }, this));
-        
-    }, this),
+    },
+
+    addTrack: function(track) {
+        this.tracksCache.push({
+            url: track.stream_url + '?client_id=' + clientID,
+            title: track.title,
+            artist: track.user.username,
+            length: track.duration
+        });
+    },
     
     togglePlayPause: function() {
         if (dancer.isPlaying()) {
@@ -232,7 +284,13 @@ var App = {
             return 0;
         }
     },
-    
+
+    resetTracks: function() {
+        this.tracksCache = [];
+        this.tracksListenedTo = [];
+        this.currentTrack = 0;
+    },
+
     attachMetaData: function(artistStr, titleStr) {
         var artist = document.getElementById('artist');
         var title = document.getElementById('title');

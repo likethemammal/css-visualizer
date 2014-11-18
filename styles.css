@@ -91,7 +91,7 @@ body {
 	background: #212121;
 	color: #fff;
 	height: 45px;
-	line-height 45px;
+	line-height: 45px;
 	float: left;
 	border: none;
 	font-size: 15px;
@@ -137,11 +137,9 @@ body {
 }
 
 #search-input {
-	display: none;
 }
 
 #search-btn {
-	display: none;
 	background-image: url('imgs/glyphicons_027_search.png');
 }
 
