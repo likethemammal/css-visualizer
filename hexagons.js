@@ -1,4 +1,4 @@
-var Visualizers = Visualizers || {}
+var Visualizers = Visualizers || {};
 
 Visualizers.Hexagons = _.extend({
     hexs: [],
@@ -58,7 +58,7 @@ Visualizers.Hexagons = _.extend({
         var color = 'rgba(255,255,255,0.08)';
                 
         for (var j = 0; j < this.numOfHexs; j++) {
-            var beforeStr = '#hex' + j + ':before { border-bottom-color : ' + color + '}';
+            var beforeStr = '#hex' + j + ':before { border-bottom-color : ' + color + '}',
                 afterStr = '#hex' + j + ':after { border-top-color : ' + color + '}';
 
             this.hexs[j].id = 'hex' + j;
@@ -71,10 +71,19 @@ Visualizers.Hexagons = _.extend({
     
     setColors: function() {
         // todo: Add cross-browser support for opacity and gradients
-        
-        var gradientStr = prefix.css + "linear-gradient(-30deg, " + randomColor() + " 0%," + randomColor() + " 50%," + randomColor() + " 100%)";
+
+        if (this.manualColorSwitch) {
+            clearInterval(this.ColorTimer);
+            this.currentOverlay = 'color'; //Set to color so that the a gradient is shown
+        } else {
+            this.color1 = randomColor();
+            this.color2 = randomColor();
+            this.color3 = randomColor();
+        }
+
+        var gradientStr = prefix.css + "linear-gradient(-30deg, " + this.color1 + " 0%," + this.color2 + " 50%," + this.color3 + " 100%)";
         if (this.currentOverlay === 'gradient') {
-            this.colorOverlay.style['background'] = randomColor();
+            this.colorOverlay.style['background'] = this.color1;
             this.colorOverlay.style.opacity = 1;
             this.gradientOverlay.style.opacity = 0;
             this.currentOverlay = 'color';
@@ -88,7 +97,6 @@ Visualizers.Hexagons = _.extend({
             this.gradientOverlay.style['background'] = gradientStr;
             this.currentOverlay = 'gradient';
         }
-        
     },
     
     onSpectrum: function(spectrum) {

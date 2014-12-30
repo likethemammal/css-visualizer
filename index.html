@@ -29,18 +29,19 @@
     
     <link rel="stylesheet" type="text/css" href="styles.css">
     
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <!--<script>-->
+      <!--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){-->
+      <!--(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),-->
+      <!--m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)-->
+      <!--})(window,document,'script','//www.google-analytics.com/analytics.js','ga');-->
 
-      ga('create', 'UA-37560411-2', 'likethemammal.github.io');
-      ga('send', 'pageview');
+      <!--ga('create', 'UA-37560411-2', 'likethemammal.github.io');-->
+      <!--ga('send', 'pageview');-->
 
-    </script>
+    <!--</script>-->
 </head>
 <body>
+
     <div id="visualizer-container">
         <div id="visualizer"></div>
         <div id="ui-container">
@@ -56,11 +57,16 @@
                         <button id="fullscreen" class="ui-btn" title="Fullscreen"></button>
                         <input id="search-input" type="search" title="Enter song name, genre, or artist">
                         <button id="search-btn" class="ui-btn" title="Search"></button>
+                        <input type="color" id="color-picker1" class="ui-btn" title="Search">
+                        <input type="color" id="color-picker2" class="ui-btn" title="Search">
+                        <input type="color" id="color-picker3" class="ui-btn" title="Search">
+                        <button id="random-color" class="ui-btn"></button>
                         <a target="_blank" id="about" href="http://github.com/likethemammal/css-visualizer" title="About, Github page" class="ui-btn"></a>
                     </nav>
                 </div>
                 <div id="meta-data" class="ui-outer">
                   <div class="ui-inner">
+                      <div id="duration"></div>
                       <h3 id="artist" class="meta-data-words"></h3>
                       <h4 id="title" class="meta-data-words"></h4>
                   </div>
@@ -71,27 +77,27 @@
     </div>
 
 <!-- Dev -->
-<!--<script src="../libs/dancer.min.js"></script>-->
-<!--<script src="../libs/underscore.min.js"></script>-->
+<script src="dancer.js"></script>
+<script src="underscore-min.js"></script>
 
 <!-- Production -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.4.0/dancer.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/q.js/1.1.1/q.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.4.0/dancer.min.js"></script>-->
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/q.js/1.1.1/q.min.js"></script>-->
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>-->
 
 <!-- Request Anim Gist -->
 <!-- https://gist.github.com/paulirish/1579671 -->
 <!-- <script src="libs/rAF.js"></script> -->
 
-<script src="http://connect.soundcloud.com/sdk.js"></script>
+<!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
 <script>
-var clientID = '587aa2d384f7333a886010d5f52f302a';
+//<!--var clientID = '587aa2d384f7333a886010d5f52f302a';-->
 
-SC.initialize({
-    client_id: clientID
-});
+<!--SC.initialize({-->
+    //client_id: clientID
+<!--});-->
 
-var loadFromSC = true;
+var loadFromSC = false;
 
 </script>
 

@@ -168,6 +168,21 @@ body {
 	bottom: 0;
 }
 
+#meta-data .ui-inner {
+    position: relative;
+}
+
+#duration {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    opacity: 0.25;
+}
+
 #artist {
 	text-transform: uppercase;
 	font-weight: normal;

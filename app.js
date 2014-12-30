@@ -11,13 +11,23 @@ var App = {
     next: document.getElementById('next'),
     searchBtn: document.getElementById('search-btn'),
     searchInput: document.getElementById('search-input'),
+    duration: document.getElementById('duration'),
+    randomColor: document.getElementById('random-color'),
+    colorPicker1: document.getElementById('color-picker1'),
+    colorPicker2: document.getElementById('color-picker2'),
+    colorPicker3: document.getElementById('color-picker3'),
+
+    DurationTimer: 0,
 
     IdleTimer: 0,
+    idleFadeUI: false,
+
+    hideVis: false,
     
     audio: new Audio(),
     audioLoaded: false,
     autoplayRandom: false,
-    
+
     tracksCache: [
         {
             artist: 'Alex Metric',
@@ -106,6 +116,8 @@ var App = {
         document.body.addEventListener('click', _.bind(this.toggleUI, this));
         document.body.addEventListener('mousemove', _.bind(this.toggleUI, this));
         document.body.addEventListener('keyup', _.bind(this.toggleUI, this));
+
+        this.setupColorEvents();
     },
     
     init: function() {
@@ -118,14 +130,42 @@ var App = {
             Visualizers[this.chooser.firstElementChild.value].run();
         }, this));
     },
-    
-    setupMusic: function() {        
+
+    setupMusic: function() {
         if (this.autoplayRandom) {
             this.currentTrack = Math.round(Math.random()*this.tracksCache.length);
-        }        
+        }
         this.nextSongFromCache();
     },
-    
+
+    setupColorEvents: function() {
+        this.randomColor.addEventListener('click', _.bind(function() {
+            Visualizers.currentVisualizer.setColors();
+        }, this));
+
+        this.colorPicker1.addEventListener('change', _.bind(function(ev) {
+            var el = ev.currentTarget;
+            onColorChange(1, el.value);
+        }, this));
+
+        this.colorPicker2.addEventListener('change', _.bind(function(ev) {
+            var el = ev.currentTarget;
+            onColorChange(2, el.value);
+        }, this));
+
+        this.colorPicker3.addEventListener('change', _.bind(function(ev) {
+            var el = ev.currentTarget;
+            onColorChange(3, el.value);
+        }, this));
+
+        function onColorChange(elNum, color) {
+            var currentVisualizer = Visualizers.currentVisualizer;
+
+            currentVisualizer['color' + elNum] = color;
+            currentVisualizer.onColorChange();
+        }
+    },
+
     switchVisualizers: function(ev) {
         if (Visualizers.currentVisualizer) {
             Visualizers.currentVisualizer.destroy();
@@ -136,13 +176,16 @@ var App = {
     toggleUI: _.throttle(function() {
         this.visualizerContainer.style.cursor = 'auto';
         this.ui.style.opacity = 1;
-        
-        clearInterval(this.IdleTimer);
-        
-        this.IdleTimer = setInterval(_.bind(function() {
-            this.ui.style.opacity = 0;
-            this.visualizerContainer.style.cursor = 'none';
-        }, this), 2000);
+
+        if (this.idleFadeUI) {
+            clearInterval(this.IdleTimer);
+
+            this.IdleTimer = setInterval(_.bind(function() {
+                this.ui.style.opacity = 0;
+                this.visualizerContainer.style.cursor = 'none';
+            }, this), 2000);
+        }
+
     }),
     
     search: function() {
@@ -241,13 +284,28 @@ var App = {
     
     nextSongFromCache: function() {
         // todo: fix error for "Failed to execute 'createMediaElementSource' on 'AudioContext'", might be a Chrome bug;
-        var trackInfo; 
-            
         dancer.pause();
                 
-        trackInfo = this.tracksCache[this.currentTrack];
+        var trackInfo = this.tracksCache[this.currentTrack];
         
         this.audio.src = trackInfo.url;
+
+        this.duration.style.right = '100%';
+
+        clearInterval(this.DurationTimeout);
+
+        this.DurationTimeout = setInterval(_.bind(function() {
+            if (this.audio.duration) {
+                var totalDuration = Math.floor(this.audio.duration);
+                var currentDuration = this.audio.currentTime;
+                var percentComplete = currentDuration/totalDuration || 0;
+                var precision = 100;
+                var percentLeft = Math.floor((1 - percentComplete)*100 * precision) / precision;
+
+                this.duration.style.right = percentLeft + '%';
+            }
+        }, this) , 250);
+
         this.attachMetaData(trackInfo.artist, trackInfo.title);
         this.ui.style.opacity = 1;
         

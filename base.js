@@ -1,19 +1,28 @@
-var Visualizers = Visualizers || {}
+var Visualizers = Visualizers || {};
 
 Visualizers.Base = {
     visualizer: document.getElementById('visualizer'),
     AnimationTimer: '',
-    
+
+    color1: randomColor(),
+    color2: randomColor(),
+    color3: randomColor(),
+
     run: function() {
         this.clear();
         
         Visualizers.currentVisualizer = this;
-        
+
+        // Needs to be hexcolor for some reason.
+        App.colorPicker1.value = this.color1;
+        App.colorPicker2.value = this.color2;
+        App.colorPicker3.value = this.color3;
+
         this.init();
         
-        var fps = 60
+        var fps = 60;
         if (this.fps) {
-            var fps = this.fps;
+            fps = this.fps;
         }
         
         this.AnimationTimer = setInterval(_.bind(this.getData, this), 50 + (60 - this.fps));
@@ -28,8 +37,9 @@ Visualizers.Base = {
     },
     
     getData: function() {
-        if (dancer.isPlaying()) {
+        if (dancer.isPlaying() && !App.hideVis) {
             var spectrum, waveform;
+
             if (this.onSpectrum) {
                 spectrum = float32ToArray(dancer.getSpectrum());
                 this.onSpectrum(spectrum);
@@ -39,6 +49,13 @@ Visualizers.Base = {
                 waveform = float32ToArray(dancer.getWaveform());
                 this.onWaveform(waveform);
             }
+        }
+    },
+
+    onColorChange: function() {
+        if (this.setColors) {
+            this.manualColorSwitch = true;
+            this.setColors();
         }
     },
     

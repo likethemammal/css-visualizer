@@ -1,4 +1,4 @@
-var Visualizers = Visualizers || {}
+var Visualizers = Visualizers || {};
 
 Visualizers.Bars = _.extend({
     numOfBars: 0,
@@ -6,9 +6,6 @@ Visualizers.Bars = _.extend({
     fps: 40,
     init: function() {
         var reflectionOverlay = document.createElement('div'),
-            rgbStr = randomColor(),
-            rgbStr2 = randomColor(),
-            stylesStr = '',
             styleSheet = document.createElement('style');
             
         reflectionOverlay.id = "reflection-overlay";
@@ -17,30 +14,42 @@ Visualizers.Bars = _.extend({
         this.numOfBars = Math.ceil(window.innerWidth/24);
         
         for (var i = 0; i < this.numOfBars; i++) {
-            var startOfSelectorStr = '.bar-wrapper:nth-of-type(' + (i + 2) + ') .bar', // Its '+ 2' because reflectionOverlay is first-child
-                bar = document.createElement('div'),
-                barWrapper = document.createElement('div'),
-                beforeStr = startOfSelectorStr + ':before { background-color: ' + lighterColor(rgbStr, 0.1) + '; }',
-                afterStr = startOfSelectorStr + ':after { background-color: ' + darkerColor(rgbStr, 0.1) + '; }',
-                barStr = startOfSelectorStr + ' { background-color: ' + darkerColor(rgbStr, 0.2) + '; }';
+            var bar = document.createElement('div'),
+                barWrapper = document.createElement('div');
 
             bar.className = 'bar';
             barWrapper.className = 'bar-wrapper';
             barWrapper.style.left = i*24 + "px";
 
-            stylesStr += beforeStr + afterStr + barStr;
-                        
             barWrapper.appendChild(bar);
             this.visualizer.appendChild(barWrapper);
-
-            rgbStr = fadeToColor(rgbStr, rgbStr2, 1/this.numOfBars);
         }
-        
+
+        this.setColors(styleSheet);
+
         styleSheet.id = 'visualizer-css';
-        styleSheet.innerHTML = stylesStr;
         document.head.appendChild(styleSheet);
 
         this.bars = document.getElementsByClassName('bar');
+    },
+
+    setColors: function(styleSheet) {
+        styleSheet = styleSheet || document.getElementById('visualizer-css');
+        var stylesStr = '';
+
+        for (var i = 0; i < this.numOfBars; i++) {
+
+            var startOfSelectorStr = '.bar-wrapper:nth-of-type(' + (i + 2) + ') .bar', // Its '+ 2' because reflectionOverlay is first-child
+                beforeStr = startOfSelectorStr + ':before { background-color: ' + lighterColor(this.color1, 0.1) + '; }',
+                afterStr = startOfSelectorStr + ':after { background-color: ' + darkerColor(this.color1, 0.1) + '; }',
+                barStr = startOfSelectorStr + ' { background-color: ' + darkerColor(this.color1, 0.2) + '; }';
+
+            stylesStr += beforeStr + afterStr + barStr;
+
+            this.color1 = fadeToColor(this.color1, this.color2, 1/this.numOfBars);
+        }
+
+        styleSheet.innerHTML = stylesStr;
     },
     
     onWaveform: function(waveform) { 
