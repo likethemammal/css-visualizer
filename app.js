@@ -16,11 +16,12 @@ var App = {
     colorPicker1: document.getElementById('color-picker1'),
     colorPicker2: document.getElementById('color-picker2'),
     colorPicker3: document.getElementById('color-picker3'),
+    volumeSlider: document.getElementById('volume-slider'),
 
     DurationTimer: 0,
 
     IdleTimer: 0,
-    idleFadeUI: false,
+    canFadeUI: false,
 
     hideVis: false,
     
@@ -114,10 +115,15 @@ var App = {
         this.next.addEventListener('click', _.bind(this.nextSongFromCache, this));
         
         document.body.addEventListener('click', _.bind(this.toggleUI, this));
-        document.body.addEventListener('mousemove', _.bind(this.toggleUI, this));
+        document.body.addEventListener('mousemove', _.throttle(_.bind(this.toggleUI, this)), 100);
         document.body.addEventListener('keyup', _.bind(this.toggleUI, this));
 
         this.setupColorEvents();
+
+        this.volumeSlider.addEventListener('change', _.bind(function(ev) {
+            var el = ev.currentTarget;
+            this.audio.volume = el.value / 100;
+        }, this));
     },
     
     init: function() {
@@ -179,7 +185,7 @@ var App = {
         this.visualizerContainer.style.cursor = 'auto';
         this.ui.style.opacity = 1;
 
-        if (this.idleFadeUI) {
+        if (this.canFadeUI) {
             clearInterval(this.IdleTimer);
 
             this.IdleTimer = setInterval(_.bind(function() {

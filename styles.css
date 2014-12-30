@@ -371,13 +371,20 @@ body {
     bottom: 0;
     right: 0;
     margin: auto;
-    background-image: url('pattern.png');
+    background:
+        linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
+        linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
+        linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
+        linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: #EC173A;
 
     border: 3px solid black;
     box-shadow: 0 0 5px rgba(0,0,0,0.9);
 
     border-radius: 50%;
     -webkit-transform-origin: 0;
+    -webkit-transition: transform 50ms linear;
 }
 
 /* Keyframes */

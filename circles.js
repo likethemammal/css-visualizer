@@ -50,12 +50,14 @@ Visualizers.Circles = _.extend({
         styleSheet.innerHTML = stylesStr;
     },
     
-    onWaveform: function(waveform) { 
+    onWaveform: function(waveform) {
         var sampleAvgs = sampleArray(waveform, this.numOfCircles);
         var circles = this.circles;
-    
+        var diluter = 5;
+        var precision = 10; //Will affect framerate as it becomes more precise
+
         for (var j = 0; j < this.numOfCircles; j++) {
-            var rotateDeg = 360 * (Math.floor(sampleAvgs[j]*1000)/1000);
+            var rotateDeg = 360 * (Math.floor(sampleAvgs[j]*precision)/precision) / diluter;
             circles[j].style[prefix.css + 'transform'] = ["rotate(", rotateDeg, "deg) translateX(-50%) translateZ(0)"].join("");
         }
     }
