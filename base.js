@@ -13,10 +13,7 @@ Visualizers.Base = {
         
         Visualizers.currentVisualizer = this;
 
-        // Needs to be hexcolor for some reason.
-        App.colorPicker1.value = this.color1;
-        App.colorPicker2.value = this.color2;
-        App.colorPicker3.value = this.color3;
+        this.reverseSetColors();
 
         this.init();
         
@@ -57,6 +54,13 @@ Visualizers.Base = {
             this.manualColorSwitch = true;
             this.setColors();
         }
+    },
+
+    reverseSetColors: function() {
+        // Needs to be hexcolor for some reason.
+        App.colorPicker1.value = rgbToHex(this.color1);
+        App.colorPicker2.value = rgbToHex(this.color2);
+        App.colorPicker3.value = rgbToHex(this.color3);
     },
     
     destroy: function() {

@@ -188,3 +188,44 @@ function getLocation(href) {
     l.href = href;
     return l.hostname;
 }
+
+//Modified from http://stackoverflow.com/questions/13070054/convert-rgb-strings-to-hex-in-javascript 12/30/14
+function rgbToHex(rgb) {
+    var rgbRegex = /^rgb\(\s*(-?\d+)(%?)\s*,\s*(-?\d+)(%?)\s*,\s*(-?\d+)(%?)\s*\)$/;
+    var result, r, g, b, hex = "";
+    if ( (result = rgbRegex.exec(rgb)) ) {
+        r = componentFromStr(result[1], result[2]);
+        g = componentFromStr(result[3], result[4]);
+        b = componentFromStr(result[5], result[6]);
+
+        hex = "#" + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+    return hex;
+
+    function componentFromStr(numStr, percent) {
+        var num = Math.max(0, parseInt(numStr, 10));
+        return percent ?
+            Math.floor(255 * Math.min(100, num) / 100) : Math.min(255, num);
+    }
+}
+
+//Modified from http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb 12/30/14
+function hexToRgb(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+    result = [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ];
+
+    var rgbStr = 'rgb(' + result + ')';
+
+    return rgbStr;
+}

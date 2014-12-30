@@ -33,6 +33,8 @@ Visualizers.Circles = _.extend({
         styleSheet = styleSheet || document.getElementById('visualizer-css');
         var stylesStr = '';
 
+        this.reverseSetColors();
+
         for (var i = 0; i < this.numOfCircles; i++) {
 
             var startOfSelectorStr = '.circle-wrapper:nth-of-type(' + (i + 1) + ') .circle', // Its '+ 2' because reflectionOverlay is first-child

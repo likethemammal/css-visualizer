@@ -97,6 +97,8 @@ Visualizers.Hexagons = _.extend({
             this.gradientOverlay.style['background'] = gradientStr;
             this.currentOverlay = 'gradient';
         }
+
+        this.reverseSetColors();
     },
     
     onSpectrum: function(spectrum) {

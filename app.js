@@ -160,7 +160,9 @@ var App = {
 
         function onColorChange(elNum, color) {
             var currentVisualizer = Visualizers.currentVisualizer;
+            color = hexToRgb(color);
 
+            //Break hex color into rgb values.
             currentVisualizer['color' + elNum] = color;
             currentVisualizer.onColorChange();
         }

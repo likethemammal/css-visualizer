@@ -37,6 +37,8 @@ Visualizers.Bars = _.extend({
         styleSheet = styleSheet || document.getElementById('visualizer-css');
         var stylesStr = '';
 
+        this.reverseSetColors();
+
         for (var i = 0; i < this.numOfBars; i++) {
 
             var startOfSelectorStr = '.bar-wrapper:nth-of-type(' + (i + 2) + ') .bar', // Its '+ 2' because reflectionOverlay is first-child
