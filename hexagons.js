@@ -102,7 +102,7 @@ Visualizers.Hexagons = _.extend({
     },
     
     onSpectrum: function(spectrum) {
-        var sampleAvgs = sampleArray(spectrum, this.numOfHexs);
+        var sampleAvgs = sampleArray(spectrum, this.numOfHexs, this.volumeModifier);
         
         for (var i = 0; i < this.numOfHexs; i++) {
             this.hexs[i].parentNode.style[prefix.css + 'transform'] = this.hexDefaultTransformStr + ' scale(' + (sampleAvgs[i]*100 + 1) + ')';

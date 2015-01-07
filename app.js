@@ -20,6 +20,10 @@ var App = {
 
     DurationTimer: 0,
 
+    options: {
+        defaultVolume: 0.25
+    },
+
     IdleTimer: 0,
     canFadeUI: false,
 
@@ -117,23 +121,31 @@ var App = {
         document.body.addEventListener('click', _.bind(this.toggleUI, this));
         document.body.addEventListener('mousemove', _.throttle(_.bind(this.toggleUI, this)), 100);
         document.body.addEventListener('keyup', _.bind(this.toggleUI, this));
+        window.addEventListener('resize', _.throttle(function() {
+            var currentVis = Visualizers.currentVisualizer;
+            var onResizeFunc = _.bind(currentVis.onResize, currentVis);
+            if (onResizeFunc) {
+                onResizeFunc();
+            }
+        }, 100));
 
         this.setupColorEvents();
 
-        this.volumeSlider.addEventListener('change', _.bind(function(ev) {
-            var el = ev.currentTarget;
-            this.audio.volume = el.value / 100;
-        }, this));
+        this.volumeSlider.addEventListener('change', _.bind(this.onVolumeChange, this));
     },
     
     init: function() {
-        this.setupMusic();
         this.events();
-        
+        this.setupMusic();
+
         this.setupFullscreen();
         
         document.addEventListener('DOMContentLoaded', _.bind(function () {
             Visualizers[this.chooser.firstElementChild.value].run();
+            this.volumeSlider.value = this.options.defaultVolume * 100;
+            //Needed because changing slider value doesnt cause change event.
+            var event = new Event('change');
+            this.volumeSlider.dispatchEvent(event);
         }, this));
     },
 
@@ -172,6 +184,15 @@ var App = {
             currentVisualizer['color' + elNum] = color;
             currentVisualizer.onColorChange();
         }
+    },
+
+    onVolumeChange: function(ev) {
+        var el = ev.currentTarget;
+        var volume =  el.value / 100;
+
+        this.audio.volume = volume;
+        this.currentVolume = volume;
+        Visualizers.currentVisualizer.setVolumeModifier();
     },
 
     switchVisualizers: function(ev) {
@@ -230,7 +251,6 @@ var App = {
                 }
 
                 promise.then(_.bind(function() {
-                    console.log(this.tracksCache)
                     this.nextSongFromCache();
                 }, this));
 

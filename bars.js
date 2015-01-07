@@ -10,9 +10,18 @@ Visualizers.Bars = _.extend({
             
         reflectionOverlay.id = "reflection-overlay";
         this.visualizer.appendChild(reflectionOverlay);
-        
+
         this.numOfBars = Math.ceil(window.innerWidth/24);
-        
+
+        this.setColors(styleSheet);
+
+        styleSheet.id = 'visualizer-css';
+        document.head.appendChild(styleSheet);
+
+        this.setupElements();
+    },
+
+    setupElements: function() {
         for (var i = 0; i < this.numOfBars; i++) {
             var bar = document.createElement('div'),
                 barWrapper = document.createElement('div');
@@ -24,11 +33,6 @@ Visualizers.Bars = _.extend({
             barWrapper.appendChild(bar);
             this.visualizer.appendChild(barWrapper);
         }
-
-        this.setColors(styleSheet);
-
-        styleSheet.id = 'visualizer-css';
-        document.head.appendChild(styleSheet);
 
         this.bars = document.getElementsByClassName('bar');
     },
@@ -55,11 +59,16 @@ Visualizers.Bars = _.extend({
     },
     
     onWaveform: function(waveform) { 
-        var sampleAvgs = sampleArray(waveform, this.numOfBars);
+        var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier);
         var bars = this.bars;
-    
+
         for (var j = 0; j < this.numOfBars; j++) {
-            bars[j].parentNode.style[prefix.css + 'transform'] = ["scaleY(", (Math.floor(sampleAvgs[j]*1000)/1000), ") translate3d(0,0,0)"].join("");
+            var magnitude = (Math.floor(sampleAvgs[j]*1000)/1000);
+            bars[j].parentNode.style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
         }
+    },
+
+    onResize: function() {
+        this.setupElements();
     }
 }, Visualizers.Base);

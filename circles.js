@@ -51,7 +51,7 @@ Visualizers.Circles = _.extend({
     },
     
     onWaveform: function(waveform) {
-        var sampleAvgs = sampleArray(waveform, this.numOfCircles);
+        var sampleAvgs = sampleArray(waveform, this.numOfCircles, this.volumeModifier);
         var circles = this.circles;
         var diluter = 5;
         var precision = 10; //Will affect framerate as it becomes more precise

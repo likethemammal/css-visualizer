@@ -8,15 +8,19 @@ Visualizers.Base = {
     color2: randomColor(),
     color3: randomColor(),
 
+    // Needed to compensate for low volumes
+    volumeModifier: 1,
+
     run: function() {
         this.clear();
         
         Visualizers.currentVisualizer = this;
 
         this.reverseSetColors();
+        this.setVolumeModifier(); //Reset volume modifier each time a new visualizer is created
 
         this.init();
-        
+
         var fps = 60;
         if (this.fps) {
             fps = this.fps;
@@ -61,6 +65,10 @@ Visualizers.Base = {
         App.colorPicker1.value = rgbToHex(this.color1);
         App.colorPicker2.value = rgbToHex(this.color2);
         App.colorPicker3.value = rgbToHex(this.color3);
+    },
+
+    setVolumeModifier: function() {
+        this.volumeModifier = (1 / App.currentVolume);
     },
     
     destroy: function() {
