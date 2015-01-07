@@ -121,15 +121,8 @@ var App = {
         document.body.addEventListener('click', _.bind(this.toggleUI, this));
         document.body.addEventListener('mousemove', _.throttle(_.bind(this.toggleUI, this)), 100);
         document.body.addEventListener('keyup', _.bind(this.toggleUI, this));
-        window.addEventListener('resize', _.throttle(function() {
-            var currentVis = Visualizers.currentVisualizer;
-            var onResizeFunc = _.bind(currentVis.onResize, currentVis);
-            if (onResizeFunc) {
-                onResizeFunc();
-            }
-        }, 100));
-
         this.setupColorEvents();
+        this.setupResizeEvent();
 
         this.volumeSlider.addEventListener('change', _.bind(this.onVolumeChange, this));
     },
@@ -183,6 +176,37 @@ var App = {
             //Break hex color into rgb values.
             currentVisualizer['color' + elNum] = color;
             currentVisualizer.onColorChange();
+        }
+    },
+
+    setupResizeEvent: function() {
+        var rtime = new Date(1, 1, 2000, 12,00,00);
+        var timeout = false;
+        var delta = 200;
+
+        window.addEventListener('resize', _.throttle(function() {
+            rtime = new Date();
+            if (timeout === false) {
+                timeout = true;
+                setTimeout(resizeend, delta);
+            }
+        }, 100));
+
+        function resizeend() {
+            if (new Date() - rtime < delta) {
+                setTimeout(resizeend, delta);
+            } else {
+                timeout = false;
+                doneResizing();
+            }
+        }
+
+        function doneResizing () {
+            var currentVis = Visualizers.currentVisualizer;
+            var onResizeFunc = _.bind(currentVis.onResize, currentVis);
+            if (onResizeFunc) {
+                onResizeFunc();
+            }
         }
     },
 

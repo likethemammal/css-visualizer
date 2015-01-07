@@ -235,7 +235,11 @@ body {
 .bar-wrapper {
 	height: 100%;
 	position: absolute;
-	
+
+    -webkit-transform: scaleY(0);
+    -moz-transform: scaleY(0);
+    transform: scaleY(0);
+
 	-webkit-transition: -webkit-transform 50ms linear;
     -moz-transition: -moz-transform 50ms linear;
     -o-transition: -o-transform 50ms linear;

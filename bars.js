@@ -5,11 +5,7 @@ Visualizers.Bars = _.extend({
     currentAmp: 0,
     fps: 40,
     init: function() {
-        var reflectionOverlay = document.createElement('div'),
-            styleSheet = document.createElement('style');
-            
-        reflectionOverlay.id = "reflection-overlay";
-        this.visualizer.appendChild(reflectionOverlay);
+        var styleSheet = document.createElement('style');
 
         this.numOfBars = Math.ceil(window.innerWidth/24);
 
@@ -22,6 +18,13 @@ Visualizers.Bars = _.extend({
     },
 
     setupElements: function() {
+        var reflectionOverlay = document.createElement('div');
+
+        reflectionOverlay.id = "reflection-overlay";
+
+        this.visualizer.innerHTML = '';
+        this.visualizer.appendChild(reflectionOverlay);
+
         for (var i = 0; i < this.numOfBars; i++) {
             var bar = document.createElement('div'),
                 barWrapper = document.createElement('div');
@@ -69,6 +72,10 @@ Visualizers.Bars = _.extend({
     },
 
     onResize: function() {
+        var styleSheet = document.getElementById('visualizer-css');
+
+        this.numOfBars = Math.ceil(window.innerWidth/24);
         this.setupElements();
+        this.setColors(styleSheet);
     }
 }, Visualizers.Base);
