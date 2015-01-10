@@ -394,7 +394,9 @@ body {
     box-shadow: 0 0 5px rgba(0,0,0,0.9);
 
     border-radius: 50%;
+    -webkit-transform: translateX(-50%) translateZ(0px);
     -webkit-transform-origin: 0;
+
     -webkit-transition: transform 100ms linear;
 }
 

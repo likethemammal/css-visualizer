@@ -10,6 +10,8 @@ Visualizers.Circles = _.extend({
 
         this.numOfCircles = Math.ceil(window.innerHeight / this.circleDiameter);
 
+        this.setColors(styleSheet);
+
         for (var i = 0; i < this.numOfCircles; i++) {
             var circle = document.createElement('div');
             var circleWrapper = document.createElement('div');
@@ -19,8 +21,6 @@ Visualizers.Circles = _.extend({
             circleWrapper.appendChild(circle);
             circleContainer.appendChild(circleWrapper);
         }
-
-        this.setColors(styleSheet);
 
         styleSheet.id = 'visualizer-css';
         this.visualizer.appendChild(circleContainer);
@@ -32,6 +32,7 @@ Visualizers.Circles = _.extend({
     setColors: function(styleSheet) {
         styleSheet = styleSheet || document.getElementById('visualizer-css');
         var stylesStr = '';
+        var color = this.color1;
 
         this.resetInputColors();
 
@@ -40,11 +41,11 @@ Visualizers.Circles = _.extend({
             var startOfSelectorStr = '.circle-wrapper:nth-of-type(' + (i + 1) + ') .circle', // Its '+ 2' because reflectionOverlay is first-child
                 diameter = (this.circleDiameter * (this.numOfCircles - i)),
                 screenCenter = Math.round(window.innerHeight/2),
-                barStr = startOfSelectorStr + ' { background-color: ' + this.color1 + '; width: ' + diameter + 'px; height: ' + diameter + 'px;}';
+                barStr = startOfSelectorStr + ' { background-color: ' + color + '; width: ' + diameter + 'px; height: ' + diameter + 'px;}';
 
             stylesStr += barStr;
 
-            this.color1 = fadeToColor(this.color1, this.color2, 1/this.numOfCircles);
+            color = fadeToColor(color, this.color2, 1/this.numOfCircles);
         }
 
         styleSheet.innerHTML = stylesStr;

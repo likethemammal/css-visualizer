@@ -4,9 +4,9 @@ Visualizers.Base = {
     visualizer: document.getElementById('visualizer'),
     AnimationTimer: '',
 
-    color1: randomColor(),
-    color2: randomColor(),
-    color3: randomColor(),
+    color1: '',
+    color2: '',
+    color3: '',
 
     // Needed to compensate for low volumes
     volumeModifier: 1,
@@ -16,6 +16,7 @@ Visualizers.Base = {
         
         Visualizers.currentVisualizer = this;
 
+        this.resetColors();
         this.resetInputColors();
         this.setVolumeModifier(); //Reset volume modifier each time a new visualizer is created
 
@@ -38,7 +39,7 @@ Visualizers.Base = {
     },
     
     getData: function() {
-        if (dancer.isPlaying() && !App.hideVis) {
+        if (dancer.isPlaying() && !App.options.hideVis) {
             var spectrum, waveform;
 
             if (this.onSpectrum) {
@@ -58,6 +59,12 @@ Visualizers.Base = {
             this.manualColorSwitch = true;
             this.setColors();
         }
+    },
+
+    resetColors: function() {
+        this.color1 = randomColor();
+        this.color2 = randomColor();
+        this.color3 = randomColor();
     },
 
     resetInputColors: function() {

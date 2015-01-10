@@ -22,16 +22,16 @@ var App = {
 
     options: {
         debug: true,
-        autoplayRandom: true,
+        debugVolume: 0.01,
+
         defaultVolume: 0.25,
-        debugVolume: 0.01
+        autoplayRandom: true,
+        hideVis: false,
+        fadeUI: true
     },
 
     IdleTimer: 0,
-    canFadeUI: false,
 
-    hideVis: false,
-    
     audio: new Audio(),
     audioLoaded: false,
 
@@ -124,7 +124,6 @@ var App = {
         document.body.addEventListener('mousemove', _.throttle(_.bind(this.toggleUI, this)), 100);
         document.body.addEventListener('keyup', _.bind(this.toggleUI, this));
         this.setupColorEvents();
-        this.setupResizeEvent();
 
         this.volumeSlider.addEventListener('change', _.bind(this.onVolumeChange, this));
     },
@@ -143,6 +142,8 @@ var App = {
             //Needed because changing slider value doesnt cause change event.
             var event = new Event('change');
             this.volumeSlider.dispatchEvent(event);
+            this.setupResizeEvent();
+
         }, this));
     },
 
@@ -166,6 +167,7 @@ var App = {
 
     setupColorEvents: function() {
         this.randomColor.addEventListener('click', _.bind(function() {
+            Visualizers.currentVisualizer.resetColors();
             Visualizers.currentVisualizer.setColors();
         }, this));
 
@@ -200,6 +202,7 @@ var App = {
         var delta = 200;
 
         window.addEventListener('resize', _.throttle(function() {
+            var onResizeFunc = _.bind(Visualizers.currentVisualizer.onResize, Visualizers.currentVisualizer);
             rtime = new Date();
             if (timeout === false) {
                 timeout = true;
@@ -217,8 +220,6 @@ var App = {
         }
 
         function doneResizing () {
-            var currentVis = Visualizers.currentVisualizer;
-            var onResizeFunc = _.bind(currentVis.onResize, currentVis);
             if (onResizeFunc) {
                 onResizeFunc();
             }
@@ -245,7 +246,7 @@ var App = {
         this.visualizerContainer.style.cursor = 'auto';
         this.ui.style.opacity = 1;
 
-        if (this.canFadeUI) {
+        if (this.options.fadeUI) {
             clearInterval(this.IdleTimer);
 
             this.IdleTimer = setInterval(_.bind(function() {
@@ -375,7 +376,7 @@ var App = {
 
                 this.duration.style.right = percentLeft + '%';
 
-//                if (dancer.isPlaying() && !App.hideVis) {
+//                if (dancer.isPlaying() && !App.options.hideVis) {
 //
 //                    console.log(float32ToArray(dancer.getSpectrum()))
 //                }
