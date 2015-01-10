@@ -2,6 +2,7 @@ var Visualizers = Visualizers || {};
 
 Visualizers.Hexagons = _.extend({
     hexs: [],
+    hexWrappers: [],
     numOfHexs: 15,
     hexDefaultTransformStr: 'rotate(0deg)',
     currentOverlay: '',
@@ -45,26 +46,27 @@ Visualizers.Hexagons = _.extend({
             
             hexContainer.appendChild(hexWrapper);
         }
-        
-        this.hexContainer = hexContainer;
-        this.overlayContainer = overlayContainer;
+
         this.colorOverlay = colorOverlay;
         this.gradientOverlay = gradientOverlay;
         
         this.hexs = document.getElementsByClassName('hex');
+        this.hexWrappers = document.getElementsByClassName('hex-wrapper');
     },
     
     setShading: function() {
-        var color = 'rgba(255,255,255,0.08)';
+        var shade = 'rgba(255,255,255,0.08)';
+        var styleSheet = document.styleSheets[0];
                 
         for (var j = 0; j < this.numOfHexs; j++) {
-            var beforeStr = '#hex' + j + ':before { border-bottom-color : ' + color + '}',
-                afterStr = '#hex' + j + ':after { border-top-color : ' + color + '}';
+            var hex = this.hexs[j];
+            var beforeStr = '#hex' + j + ':before { border-bottom-color : ' + shade + '}',
+                afterStr = '#hex' + j + ':after { border-top-color : ' + shade + '}';
 
-            this.hexs[j].id = 'hex' + j;
-            this.hexs[j].style['background-color'] = color;
-            document.styleSheets[0].insertRule(beforeStr, 0);
-            document.styleSheets[0].insertRule(afterStr, 0);
+            hex.id = 'hex' + j;
+            hex.style['background-color'] = shade;
+            styleSheet.insertRule(beforeStr, 0);
+            styleSheet.insertRule(afterStr, 0);
             
         }
     },
@@ -82,30 +84,34 @@ Visualizers.Hexagons = _.extend({
         }
 
         var gradientStr = prefix.css + "linear-gradient(-30deg, " + this.color1 + " 0%," + this.color2 + " 50%," + this.color3 + " 100%)";
-        if (this.currentOverlay === 'gradient') {
-            this.colorOverlay.style['background'] = this.color1;
-            this.colorOverlay.style.opacity = 1;
-            this.gradientOverlay.style.opacity = 0;
-            this.currentOverlay = 'color';
-        } else if (this.currentOverlay === 'color') {
-            this.gradientOverlay.style['background'] = gradientStr;
-            this.colorOverlay.style.opacity = 0;
-            this.gradientOverlay.style.opacity = 1;
-            this.currentOverlay = 'gradient';
-        } else {
-            this.colorOverlay.style.opacity = 0;
-            this.gradientOverlay.style['background'] = gradientStr;
-            this.currentOverlay = 'gradient';
+
+        switch (this.currentOverlay) {
+            case 'gradient':
+                this.colorOverlay.style['background'] = this.color1;
+                this.colorOverlay.style.opacity = 1;
+                this.gradientOverlay.style.opacity = 0;
+                this.currentOverlay = 'color';
+                break;
+            case 'color':
+                this.gradientOverlay.style['background'] = gradientStr;
+                this.colorOverlay.style.opacity = 0;
+                this.gradientOverlay.style.opacity = 1;
+                this.currentOverlay = 'gradient';
+                break;
+            default:
+                this.colorOverlay.style.opacity = 0;
+                this.gradientOverlay.style['background'] = gradientStr;
+                this.currentOverlay = 'gradient';
         }
 
-        this.reverseSetColors();
+        this.resetInputColors();
     },
-    
+
     onSpectrum: function(spectrum) {
         var sampleAvgs = sampleArray(spectrum, this.numOfHexs, this.volumeModifier);
         
         for (var i = 0; i < this.numOfHexs; i++) {
-            this.hexs[i].parentNode.style[prefix.css + 'transform'] = this.hexDefaultTransformStr + ' scale(' + (sampleAvgs[i]*100 + 1) + ')';
+            this.hexWrappers[i].style[prefix.css + 'transform'] = this.hexDefaultTransformStr + ' scale(' + (sampleAvgs[i]*100 + 1) + ')';
         }
     },
     

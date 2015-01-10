@@ -21,7 +21,10 @@ var App = {
     DurationTimer: 0,
 
     options: {
-        defaultVolume: 0.25
+        debug: true,
+        autoplayRandom: true,
+        defaultVolume: 0.25,
+        debugVolume: 0.01
     },
 
     IdleTimer: 0,
@@ -31,74 +34,73 @@ var App = {
     
     audio: new Audio(),
     audioLoaded: false,
-    autoplayRandom: false,
 
     tracksCache: [
         {
             artist: 'Alex Metric',
             title: 'Scandalism',
             format: 'mp3',
-            url: 'music/Alex Metric - Scandalism.mp3'
+            streamUrl: 'music/Alex Metric - Scandalism.mp3'
         },
         {
             artist: 'Kygo',
             title: 'Sexual Healing (Remix)',
             format: 'mp3',
-            url: 'music/Kygo - Sexual Healing (Remix).mp3'
+            streamUrl: 'music/Kygo - Sexual Healing (Remix).mp3'
         },
         {
             artist: 'Bondax',
             title: 'All Inside',
             format: 'mp3',
-            url: 'music/Bondax - All Inside.mp3'
+            streamUrl: 'music/Bondax - All Inside.mp3'
         },
         {
             artist: 'Estelle Miller',
             title: 'Jacknjill',
             format: 'mp3',
-            url: 'music/Estelle Miller - Jacknjill.mp3'
+            streamUrl: 'music/Estelle Miller - Jacknjill.mp3'
         },
         {
             artist: 'Estelle Miller',
             title: 'Delicate Words',
             format: 'mp3',
-            url: 'music/Estelle Miller - Delicate Words.mp3'
+            streamUrl: 'music/Estelle Miller - Delicate Words.mp3'
         },
         {
             artist: 'Nobuo Uematsu',
             title: 'To Zanarkand',
             format: 'mp3',
-            url: 'music/Nobuo Uematsu - To Zanarkand.mp3'
+            streamUrl: 'music/Nobuo Uematsu - To Zanarkand.mp3'
         },
         {
             artist: 'Koji Kondo',
             title: 'Song of Storms',
             format: 'mp3',
-            url: 'music/Koji Kondo - Song of Storms.mp3'
+            streamUrl: 'music/Koji Kondo - Song of Storms.mp3'
         },
         {
             artist: 'Carl Douglas',
             title: 'Kung Fu Fighting 1974 Disco',
             format: 'mp3',
-            url: 'music/Carl Douglas - Kung Fu Fighting 1974 Disco.mp3'
+            streamUrl: 'music/Carl Douglas - Kung Fu Fighting 1974 Disco.mp3'
         },
         {
             artist: 'Ella Fitzgerald',
             title: 'Someone To Watch Over Me',
             format: 'mp3',
-            url: 'music/Ella Fitzgerald - Someone To Watch Over Me.mp3'
+            streamUrl: 'music/Ella Fitzgerald - Someone To Watch Over Me.mp3'
         },
         {
             artist: 'Neon Indian',
             title: 'Polish Girl',
             format: 'mp3',
-            url: 'music/Neon Indian - Polish Girl.mp3'
+            streamUrl: 'music/Neon Indian - Polish Girl.mp3'
         },
         {
             artist: 'George Michael',
             title: 'Careless Whisper',
             format: 'mp3',
-            url: 'music/George Michael - Careless Whisper.mp3'
+            streamUrl: 'music/George Michael - Careless Whisper.mp3'
         }
     ],
     
@@ -129,21 +131,34 @@ var App = {
     
     init: function() {
         this.events();
+        this.setVolume();
         this.setupMusic();
 
         this.setupFullscreen();
         
         document.addEventListener('DOMContentLoaded', _.bind(function () {
             Visualizers[this.chooser.firstElementChild.value].run();
-            this.volumeSlider.value = this.options.defaultVolume * 100;
+            this.setVolume();
+
             //Needed because changing slider value doesnt cause change event.
             var event = new Event('change');
             this.volumeSlider.dispatchEvent(event);
         }, this));
     },
 
+    setVolume: function() {
+        var modifer = 100;
+
+        if (this.options.debug) {
+            this.volumeSlider.value = this.options.debugVolume * modifer;
+        } else {
+            this.volumeSlider.value = this.options.defaultVolume * modifer;
+        }
+
+    },
+
     setupMusic: function() {
-        if (this.autoplayRandom) {
+        if (this.options.autoplayRandom) {
             this.currentTrack = Math.round(Math.random()*this.tracksCache.length);
         }
         this.nextSongFromCache();
@@ -216,7 +231,7 @@ var App = {
 
         this.audio.volume = volume;
         this.currentVolume = volume;
-        Visualizers.currentVisualizer.setVolumeModifier();
+        Visualizers.currentVisualizer.setVolumeModifier(); //Visualizer needs to compensate for low volume audio data
     },
 
     switchVisualizers: function(ev) {
@@ -299,9 +314,11 @@ var App = {
 
     addTrack: function(track) {
         this.tracksCache.push({
-            url: track.stream_url + '?client_id=' + clientID,
+            streamUrl: track.stream_url + '?client_id=' + clientID,
             title: track.title,
+            titleUrl: track.permalink_url,
             artist: track.user.username,
+            artistUrl: track.user.permalink_url,
             length: track.duration
         });
     },
@@ -339,8 +356,10 @@ var App = {
         dancer.pause();
                 
         var trackInfo = this.tracksCache[this.currentTrack];
+        var playbackRate = 1;
         
-        this.audio.src = trackInfo.url;
+        this.audio.src = trackInfo.streamUrl;
+//        this.audio.playbackRate = playbackRate;
 
         this.duration.style.right = '100%';
 
@@ -355,10 +374,15 @@ var App = {
                 var percentLeft = Math.floor((1 - percentComplete)*100 * precision) / precision;
 
                 this.duration.style.right = percentLeft + '%';
-            }
-        }, this) , 250);
 
-        this.attachMetaData(trackInfo.artist, trackInfo.title);
+//                if (dancer.isPlaying() && !App.hideVis) {
+//
+//                    console.log(float32ToArray(dancer.getSpectrum()))
+//                }
+            }
+        }, this) , (1000 / 60) * playbackRate);
+
+        this.attachMetaData(trackInfo.artist, trackInfo.title, trackInfo.artistUrl, trackInfo.titleUrl);
         this.ui.style.opacity = 1;
         
         this.tracksListenedTo.push(this.currentTrack);
@@ -401,12 +425,16 @@ var App = {
         this.currentTrack = 0;
     },
 
-    attachMetaData: function(artistStr, titleStr) {
+    attachMetaData: function(artistStr, titleStr, artistUrl, titleUrl) {
+        artistUrl = artistUrl || '';
+        titleUrl = titleUrl || '';
         var artist = document.getElementById('artist');
         var title = document.getElementById('title');
         
-        artist.innerHTML = artistStr;
-        title.innerHTML = titleStr;
+        artist.innerText = artistStr;
+        title.innerText = titleStr;
+        artist.href = artistUrl;
+        title.href = titleUrl;
     }
 };
 

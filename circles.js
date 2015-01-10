@@ -33,7 +33,7 @@ Visualizers.Circles = _.extend({
         styleSheet = styleSheet || document.getElementById('visualizer-css');
         var stylesStr = '';
 
-        this.reverseSetColors();
+        this.resetInputColors();
 
         for (var i = 0; i < this.numOfCircles; i++) {
 
@@ -53,7 +53,7 @@ Visualizers.Circles = _.extend({
     onWaveform: function(waveform) {
         var sampleAvgs = sampleArray(waveform, this.numOfCircles, this.volumeModifier);
         var circles = this.circles;
-        var diluter = 5;
+        var diluter = 2;
         var precision = 10; //Will affect framerate as it becomes more precise
 
         for (var j = 0; j < this.numOfCircles; j++) {

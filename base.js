@@ -16,7 +16,7 @@ Visualizers.Base = {
         
         Visualizers.currentVisualizer = this;
 
-        this.reverseSetColors();
+        this.resetInputColors();
         this.setVolumeModifier(); //Reset volume modifier each time a new visualizer is created
 
         this.init();
@@ -60,7 +60,7 @@ Visualizers.Base = {
         }
     },
 
-    reverseSetColors: function() {
+    resetInputColors: function() {
         // Needs to be hexcolor for some reason.
         App.colorPicker1.value = rgbToHex(this.color1);
         App.colorPicker2.value = rgbToHex(this.color2);

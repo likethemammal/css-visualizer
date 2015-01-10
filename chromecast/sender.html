@@ -1,4 +1,4 @@
-<html data-cast-api-enabled="true">
+<html data-cast-api-enabled="true" xmlns="http://www.w3.org/1999/html">
 	<head>
 		<title>Hello World Chrome Sender</title>
 	</head>
@@ -11,6 +11,8 @@
 		</div>
 		<button class="load">Load</button>
 		<button class="kill" disabled>Kill the Connection</button>
+		<button class="play">Play</button>
+		<button class="stop">Stop</button>
 	</body>
 
 	<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
@@ -35,21 +37,14 @@
         }
     </script>
 
-
-
     <script>
 		var cast_api,
 			cv_activity,
 			receiverList,
-			$killSwitch = $('.kill');
-			$loadSwitch= $('.load');
-
-        //		window.addEventListener('message', function(event) {
-//			if (event.source === window && event.data &&
-//					event.data.source === 'CastApi' &&
-//					event.data.event === 'Hello') {
-//			}
-//		});
+			$killSwitch = $('.kill'),
+			$loadSwitch= $('.load'),
+			$playBtn= $('.play');
+			$stopBtn= $('.stop');
 
 		initializeApi = function() {
             if (!chrome.cast || !chrome.cast.isAvailable) {
@@ -86,11 +81,6 @@
                 }
             }
 
-//			if (!cast_api) {
-//				cast_api = new cast.Api();
-//				cast_api.addReceiverListener('B7A2237F', onReceiverList);
-//                console.log('on receiver list')
-//			}
 		};
 
 		onReceiverList = function(list) {
@@ -143,17 +133,6 @@
 
                 session = e;
 
-
-//                var mediaInfo = new chrome.cast.media.MediaInfo(currentMediaURL);
-//                var request = new chrome.cast.media.LoadRequest(mediaInfo);
-//                session.loadMedia(request,
-//                        onMediaDiscovered.bind(this, 'loadMedia'),
-//                        onMediaError);
-//
-//                function onMediaDiscovered(how, media) {
-//                    currentMedia = media;
-//                }
-
             }
 
             function onLaunchError(e) {
@@ -173,4 +152,5 @@
         initializeApi();
 
     </script>
+    <script src="audiodata.js"></script>
 </html>

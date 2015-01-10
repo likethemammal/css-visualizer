@@ -199,15 +199,22 @@ body {
 }
 
 .meta-data-words {
+    display: block;
 	width: 100%;
-	
+    color: #fff;
+
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+    text-decoration: none;
 
-	-webkit-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.meta-data-words:hover {
+    text-decoration: underline;
 }
 
 
@@ -388,7 +395,7 @@ body {
 
     border-radius: 50%;
     -webkit-transform-origin: 0;
-    -webkit-transition: transform 50ms linear;
+    -webkit-transition: transform 100ms linear;
 }
 
 /* Keyframes */

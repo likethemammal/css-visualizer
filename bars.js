@@ -43,19 +43,20 @@ Visualizers.Bars = _.extend({
     setColors: function(styleSheet) {
         styleSheet = styleSheet || document.getElementById('visualizer-css');
         var stylesStr = '';
+        var color = this.color1;
 
-        this.reverseSetColors();
+        this.resetInputColors();
 
         for (var i = 0; i < this.numOfBars; i++) {
 
             var startOfSelectorStr = '.bar-wrapper:nth-of-type(' + (i + 2) + ') .bar', // Its '+ 2' because reflectionOverlay is first-child
-                beforeStr = startOfSelectorStr + ':before { background-color: ' + lighterColor(this.color1, 0.1) + '; }',
-                afterStr = startOfSelectorStr + ':after { background-color: ' + darkerColor(this.color1, 0.1) + '; }',
-                barStr = startOfSelectorStr + ' { background-color: ' + darkerColor(this.color1, 0.2) + '; }';
+                beforeStr = startOfSelectorStr + ':before { background-color: ' + lighterColor(color, 0.1) + '; }',
+                afterStr = startOfSelectorStr + ':after { background-color: ' + darkerColor(color, 0.1) + '; }',
+                barStr = startOfSelectorStr + ' { background-color: ' + darkerColor(color, 0.2) + '; }';
 
             stylesStr += beforeStr + afterStr + barStr;
 
-            this.color1 = fadeToColor(this.color1, this.color2, 1/this.numOfBars);
+            color = fadeToColor(color, this.color2, 1/this.numOfBars);
         }
 
         styleSheet.innerHTML = stylesStr;
