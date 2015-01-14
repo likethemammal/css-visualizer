@@ -114,19 +114,19 @@ body {
 }
 
 #play-pause {
-	background-image: url('imgs/glyphicons_174_pause.png');
+	background-image: url('../imgs/glyphicons_174_pause.png');
 }
 
 #next {
-	background-image: url('imgs/glyphicons_178_step_forward.png');
+	background-image: url('../imgs/glyphicons_178_step_forward.png');
 }
 
 #fullscreen {
-	background-image: url('imgs/glyphicons_215_resize_full.png');
+	background-image: url('../imgs/glyphicons_215_resize_full.png');
 }
 
 #about {
-	background-image: url('imgs/glyphicons_194_circle_question_mark.png');
+	background-image: url('../imgs/glyphicons_194_circle_question_mark.png');
 }
 
 #fullscreen:hover {
@@ -140,7 +140,7 @@ body {
 }
 
 #search-btn {
-	background-image: url('imgs/glyphicons_027_search.png');
+	background-image: url('../imgs/glyphicons_027_search.png');
 }
 
 .ui-btn {
@@ -523,40 +523,40 @@ body {
 
 @-webkit-keyframes toggleFullscreen {
 	0% {
-		background-image: url('imgs/glyphicons_215_resize_full.png');
+		background-image: url('../imgs/glyphicons_215_resize_full.png');
 	}
 	
 	100% {
-		background-image: url('imgs/glyphicons_214_resize_small.png');
+		background-image: url('../imgs/glyphicons_214_resize_small.png');
 	}
 }
 
 @-moz-keyframes toggleFullscreen {
 	0% {
-		background-image: url('imgs/glyphicons_215_resize_full.png');
+		background-image: url('../imgs/glyphicons_215_resize_full.png');
 	}
 	
 	100% {
-		background-image: url('imgs/glyphicons_214_resize_small.png');
+		background-image: url('../imgs/glyphicons_214_resize_small.png');
 	}
 }
 
 @-o-keyframes toggleFullscreen {
 	0% {
-		background-image: url('imgs/glyphicons_215_resize_full.png');
+		background-image: url('../imgs/glyphicons_215_resize_full.png');
 	}
 	
 	100% {
-		background-image: url('imgs/glyphicons_214_resize_small.png');
+		background-image: url('../imgs/glyphicons_214_resize_small.png');
 	}
 }
 
 @keyframes toggleFullscreen {
 	0% {
-		background-image: url('imgs/glyphicons_215_resize_full.png');
+		background-image: url('../imgs/glyphicons_215_resize_full.png');
 	}
 	
 	100% {
-		background-image: url('imgs/glyphicons_214_resize_small.png');
+		background-image: url('../imgs/glyphicons_214_resize_small.png');
 	}
 }

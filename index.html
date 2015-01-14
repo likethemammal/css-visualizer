@@ -27,7 +27,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="author" content="Chris Dolphin">
     
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     
     <!--<script>-->
       <!--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){-->
@@ -79,30 +79,25 @@
     </div>
 
 <!-- Dev -->
-<!--<script src="dancer.js"></script>-->
-<!--<script src="underscore-min.js"></script>-->
+<script src="js/libs/dancer.js"></script>
+<!--<script src="js/libs/underscore-min.js"></script>-->
+<!--<script src="js/libs/require.min.js"></script>-->
 
-<!-- Production -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.4.0/dancer.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/q.js/1.1.1/q.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+
+    <!-- Production -->
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/dancer.js/0.4.0/dancer.min.js"></script>-->
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/q.js/1.1.1/q.min.js"></script>-->
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>-->
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>-->
 
 <!-- Request Anim Gist -->
 <!-- https://gist.github.com/paulirish/1579671 -->
 <!-- <script src="libs/rAF.js"></script> -->
 
-<script src="http://connect.soundcloud.com/sdk.js"></script>
+<!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
 <script>
-var clientID = '587aa2d384f7333a886010d5f52f302a';
-
-SC.initialize({
-    client_id: clientID
-});
-
-var loadFromSC = true;
 
 </script>
-
 
 <!-- Detect Browser Prefixes; From http://davidwalsh.name/vendor-prefix -->
 <script>
@@ -126,12 +121,16 @@ var prefix = (function () {
 </script>
 
 
-<script src="utils.js" ></script>
-<script src="app.js" ></script>
-<script src="base.js" ></script>
-<script src="hexagons.js" ></script>
-<script src="bars.js" ></script>
-<script src="circles.js" ></script>
+<script src="js/app/utils.js" ></script>
+
+<!--<script src="js/app/app.js" ></script>-->
+<!--<script src="js/app/visualizers/base.js" ></script>-->
+<!--<script src="js/app/visualizers/hexagons.js" ></script>-->
+<!--<script src="js/app/visualizers/bars.js" ></script>-->
+<!--<script src="js/app/visualizers/circles.js" ></script>-->
+
+<script data-main="js/main" src="js/libs/require.min.js"></script>
+
 </body>
 
 </html>
