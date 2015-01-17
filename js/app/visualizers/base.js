@@ -41,6 +41,8 @@ define(['app/options', 'bean'], function (Options, Bean) {
             if (dancer.isPlaying() && !Options.hideVis) {
                 var spectrum, waveform;
 
+                this.isPlaying = true;
+
                 if (this.onSpectrum) {
                     spectrum = float32ToArray(dancer.getSpectrum());
                     this.onSpectrum(spectrum);
@@ -50,6 +52,8 @@ define(['app/options', 'bean'], function (Options, Bean) {
                     waveform = float32ToArray(dancer.getWaveform());
                     this.onWaveform(waveform);
                 }
+            } else {
+                this.isPlaying = false;
             }
         },
 

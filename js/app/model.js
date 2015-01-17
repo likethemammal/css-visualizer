@@ -10,6 +10,8 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
 
         DurationTimer: 0,
 
+        chromecastAudioData: false,
+
         init: function() {
             Bean.on(window, 'setupMusic', _.bind(this.setupMusic, this));
             Bean.on(window, 'model.search', _.bind(this.search, this));
