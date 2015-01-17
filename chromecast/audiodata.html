@@ -7,146 +7,220 @@
 
     <title>decodeAudioData example</title>
 
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../css/styles.css">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
 
 <body>
-<h1>decodeAudioData example</h1>
 
-<button class="play">Play</button>
-<button class="stop">Stop</button>
+<div id="visualizer"></div>
 
-<h2>Set playback rate</h2>
-<input class="playback-rate-control" type="range" min="0.25" max="3" step="0.05" value="1">
-<span class="playback-rate-value">1.0</span>
+<h1>Testing</h1>
 
-<h2>Set loop start and loop end</h2>
-<input class="loopstart-control" type="range" min="0" max="20" step="1" value="0">
-<span class="loopstart-value">0</span>
-
-<input class="loopend-control" type="range" min="0" max="20" step="1" value="0">
-<span class="loopend-value">0</span>
-
-<pre></pre>
-</body>
 <script>
 
-
-    // define variables
-
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    var analyser = audioCtx.createAnalyser();
-    var source;
-    var songLength;
-    var audioDataTimer = '';
-    var timerCounter = 0;
-
-    var pre = document.querySelector('pre');
-    var myScript = document.querySelector('script');
-    var play = document.querySelector('.play');
-    var stop = document.querySelector('.stop');
-
-    var playbackControl = document.querySelector('.playback-rate-control');
-    var playbackValue = document.querySelector('.playback-rate-value');
-    playbackControl.setAttribute('disabled', 'disabled');
-
-    var loopstartControl = document.querySelector('.loopstart-control');
-    var loopstartValue = document.querySelector('.loopstart-value');
-    loopstartControl.setAttribute('disabled', 'disabled');
-
-    var loopendControl = document.querySelector('.loopend-control');
-    var loopendValue = document.querySelector('.loopend-value');
-    loopendControl.setAttribute('disabled', 'disabled');
-
-    // use XHR to load an audio track, and
-    // decodeAudioData to decode it and stick it in a buffer.
-    // Then we put the buffer into the source
-
-    function getData() {
-        source = audioCtx.createBufferSource();
-        request = new XMLHttpRequest();
-
-        request.open('GET', 'audio.mp3', true);
-
-        request.responseType = 'arraybuffer';
-
-
-        request.onload = function() {
-            var audioData = request.response;
-
-            audioCtx.decodeAudioData(audioData, function(buffer) {
-                myBuffer = buffer;
-                songLength = buffer.duration;
-                source.buffer = myBuffer;
-                source.playbackRate.value = playbackControl.value;
-                source.connect(analyser);
-                source.loop = true;
-
-                loopstartControl.setAttribute('max', Math.floor(songLength));
-                loopendControl.setAttribute('max', Math.floor(songLength));
-            }, function(e){"Error with decoding audio data" + e.err});
+    var prefix = (function () {
+        var styles = window.getComputedStyle(document.documentElement, ''),
+                pre = (Array.prototype.slice
+                        .call(styles)
+                        .join('')
+                        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+                        )[1],
+                dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+        return {
+            dom: dom,
+            lowercase: pre,
+            css: '-' + pre + '-',
+            js: pre[0].toUpperCase() + pre.substr(1)
         };
+    })();
 
-        request.send();
-    }
-
-    // wire up buttons to stop and play audio, and range slider control
-
-    play.onclick = function() {
-        getData();
-        source.start(0);
-        play.setAttribute('disabled', 'disabled');
-        playbackControl.removeAttribute('disabled');
-        loopstartControl.removeAttribute('disabled');
-        loopendControl.removeAttribute('disabled');
-    }
-
-    stop.onclick = function() {
-        source.stop(0);
-        play.removeAttribute('disabled');
-        playbackControl.setAttribute('disabled', 'disabled');
-        loopstartControl.setAttribute('disabled', 'disabled');
-        loopendControl.setAttribute('disabled', 'disabled');
-        clearInterval(audioDataTimer)
-    }
-
-    playbackControl.oninput = function() {
-        source.playbackRate.value = playbackControl.value;
-        playbackValue.innerHTML = playbackControl.value;
-        audioDataTimer = setInterval(function() {
-            if (timerCounter < 10000) {
-                timerCounter++;
-                analyser.fftSize = 2048;
-                var bufferLength = analyser.fftSize;
-                var dataArray = new Uint8Array(bufferLength);
-                analyser.getByteTimeDomainData(dataArray);
-                console.log(dataArray)
-                console.log(source.playbackRate.value);
-                console.log(source);
-            } else {
-                clearInterval(audioDataTimer);
-            }
-
-        }, 10);
-
-    }
-
-    loopstartControl.oninput = function() {
-        source.loopStart = loopstartControl.value;
-        loopstartValue.innerHTML = loopstartControl.value;
-    }
-
-    loopendControl.oninput = function() {
-        source.loopEnd = loopendControl.value;
-        loopendValue.innerHTML = loopendControl.value;
-    }
-
-
-    // dump script to pre element
-
-    pre.innerHTML = myScript.innerHTML;
 </script>
+
+
+<script src="../js/libs/q.min.js"></script>
+<script src="../js/libs/underscore-min.js"></script>
+<script src="../js/libs/bean.min.js"></script>
+<script src="../js/app/utils.js"></script>
+
+<script src="visualizer.js"></script>
+<script src="bars.js"></script>
+<script src="queue.js"></script>
+
+
+<script>
+
+    var options = {
+        playing: true
+    };
+
+    var staticAudioAnalyzer = {
+
+        audioCtx: '',
+        analyser: '',
+        audioDataTimer: '',
+        playbackRate: 1,
+
+        getData: function(audioSrc, framerate) {
+
+            return Q.Promise(function(resolve, reject, notify) {
+                var myBuffer;
+                var request = new XMLHttpRequest();
+                var songLength;
+                var source;
+                var analyser;
+
+                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+                analyser = this.audioCtx.createAnalyser();
+                source = this.audioCtx.createBufferSource();
+
+                request.open('GET', audioSrc, true);
+
+                request.responseType = 'arraybuffer';
+
+                request.onload = function() {
+                    var response = request.response;
+                    console.log(response)
+
+                    this.audioCtx.decodeAudioData(response, function(buffer) {
+
+                        myBuffer = buffer;
+                        songLength = buffer.duration;
+                        source.buffer = myBuffer;
+                        source.playbackRate.value = this.playbackRate;
+                        source.volume = 0.01;
+                        source.connect(this.audioCtx.destination);
+                        source.connect(analyser);
+                        source.loop = true;
+                        source.start(0);
+
+                        b = source;
+
+
+                        console.log(this, analyser, framerate, songLength, resolve, notify);
+
+                        this.analyze(analyser, framerate, songLength, resolve, notify);
+
+                    }.bind(this), function(e){console.warn("Error with decoding audio data" + e.err);});
+
+
+                }.bind(this);
+
+                if (options.playing) { //Used for debugging
+                    request.send();
+                }
+
+            }.bind(this));
+
+        },
+
+        analyze: function(analyser, framerate, songLength, resolve, notify) {
+            var audioData = [];
+
+            var lengthOfRealSecond = 1000;
+            var lengthOfSimulatedSecond = 1000 / this.playbackRate;
+            var lengthOfSimulatedFrame = lengthOfSimulatedSecond / framerate;
+            var numberOfSimulatedSeconds = songLength * lengthOfSimulatedSecond;
+            var simulatedFrameCounter = 0;
+            var numberOfRealSecondsPerPacket = 1;
+            var lengthOfSimulatedFramePacket = framerate * numberOfRealSecondsPerPacket;
+
+            clearInterval(this.audioDataTimer);
+
+            this.audioDataTimer = setInterval(function() {
+
+                if (simulatedFrameCounter < numberOfSimulatedSeconds) {
+                    analyser.fftSize = 256;
+                    var bufferLength = analyser.frequencyBinCount;
+                    var dataArray = new Uint8Array(bufferLength);
+                    analyser.getByteFrequencyData(dataArray);
+
+//                    var string = float32ToArray(dataArray).join('|');
+
+                    audioData.push(dataArray);
+                    simulatedFrameCounter++;
+
+                    if (simulatedFrameCounter % lengthOfSimulatedFramePacket === 0) {
+                        console.log(audioData)
+                        notify(audioData);
+                        audioData = [];
+                    }
+
+                } else {
+                    resolve(audioData);
+                    clearInterval(this.audioDataTimer);
+                }
+
+//                if (simulatedFrameCounter % 5 === 0) {
+//                    resolve(audioData);
+////                    clearInterval(this.audioDataTimer);
+//                }
+
+            }.bind(this), lengthOfSimulatedFrame);
+        }
+
+    };
+
+    var analyserDeferred = staticAudioAnalyzer.getData('audio.mp3', 60);
+
+    analyserDeferred.then(
+        function(response) {
+            console.log('Response',response);
+        }, function(err) {
+            console.log('Error', err);
+        }, function(progress) {
+                PUBNUB_demo.publish({
+                    channel: 'deasdfasdf',
+                    message: progress
+                });
+//                console.log(progress)
+//            console.log('Progress', progress);
+        }
+    );
+
+
+    function roughSizeOfObject( object ) {
+
+        var objectList = [];
+        var stack = [ object ];
+        var bytes = 0;
+
+        while ( stack.length ) {
+            var value = stack.pop();
+
+            if ( typeof value === 'boolean' ) {
+                bytes += 4;
+            }
+            else if ( typeof value === 'string' ) {
+                bytes += value.length * 2;
+            }
+            else if ( typeof value === 'number' ) {
+                bytes += 8;
+            }
+            else if
+                    (
+                    typeof value === 'object'
+                            && objectList.indexOf( value ) === -1
+                    )
+            {
+                objectList.push( value );
+
+                for( var i in value ) {
+                    stack.push( value[ i ] );
+                }
+            }
+        }
+        return bytes;
+    }
+
+    Queue.init();
+
+</script>
+
+
+</body>
+s
 </html>
