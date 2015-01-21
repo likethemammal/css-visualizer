@@ -9,21 +9,20 @@
     </style>
 </head>
 <body>
-<h1 id="data">Hello World</h1>
-<video id='media'/>
+<h1>Hello World</h1>
+<audio id='audio'/>
 <script>
-    window.mediaElement = document.getElementById('media');
+
+    window.mediaElement = document.getElementById('audio');
     window.mediaManager = new cast.receiver.MediaManager(window.mediaElement);
+
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-    window.castReceiverManager.start();
-</script>
-<script>
 
-    console.log('the fuck');
+    console.log('chromecast loaded');
 
 </script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/app/chromecast/receiver/socket.js"></script>
+
+<script data-main="js/app/chromecast/receiver/main" src="js/libs/require.min.js"></script>
 
 </body>
 </html>

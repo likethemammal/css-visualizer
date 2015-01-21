@@ -7,6 +7,7 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
 
         tracksListenedTo: [],
         currentTrack: 0,
+        playbackRate: 1,
 
         DurationTimer: 0,
 
@@ -19,10 +20,8 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             Bean.on(window, 'next', _.bind(this.nextSongFromCache, this));
             Bean.on(window, 'playPause', this.togglePlayPause, this);
             Bean.on(window, 'model.setVolume', _.bind(this.setVolume, this));
-            Bean.on(window, 'setCurrent', _.bind(function() {
-                this.tracksListenedTo.push(this.currentTrack);
-                this.currentTrack = this.getRandomTrackNum();
-            }, this))
+            Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
+
         },
 
         search: function(searchVal) {
@@ -149,10 +148,14 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             dancer.pause();
 
             var trackInfo = this.tracksCache[this.currentTrack];
-            var playbackRate = 1;
 
-            this.audio.src = trackInfo.streamUrl;
-            this.audio.playbackRate = playbackRate;
+            if (this.chromecastConnected) {
+                console.log(trackInfo.streamUrl)
+                Bean.fire(window, 'sender.loadMedia', trackInfo.streamUrl);
+
+                this.playbackRate = Options.chromecastPlaybackRate;
+                this.setVolume(Options.chromecastVolume);
+            }
 
             Bean.fire(window, 'resetDuration');
 
@@ -169,14 +172,20 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
 
                     Bean.fire(window, 'view.durationProgress', percentLeft + '%');
                 }
-            }, this) , (1000 / 60) * playbackRate);
+            }, this) , (1000 / 60) * this.playbackRate);
 
             Bean.fire(window, 'view.metadata', [[trackInfo.artist, trackInfo.title, trackInfo.artistUrl, trackInfo.titleUrl]]);
-            Bean.fire(window, 'setCurrent');
+
+            this.tracksListenedTo.push(this.currentTrack);
+            this.currentTrack = this.getRandomTrackNum();
+
+            this.audio.src = trackInfo.streamUrl;
+            this.audio.playbackRate = this.playbackRate;
+
+            Bean.off(this.audio, 'ended');
             Bean.on(this.audio, 'ended', _.bind(this.nextSongFromCache, this));
 
             Bean.fire(window, 'loadAndPlay');
-
         },
 
         setVolume: function(volume) {
@@ -184,72 +193,77 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             Bean.fire(window, 'visualizer.setVolume', volume);
         },
 
+        onChromecastConnected: function() {
+            this.chromecastConnected = true;
+            this.nextSongFromCache();
+        },
+
         tracksCache: [
             {
                 artist: 'Alex Metric',
                 title: 'Scandalism',
                 format: 'mp3',
-                streamUrl: 'music/Alex Metric - Scandalism.mp3'
+                streamUrl: '/music/Alex Metric - Scandalism.mp3'
             },
             {
                 artist: 'Kygo',
                 title: 'Sexual Healing (Remix)',
                 format: 'mp3',
-                streamUrl: 'music/Kygo - Sexual Healing (Remix).mp3'
+                streamUrl: '/music/Kygo - Sexual Healing (Remix).mp3'
             },
             {
                 artist: 'Bondax',
                 title: 'All Inside',
                 format: 'mp3',
-                streamUrl: 'music/Bondax - All Inside.mp3'
+                streamUrl: '/music/Bondax - All Inside.mp3'
             },
             {
                 artist: 'Estelle Miller',
                 title: 'Jacknjill',
                 format: 'mp3',
-                streamUrl: 'music/Estelle Miller - Jacknjill.mp3'
+                streamUrl: '/music/Estelle Miller - Jacknjill.mp3'
             },
             {
                 artist: 'Estelle Miller',
                 title: 'Delicate Words',
                 format: 'mp3',
-                streamUrl: 'music/Estelle Miller - Delicate Words.mp3'
+                streamUrl: '/music/Estelle Miller - Delicate Words.mp3'
             },
             {
                 artist: 'Nobuo Uematsu',
                 title: 'To Zanarkand',
                 format: 'mp3',
-                streamUrl: 'music/Nobuo Uematsu - To Zanarkand.mp3'
+                streamUrl: '/music/Nobuo Uematsu - To Zanarkand.mp3'
             },
             {
                 artist: 'Koji Kondo',
                 title: 'Song of Storms',
                 format: 'mp3',
-                streamUrl: 'music/Koji Kondo - Song of Storms.mp3'
+                streamUrl: '/music/Koji Kondo - Song of Storms.mp3'
             },
             {
                 artist: 'Carl Douglas',
                 title: 'Kung Fu Fighting 1974 Disco',
                 format: 'mp3',
-                streamUrl: 'music/Carl Douglas - Kung Fu Fighting 1974 Disco.mp3'
+                streamUrl: '/music/Carl Douglas - Kung Fu Fighting 1974 Disco.mp3'
             },
             {
                 artist: 'Ella Fitzgerald',
                 title: 'Someone To Watch Over Me',
                 format: 'mp3',
-                streamUrl: 'music/Ella Fitzgerald - Someone To Watch Over Me.mp3'
+                streamUrl: '/music/Ella Fitzgerald - Someone To Watch Over Me.mp3'
             },
             {
                 artist: 'Neon Indian',
                 title: 'Polish Girl',
                 format: 'mp3',
-                streamUrl: 'music/Neon Indian - Polish Girl.mp3'
+                streamUrl: '/music/Neon Indian - Polish Girl.mp3'
             },
             {
                 artist: 'George Michael',
                 title: 'Careless Whisper',
                 format: 'mp3',
-                streamUrl: 'music/George Michael - Careless Whisper.mp3'
+                streamUrl: '/music/George Michael - Careless Whisper.mp3'
             }
         ]
 

@@ -1,17 +1,45 @@
-var room = 0;
-window.onload = startSocket;
+define(['app/options', 'bean', 'socketio', 'app/chromecast/receiver/visualizers/bars'], function(Options, Bean, io, visualizer) {
 
-function startSocket() {
-    // Connect to socket.io
-    var socket = io.connect();
+    var Socket = {
 
-    //Connect to server
-    socket.on('connect', function(){
+        room: 0,
 
-        socket.on('audiodata', onAudioData);
+        init: function() {
+            // Connect to socket.io
+            this.socket = io.connect();
 
-        //Join room with roomID from desktop
-        socket.emit('chromecast-join', roomID);
-    });
+            Bean.on(window, 'socket.subscribe', this.subscribeSocket.bind(this));
 
-}
+            this.socket.on('chromecast-connected', this.onSocketConnection.bind(this));
+
+            //Connect to server
+            this.socket.on('connect', function() {
+                this.socket.on('audiodata', this.onAudiodata);
+            }.bind(this));
+        },
+
+        subscribeSocket: function(data) {
+
+            console.log('subscribing to socket')
+
+            //Join room with roomID from desktop
+            this.socket.emit('chromecast-subscribe', {
+                room: data.room,
+                visSettings: visualizer.settings
+            });
+        },
+
+        onSocketConnection: function() {
+            Bean.fire(window, 'player.start');
+            console.log('player.start')
+        },
+
+        onAudioData: function(data) {
+            Bean.fire(window, 'queue.audiodata', data);
+        }
+
+    };
+
+    return Socket;
+
+});

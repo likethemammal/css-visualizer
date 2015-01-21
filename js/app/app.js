@@ -5,13 +5,13 @@ define(['app/visualizers/base', 'underscore', 'bean'], function (Base, _, Bean) 
         init: function() {
             Bean.fire(window, 'view.setVolume');
 
-            var onLoadFunc = _.bind(function () {
+            var onLoadFunc = function () {
                 Bean.fire(window, 'setupFullscreen');
                 Bean.fire(window, 'view.loadVis');
                 Bean.fire(window, 'view.setVolume');
                 Bean.fire(window, 'pageLoaded');
                 Bean.fire(window, 'setupMusic');
-            }, this);
+            };
 
             if (document.readyState === "complete") {
                 onLoadFunc();

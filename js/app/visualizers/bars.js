@@ -5,10 +5,11 @@ define(['app/visualizers/base', 'underscore', 'bean'], function (Base, _, Bean) 
         numOfBars: 0,
         currentAmp: 0,
         fps: 40,
+        barWidth: 24,
         init: function() {
             var styleSheet = document.createElement('style');
 
-            this.numOfBars = Math.ceil(window.innerWidth/24);
+            this.numOfBars = Math.ceil(window.innerWidth/this.barWidth);
 
             this.setColors(styleSheet);
 

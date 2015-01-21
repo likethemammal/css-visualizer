@@ -1,9 +1,10 @@
 /* Express 3 requires that you instantiate a `http.Server` to attach socket.io to first */
-var app = require('express')(),
+var express = require('express'),
+    app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     uuid = require('node-uuid'),
-    port = 8080,
+    port = 3000,
     url  = 'http://localhost:' + port + '/';
 
 /* We can access nodejitsu enviroment variables from process.env */
@@ -15,6 +16,8 @@ if(process.env.SUBDOMAIN){
 server.listen(port);
 console.log("Express server listening on port " + port);
 console.log(url);
+
+app.use(express.static(process.cwd()));
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
@@ -32,12 +35,17 @@ io.sockets.on('connection', function (socket) {
         console.log('socket joined room: ', roomID);
 
         socket.join(roomID);
-        socket.broadcast.to(roomID).emit('joined-room', roomID);
+
+        //Send roomID back to desktop
+        io.sockets.in(roomID).emit('joined-room', roomID);
     });
 
-    socket.on('chromecast-join', function(roomID) {
-        socket.join(roomID);
-        socket.broadcast.to(roomID).emit('chromecast-connected');
+    //chromecast asking to join
+    socket.on('chromecast-subscribe', function(data) {
+        socket.join(data.room);
+
+        //Tell desktop chromecast has connect and give chromecast width to desktop for visualizer settings
+        socket.broadcast.to(data.room).emit('chromecast-connected', data.visSettings);
     });
 
 });

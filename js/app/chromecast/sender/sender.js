@@ -1,4 +1,4 @@
-define(['app/options', '../../.', 'bean'], function (Options, chrome, Bean) {
+define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
 
     var Sender = {
 
@@ -8,12 +8,13 @@ define(['app/options', '../../.', 'bean'], function (Options, chrome, Bean) {
         currentMedia: '',
 
         init: function() {
-            Bean.on(this.chromecastBtn, 'click', this.requestSession);
-            Bean.on(window, 'sender.loadMedia', this.loadMedia);
+            Bean.on(this.chromecastBtn, 'click', this.requestSession.bind(this));
+            Bean.on(window, 'sender.loadMedia', this.loadMedia.bind(this));
             Bean.on(window, 'sender.stop', this.stopSession);
-            Bean.on(window, 'sender.message', this.sendMessage);
+            Bean.on(window, 'sender.message', this.sendMessage.bind(this));
 
             if (!chrome.cast || !chrome.cast.isAvailable) {
+                console.log('chrome cast lib loaded')
                 setTimeout(this.initializeCastApi.bind(this), 1000);
             }
         },
@@ -30,45 +31,68 @@ define(['app/options', '../../.', 'bean'], function (Options, chrome, Bean) {
         },
 
         sessionListener: function(ev) {
-            this.session = ev;
+            console.log('session listener fired');
 
-            //Browser was reloaded and media was grabbed again.
-            if (this.session.media.length != 0) {
-                this.onMediaLoaded('onRequestSessionSuccess', session.media[0]);
-            }
+            this.onSession(ev);
         },
 
         receiverListener: function(ev) {
             if (ev === chrome.cast.ReceiverAvailability.AVAILABLE) {
                 console.log('receiver available');
             } else {
-                console.log('receiver unavailable');
+                console.log('receiver unavailable', ev);
             }
         },
 
         requestSession: function() {
             if (!this.session) {
                 chrome.cast.requestSession(function(e) {
-                    this.session = e;
-                    this.loadMedia();
+                    this.onSession(e);
                     console.log('request session success')
-                }.bind(this), function() {
-                    console.log('request session error')
+                }.bind(this), function(e) {
+                    console.log('request session error', e)
                 });
             } else {
                 console.log('Attempting to disconnect chromecast');
             }
         },
 
+        onSession: function(session) {
+            this.session = session;
+
+            this.session.removeMessageListener(Options.chromecastNamespace, this.onMessage.bind(this));
+            this.session.addMessageListener(Options.chromecastNamespace, this.onMessage.bind(this));
+
+            Bean.fire(window, 'socket.connect');
+
+            console.log('on session')
+
+
+            //Browser was reloaded and media was grabbed again.
+            if (this.session.media.length != 0) {
+                this.onMediaLoaded('onRequestSessionSuccess', session.media[0]);
+            } else {
+                if (this.currentMediaUrl) {
+                    this.loadMedia(this.currentMediaUrl);
+                }
+            }
+
+        },
+
+        onMessage: function(namespace, message) {
+            console.log(namespace, message);
+            Bean.fire(window, message);
+        },
+
         loadMedia: function(mediaUrl) {
-            mediaUrl = mediaUrl || this.currentMediaUrl;
+            console.log("Media URL",mediaUrl)
             this.currentMediaUrl = mediaUrl;
 
-            var mediaInfo = new chrome.cast.media.MediaInfo(mediaURL);
+            var mediaInfo = new chrome.cast.media.MediaInfo(mediaUrl);
             var request = new chrome.cast.media.LoadRequest(mediaInfo);
 
-            this.session.loadMedia(request, this.onMediaLoaded.bind(this, 'loadMedia'), function() {
-                console.log('media load error');
+            this.session.loadMedia(request, this.onMediaLoaded.bind(this, 'loadMedia'), function(err) {
+                console.log('media load error', err);
             });
         },
 

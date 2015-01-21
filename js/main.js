@@ -8,8 +8,8 @@ require.config({
         Dancer: 'libs/dancer',
         soundcloud: 'libs/soundcloud-sdk',
         q: 'libs/q.min',
-        chromecast: 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js',
-        socketio: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.2.1/socket.io.min.js'
+        chromecast: '//www.gstatic.com/cv/js/sender/v1/cast_sender',
+        socketio: '//cdnjs.cloudflare.com/ajax/libs/socket.io/1.2.1/socket.io.min'
     },
 
     shim: {
@@ -43,8 +43,8 @@ require([
     'app/app',
     'app/model',
     'app/view',
-    'app/chromecast/sender',
-    'app/chromecast/socket',
+    'app/chromecast/sender/sender',
+    'app/chromecast/sender/socket',
     'Dancer',
     'soundcloud',
     'chromecast'
