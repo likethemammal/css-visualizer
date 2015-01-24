@@ -26,14 +26,15 @@ define(['app/options', 'bean', 'app/chromecast/receiver/player', 'app/chromecast
         getData: function() {
             if (Player.isPlaying) {
 
-                var spectrum, waveform;
+                //Get the data packet for the currentTime of the song
+                var data = Queue.audiodata[Player.audio.currentTime];
 
                 if (this.onSpectrum) {
-                    this.onSpectrum(Queue.audiodata);
+                    this.onSpectrum(data);
                 }
 
                 if (this.onWaveform) {
-                    this.onWaveform(Queue.audiodata);
+                    this.onWaveform(data);
                 }
             }
         },

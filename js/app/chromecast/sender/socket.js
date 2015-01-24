@@ -54,14 +54,14 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
 
             this.room = roomID;
 
-            console.log('on room joined',this.room)
+            console.log('on room joined',this.room);
 
             this.sendRoom();
         },
 
         sendRoom: function() {
 
-            console.log('room is:', this)
+            console.log('room is:', this);
 
             //Send roomID to chromecast to connect to server as well
             Bean.fire(window, 'sender.message', {

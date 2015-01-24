@@ -1,10 +1,15 @@
 define([
     'app/visualizers/base',
+    'app/model',
     'app/options',
     'underscore',
-    'bean',
-    'app/chromecast/receiver/visualizers/bars'
-], function (Base, Options, _, Bean, chromecastVisualizer) {
+    'bean'
+], function (
+    Base,
+    Model,
+    Options,
+    _,
+    Bean) {
 
     var Chromecast = _.extend({
 
@@ -36,7 +41,13 @@ define([
         },
 
         packData: function(data) {
-            this.audioData.push(data);
+            //Set the data packet to the audio's currentTime
+            var currentTime = Model.audio.currentTime;
+            var currentTimeSlot = this.audioData[currentTime] || [];
+
+            currentTimeSlot.push(data);
+
+            this.audioData[currentTime] = currentTimeSlot;
         },
 
         sendDataPacket: function() {

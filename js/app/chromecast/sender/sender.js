@@ -85,7 +85,6 @@ define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
         },
 
         loadMedia: function(mediaUrl) {
-            console.log("Media URL",mediaUrl)
             this.currentMediaUrl = mediaUrl;
 
             var mediaInfo = new chrome.cast.media.MediaInfo(mediaUrl);

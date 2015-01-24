@@ -150,7 +150,6 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             var trackInfo = this.tracksCache[this.currentTrack];
 
             if (this.chromecastConnected) {
-                console.log(trackInfo.streamUrl)
                 Bean.fire(window, 'sender.loadMedia', trackInfo.streamUrl);
 
                 this.playbackRate = Options.chromecastPlaybackRate;

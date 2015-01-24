@@ -12,7 +12,7 @@ define(['app/options', 'bean'], function(Options, Bean) {
             if (data.songChanged) {
                 this.audiodata = [];
             }
-            this.audiodata.push(data.audiodata);
+            this.audiodata.concat(data.audiodata);
         }
     };
 
