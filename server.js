@@ -51,11 +51,9 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('server-audiodata', function(data) {
-        console.log(data.audiodata);
-
         io.sockets.in(data.room).emit('chromecast-audiodata', {
             songChanged: data.songChanged,
-            audiodata: data.audiodata
+            audioDataPacket: data.audioDataPacket
         });
     })
 

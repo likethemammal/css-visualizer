@@ -1,8 +1,8 @@
-define(['app/options', 'bean'], function(Options, Bean) {
+define(['app/options', 'bean', 'app/models/audio-data-packet'], function(Options, Bean, AudioDataPacket) {
 
     var Queue = {
 
-        audiodata: {},
+        audioDataPacket: AudioDataPacket.newPacket(),
 
         init: function() {
             Bean.on(window, 'queue.audiodata', this.onAudiodata.bind(this));
@@ -10,9 +10,10 @@ define(['app/options', 'bean'], function(Options, Bean) {
 
         onAudiodata: function(data) {
             if (data.songChanged) {
-                this.audiodata = {};
+                this.audioDataPacket.empty();
             }
-            this.audiodata = _.extend(data.audiodata, this.audiodata);
+
+            this.audioDataPacket.merge(data.audioDataPacket);
         }
     };
 

@@ -5,17 +5,16 @@ define(['app/options', 'bean', 'socketio', 'app/chromecast/receiver/visualizers/
         room: 0,
 
         init: function() {
-            // Connect to socket.io
-            this.socket = io.connect();
 
             Bean.on(window, 'socket.subscribe', this.subscribeSocket.bind(this));
 
-            this.socket.on('chromecast-connected', this.onSocketConnection);
-
-            //Connect to server
+            // Connect to socket.io
+            this.socket = io.connect();
             this.socket.on('connect', function() {
                 this.socket.on('chromecast-audiodata', this.onAudiodata);
             }.bind(this));
+
+            this.socket.on('chromecast-connected', this.onSocketConnection);
         },
 
         subscribeSocket: function(data) {

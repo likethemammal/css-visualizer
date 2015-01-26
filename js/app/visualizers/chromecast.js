@@ -1,12 +1,14 @@
 define([
     'app/visualizers/base',
     'app/model',
+    'app/models/audio-data-packet',
     'app/options',
     'underscore',
     'bean'
 ], function (
     Base,
     Model,
+    AudioDataPacket,
     Options,
     _,
     Bean) {
@@ -15,7 +17,7 @@ define([
 
         name: 'Chromecast',
 
-        audioData: '',
+        audioDataPacket: AudioDataPacket.newPacket(),
         dataPacketTimer: '',
         songChanged: false,
 
@@ -36,24 +38,15 @@ define([
         },
 
         onSongChange: function() {
-            this.audioData = [];
+            this.audioDataPacket.empty();
             this.songChanged = true;
         },
 
         onWaveform: function(waveform) {
-            var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier * 100);
+            var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier);
+            var currentSecond = Math.floor(Model.audio.currentTime);
 
-            this.packData(sampleAvgs);
-        },
-
-        packData: function(data) {
-            //Set the data packet to the audio's currentTime
-            var currentTime = Math.floor(Model.audio.currentTime);
-            var currentTimeSlot = this.audioData[currentTime] || [];
-
-            currentTimeSlot.push(data);
-
-            this.audioData[currentTime] = currentTimeSlot;
+            this.audioDataPacket.packFrame(sampleAvgs, currentSecond);
         },
 
         sendDataPacket: function() {
@@ -61,12 +54,11 @@ define([
 
                 Bean.fire(window, 'socket.audiodata', {
                     songChanged: this.songChanged,
-                    audiodata: this.audioData
+                    audioDataPacket: this.audioDataPacket
                 });
 
                 this.songChanged = false;
-                this.audioData = {};
-
+                this.audioDataPacket.empty();
             }
         },
 

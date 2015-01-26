@@ -32,9 +32,9 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
         },
 
         joinedRoom: function(roomID) {
-            //This socket is already in room
             console.log('room joined');
 
+            //This socket is already in room
             if (this.room !== '') {
                 return;
             }
@@ -78,7 +78,7 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
             this.socket.emit('server-audiodata', {
                 room: this.room,
                 songChanged: data.songChanged,
-                audiodata: data.audiodata
+                audioDataPacket: data.audioDataPacket
             });
         }
     };
