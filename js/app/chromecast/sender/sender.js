@@ -87,7 +87,7 @@ define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
         loadMedia: function(mediaUrl) {
             this.currentMediaUrl = mediaUrl;
 
-            var mediaInfo = new chrome.cast.media.MediaInfo(mediaUrl);
+            var mediaInfo = new chrome.cast.media.MediaInfo(mediaUrl, "audio/mpeg");
             var request = new chrome.cast.media.LoadRequest(mediaInfo);
 
             this.session.loadMedia(request, this.onMediaLoaded.bind(this, 'loadMedia'), function(err) {
@@ -96,6 +96,7 @@ define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
         },
 
         onMediaLoaded: function(how, media) {
+            console.log('media loaded success', media)
             media.addUpdateListener(function() {
                 console.log('media updated');
             });

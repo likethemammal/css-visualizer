@@ -10,11 +10,11 @@ define(['app/options', 'bean', 'socketio', 'app/chromecast/receiver/visualizers/
 
             Bean.on(window, 'socket.subscribe', this.subscribeSocket.bind(this));
 
-            this.socket.on('chromecast-connected', this.onSocketConnection.bind(this));
+            this.socket.on('chromecast-connected', this.onSocketConnection);
 
             //Connect to server
             this.socket.on('connect', function() {
-                this.socket.on('audiodata', this.onAudiodata);
+                this.socket.on('chromecast-audiodata', this.onAudiodata);
             }.bind(this));
         },
 
@@ -30,11 +30,10 @@ define(['app/options', 'bean', 'socketio', 'app/chromecast/receiver/visualizers/
         },
 
         onSocketConnection: function() {
-            Bean.fire(window, 'player.start');
-            console.log('player.start')
+            Bean.fire(window, 'player.connected');
         },
 
-        onAudioData: function(data) {
+        onAudiodata: function(data) {
             Bean.fire(window, 'queue.audiodata', data);
         }
 

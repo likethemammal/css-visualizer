@@ -2,7 +2,7 @@ define(['app/options', 'bean'], function(Options, Bean) {
 
     var Queue = {
 
-        audiodata: [],
+        audiodata: {},
 
         init: function() {
             Bean.on(window, 'queue.audiodata', this.onAudiodata.bind(this));
@@ -10,9 +10,9 @@ define(['app/options', 'bean'], function(Options, Bean) {
 
         onAudiodata: function(data) {
             if (data.songChanged) {
-                this.audiodata = [];
+                this.audiodata = {};
             }
-            this.audiodata.concat(data.audiodata);
+            this.audiodata = _.extend(data.audiodata, this.audiodata);
         }
     };
 

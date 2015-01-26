@@ -30,8 +30,11 @@ require([
     'app/chromecast/receiver/receiver',
     'app/chromecast/receiver/socket',
     'app/chromecast/receiver/queue',
-    'app/chromecast/receiver/player'
-], function (receiver, socket, queue) {
+    'app/chromecast/receiver/player',
+    'app/chromecast/receiver/view'
+], function (receiver, socket, queue, player, view) {
+    view.init();
+    player.init();
     queue.init();
     socket.init();
     receiver.init();

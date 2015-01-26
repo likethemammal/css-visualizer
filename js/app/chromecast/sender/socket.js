@@ -14,8 +14,6 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
 
         connect: function() {
 
-            console.log(this.socket)
-
             // Connect to socket.io
             this.socket = io.connect();
 
@@ -43,8 +41,9 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
 
             //When chromecast is connected allow playback
             this.socket.on('chromecast-connected', function(visSettings) {
-                //Remove any events for a second possible misfire
+                console.log('chromecast connected to socket')
 
+                //Remove any events for a second possible misfire
                 Bean.off(window, 'socket.audiodata');
                 Bean.on(window, 'socket.audiodata', this.sendAudioData.bind(this));
 
@@ -76,9 +75,10 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
         },
 
         sendAudioData: function(data) {
-            this.socket.emit('audiodata', {
+            this.socket.emit('server-audiodata', {
                 room: this.room,
-                message: data
+                songChanged: data.songChanged,
+                audiodata: data.audiodata
             });
         }
     };

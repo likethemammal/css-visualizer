@@ -44,8 +44,19 @@ io.sockets.on('connection', function (socket) {
     socket.on('chromecast-subscribe', function(data) {
         socket.join(data.room);
 
+        console.log('chromecast connected');
+
         //Tell desktop chromecast has connect and give chromecast width to desktop for visualizer settings
-        socket.broadcast.to(data.room).emit('chromecast-connected', data.visSettings);
+        io.sockets.in(data.room).emit('chromecast-connected', data.visSettings);
     });
+
+    socket.on('server-audiodata', function(data) {
+        console.log(data.audiodata);
+
+        io.sockets.in(data.room).emit('chromecast-audiodata', {
+            songChanged: data.songChanged,
+            audiodata: data.audiodata
+        });
+    })
 
 });

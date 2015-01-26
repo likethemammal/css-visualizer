@@ -3,13 +3,15 @@ define([
     'bean',
     'app/visualizers/bars',
     'app/visualizers/circles',
-    'app/visualizers/hexagons'
+    'app/visualizers/hexagons',
+    'app/visualizers/chromecast'
 ], function (
     Options,
     Bean,
     bars,
     circles,
-    hexagons
+    hexagons,
+    chromecastVis
     ) {
 
     var View = {
@@ -67,14 +69,22 @@ define([
             Bean.on(window, 'view.setVolume', _.bind(this.setVolume, this));
             Bean.on(window, 'pageLoaded', this.setupResizeEvent);
             Bean.on(window, 'view.metadata', _.bind(this.attachMetaData, this));
-            Bean.on(window, 'resetDuration', _.bind(this.setDuration, this));
+            Bean.on(window, 'view.resetDuration', _.bind(this.setDuration, this));
             Bean.on(window, 'view.durationProgress', _.bind(this.setDuration, this));
-            Bean.on(window, 'setupFullscreen', _.bind(this.setupFullscreen, this));
+            Bean.on(window, 'view.setupFullscreen', _.bind(this.setupFullscreen, this));
             Bean.on(window, 'view.resetColors', _.bind(this.resetColors, this));
+            Bean.on(window, 'chromecastConnected', _.bind(function(visualizerSettings) {
+                if (!this.chromecastConnected) {
+                    this.chromecastConnected = true;
+                    this.visualizerSettings = visualizerSettings;
+                    this.switchVisualizers();
+                }
+            }, this));
 
             this.visualizers[bars.name] = bars;
             this.visualizers[circles.name] = circles;
             this.visualizers[hexagons.name] = hexagons;
+            this.visualizers[chromecastVis.name] = chromecastVis;
         },
 
         setVolume: function() {
@@ -175,12 +185,14 @@ define([
         },
 
         switchVisualizers: function(ev) {
-            var visName = this.chooser.value;
+            var visName = (this.chromecastConnected) ? 'Chromecast' : this.chooser.value;
             var current = this.visualizers.current;
 
             if (current) {
                 this.visualizers[current].destroy();
             }
+            this.visualizers[visName].chromecastConnected = this.chromecastConnected;
+            this.visualizers[visName].visualizerSettings = this.visualizerSettings;
             this.visualizers[visName].run();
             this.visualizers.current = visName;
         },

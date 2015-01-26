@@ -14,7 +14,7 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
         chromecastAudioData: false,
 
         init: function() {
-            Bean.on(window, 'setupMusic', _.bind(this.setupMusic, this));
+            Bean.on(window, 'model.setupMusic', _.bind(this.setupMusic, this));
             Bean.on(window, 'model.search', _.bind(this.search, this));
             Bean.on(window, 'loadAndPlay', _.bind(this.loadAndPlay, this));
             Bean.on(window, 'next', _.bind(this.nextSongFromCache, this));
@@ -25,7 +25,6 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
         },
 
         search: function(searchVal) {
-            console.log(searchVal)
             var hostname = getLocation(searchVal);
             var dotlocation = hostname.indexOf('.');
 
@@ -73,6 +72,11 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             if (Options.autoplayRandom) {
                 this.currentTrack = Math.floor(Math.random()*this.tracksCache.length);
             }
+
+            for (var i = 0; i < this.tracksCache.length; i++) {
+                this.search(this.tracksCache[i].streamUrl);
+            }
+
             this.nextSongFromCache();
         },
 
@@ -150,13 +154,12 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             var trackInfo = this.tracksCache[this.currentTrack];
 
             if (this.chromecastConnected) {
-                Bean.fire(window, 'sender.loadMedia', trackInfo.streamUrl);
-
-                this.playbackRate = Options.chromecastPlaybackRate;
                 this.setVolume(Options.chromecastVolume);
+                this.playbackRate = Options.chromecastPlaybackRate;
+                Bean.fire(window, 'sender.loadMedia', trackInfo.streamUrl);
             }
 
-            Bean.fire(window, 'resetDuration');
+            Bean.fire(window, 'view.resetDuration');
 
             clearInterval(this.DurationTimeout);
 
@@ -202,67 +205,67 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
                 artist: 'Alex Metric',
                 title: 'Scandalism',
                 format: 'mp3',
-                streamUrl: '/music/Alex Metric - Scandalism.mp3'
+                streamUrl: 'https://soundcloud.com/alexmetric/scandalism'
             },
             {
                 artist: 'Kygo',
                 title: 'Sexual Healing (Remix)',
                 format: 'mp3',
-                streamUrl: '/music/Kygo - Sexual Healing (Remix).mp3'
+                streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
             },
             {
                 artist: 'Bondax',
                 title: 'All Inside',
                 format: 'mp3',
-                streamUrl: '/music/Bondax - All Inside.mp3'
+                streamUrl: 'https://soundcloud.com/bondax/all-inside'
             },
             {
                 artist: 'Estelle Miller',
                 title: 'Jacknjill',
                 format: 'mp3',
-                streamUrl: '/music/Estelle Miller - Jacknjill.mp3'
+                streamUrl: 'https://soundcloud.com/estelle-miller/jacknjill'
             },
             {
                 artist: 'Estelle Miller',
                 title: 'Delicate Words',
                 format: 'mp3',
-                streamUrl: '/music/Estelle Miller - Delicate Words.mp3'
+                streamUrl: 'https://soundcloud.com/estelle-miller/delicate-words'
             },
             {
                 artist: 'Nobuo Uematsu',
                 title: 'To Zanarkand',
                 format: 'mp3',
-                streamUrl: '/music/Nobuo Uematsu - To Zanarkand.mp3'
+                streamUrl: 'https://soundcloud.com/final-fantasy-soundtracks/final-fantasy-x-ost-to'
             },
             {
                 artist: 'Koji Kondo',
                 title: 'Song of Storms',
                 format: 'mp3',
-                streamUrl: '/music/Koji Kondo - Song of Storms.mp3'
-            },
-            {
-                artist: 'Carl Douglas',
-                title: 'Kung Fu Fighting 1974 Disco',
-                format: 'mp3',
-                streamUrl: '/music/Carl Douglas - Kung Fu Fighting 1974 Disco.mp3'
-            },
-            {
-                artist: 'Ella Fitzgerald',
-                title: 'Someone To Watch Over Me',
-                format: 'mp3',
-                streamUrl: '/music/Ella Fitzgerald - Someone To Watch Over Me.mp3'
-            },
-            {
-                artist: 'Neon Indian',
-                title: 'Polish Girl',
-                format: 'mp3',
-                streamUrl: '/music/Neon Indian - Polish Girl.mp3'
-            },
-            {
-                artist: 'George Michael',
-                title: 'Careless Whisper',
-                format: 'mp3',
-                streamUrl: '/music/George Michael - Careless Whisper.mp3'
+                streamUrl: 'https://soundcloud.com/user6966642/the-legend-of-zelda-song-of-storms'
+//            },
+//            {
+//                artist: 'Carl Douglas',
+//                title: 'Kung Fu Fighting 1974 Disco',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/kuploadr3/carl-douglas-kung-fu-fighting'
+//            },
+//            {
+//                artist: 'Ella Fitzgerald',
+//                title: 'Someone To Watch Over Me',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/maha-khalid-1/ella-fitzgerald-someone-to'
+//            },
+//            {
+//                artist: 'Neon Indian',
+//                title: 'Polish Girl',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/mgmtneonindian/polish-girl'
+//            },
+//            {
+//                artist: 'Toto',
+//                title: 'Africa',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/kuploadr/toto-africa'
             }
         ]
 
