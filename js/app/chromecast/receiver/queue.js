@@ -14,7 +14,10 @@ define(['app/options', 'bean', 'app/models/audio-data-packet'], function(Options
                 this.audioDataPacket.empty();
             }
 
-            this.audioDataPacket.mergePackets(data.audioDataPacket);
+            //Parse fake audioDataPacket from string into simple obj with seconds data.
+            var audioDataPacket = JSON.parse(data.audioDataPacket);
+
+            this.audioDataPacket.mergePackets(audioDataPacket);
             Bean.fire(window, 'queue.showData');
         },
 

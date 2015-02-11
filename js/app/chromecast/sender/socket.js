@@ -73,10 +73,15 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
         },
 
         sendAudioData: function(data) {
+            // JSON.stringify can't handle complex objects so we just stringify the seconds obj.
+            var audioDataPacketStr = JSON.stringify({
+                seconds: data.audioDataPacket.seconds
+            });
+
             this.socket.emit('server-audiodata', {
                 room: this.room,
                 songChanged: data.songChanged,
-                audioDataPacket: data.audioDataPacket
+                audioDataPacket: audioDataPacketStr
             });
         }
     };
