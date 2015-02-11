@@ -2,10 +2,11 @@ define(['app/options', 'bean', 'app/models/audio-data-packet'], function(Options
 
     var Queue = {
 
-        audioDataPacket: AudioDataPacket.newPacket(),
+        audioDataPacket: new AudioDataPacket(),
 
         init: function() {
             Bean.on(window, 'queue.audiodata', this.onAudiodata.bind(this));
+            Bean.on(window, 'queue.showdata', this.showData.bind(this));
         },
 
         onAudiodata: function(data) {
@@ -13,7 +14,12 @@ define(['app/options', 'bean', 'app/models/audio-data-packet'], function(Options
                 this.audioDataPacket.empty();
             }
 
-            this.audioDataPacket.merge(data.audioDataPacket);
+            this.audioDataPacket.mergePackets(data.audioDataPacket);
+            Bean.fire(window, 'queue.showData');
+        },
+
+        showData: function() {
+            console.log(this.audioDataPacket);
         }
     };
 

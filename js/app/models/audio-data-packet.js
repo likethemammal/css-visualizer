@@ -1,18 +1,10 @@
-define(['underscore'], function (_) {
-    var AudioDataPacket = {
+define(['underscore', 'backbone'], function (_, Backbone) {
+    var AudioDataPacket = Backbone.Model.extend({
 
         seconds: {},
         lastCompleteSecond: 0,
 
-        newPacket: function() {
-            var clone = _.extend({}, this);
-
-            clone.empty();
-
-            return clone;
-        },
-
-        empty: function() {
+        emptyPackets: function() {
             //Get any partial that might not have been sent between intervals
             var partialSecond = this.seconds[this.lastCompleteSecond + 1];
 
@@ -20,7 +12,7 @@ define(['underscore'], function (_) {
             this.seconds[this.lastCompleteSecond + 1] = partialSecond;
         },
 
-        merge: function(packet) {
+        mergePackets: function(packet) {
             this.seconds = _.extend(this.seconds, packet.seconds);
         },
 
@@ -45,7 +37,7 @@ define(['underscore'], function (_) {
                 this.lastCompleteSecond = second - 1;
             }
         }
-    };
+    });
 
     return AudioDataPacket;
 });

@@ -1,4 +1,4 @@
-define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
+define(['app/options', 'bean', 'chromecast'], function (Options, Bean) {
 
     var Sender = {
 
@@ -6,6 +6,7 @@ define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
         session: '',
         currentMediaUrl: '',
         currentMedia: '',
+        chromeLibTimer: '',
 
         init: function() {
             Bean.on(this.chromecastBtn, 'click', this.requestSession.bind(this));
@@ -13,13 +14,27 @@ define(['app/options', 'chromecast', 'bean'], function (Options, chrome, Bean) {
             Bean.on(window, 'sender.stop', this.stopSession);
             Bean.on(window, 'sender.message', this.sendMessage.bind(this));
 
-            if (!chrome.cast || !chrome.cast.isAvailable) {
-                console.log('chrome cast lib loaded')
-                setTimeout(this.initializeCastApi.bind(this), 1000);
+            if (!window.chromecastLoaded) {
+                window['__onGCastApiAvailable'] = function(loaded, errorInfo) {
+                    if (loaded) {
+                        this.initializeCastApi();
+                    } else {
+                        console.log(errorInfo);
+                    }
+                }.bind(this);
+            } else {
+                this.initializeCastApi();
             }
+
         },
 
         initializeCastApi: function() {
+            if (this.initialized) {
+                return false;
+            }
+
+            this.initialized = true;
+            console.log('cast api trying to initialize');
             var sessionRequest = new chrome.cast.SessionRequest(Options.chromecastAppID);
             var apiConfig = new chrome.cast.ApiConfig(sessionRequest, this.sessionListener.bind(this), this.receiverListener);
 

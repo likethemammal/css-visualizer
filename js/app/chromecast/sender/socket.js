@@ -8,8 +8,6 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
         init: function() {
             Bean.on(window, 'socket.connect', this.connect.bind(this));
             Bean.on(window, 'socket.sendRoom', this.sendRoom.bind(this));
-
-            console.log('socket inited')
         },
 
         connect: function() {

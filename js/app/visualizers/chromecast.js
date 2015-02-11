@@ -17,7 +17,7 @@ define([
 
         name: 'Chromecast',
 
-        audioDataPacket: AudioDataPacket.newPacket(),
+        audioDataPacket: new AudioDataPacket(),
         dataPacketTimer: '',
         songChanged: false,
 
@@ -38,7 +38,7 @@ define([
         },
 
         onSongChange: function() {
-            this.audioDataPacket.empty();
+            this.audioDataPacket.emptyPackets();
             this.songChanged = true;
         },
 
@@ -58,7 +58,7 @@ define([
                 });
 
                 this.songChanged = false;
-                this.audioDataPacket.empty();
+                this.audioDataPacket.emptyPackets();
             }
         },
 
