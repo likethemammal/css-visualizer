@@ -23,7 +23,7 @@ define(['underscore', 'backbone'], function (_, Backbone) {
             this.seconds[second] = JSON.stringify(frames);
 
             //Parse stored stringified value
-            return currentFrame ? JSON.parse(currentFrame) : [];
+            return this.smartParse(currentFrame);
         },
 
         packFrame: function(frame, second) {

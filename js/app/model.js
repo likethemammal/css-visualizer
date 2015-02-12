@@ -206,42 +206,42 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
                 title: 'Scandalism',
                 format: 'mp3',
                 streamUrl: 'https://soundcloud.com/alexmetric/scandalism'
-            },
-            {
-                artist: 'Kygo',
-                title: 'Sexual Healing (Remix)',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
-            },
-            {
-                artist: 'Bondax',
-                title: 'All Inside',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/bondax/all-inside'
-            },
-            {
-                artist: 'Estelle Miller',
-                title: 'Jacknjill',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/estelle-miller/jacknjill'
-            },
-            {
-                artist: 'Estelle Miller',
-                title: 'Delicate Words',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/estelle-miller/delicate-words'
-            },
-            {
-                artist: 'Nobuo Uematsu',
-                title: 'To Zanarkand',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/final-fantasy-soundtracks/final-fantasy-x-ost-to'
-            },
-            {
-                artist: 'Koji Kondo',
-                title: 'Song of Storms',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/user6966642/the-legend-of-zelda-song-of-storms'
+//            },
+//            {
+//                artist: 'Kygo',
+//                title: 'Sexual Healing (Remix)',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
+//            },
+//            {
+//                artist: 'Bondax',
+//                title: 'All Inside',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/bondax/all-inside'
+//            },
+//            {
+//                artist: 'Estelle Miller',
+//                title: 'Jacknjill',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/estelle-miller/jacknjill'
+//            },
+//            {
+//                artist: 'Estelle Miller',
+//                title: 'Delicate Words',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/estelle-miller/delicate-words'
+//            },
+//            {
+//                artist: 'Nobuo Uematsu',
+//                title: 'To Zanarkand',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/final-fantasy-soundtracks/final-fantasy-x-ost-to'
+//            },
+//            {
+//                artist: 'Koji Kondo',
+//                title: 'Song of Storms',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/user6966642/the-legend-of-zelda-song-of-storms'
 //            },
 //            {
 //                artist: 'Carl Douglas',

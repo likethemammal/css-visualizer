@@ -70,7 +70,7 @@ define(['underscore', 'app/chromecast/receiver/visualizers/base'], function (_, 
 
                 stylesStr += beforeStr + afterStr + barStr;
 
-                color = fadeToColor(color, this.color2, 1/this.numOfBars);
+                color = fadeToColor(color, this.color2, 1/this.settings.numOfBars);
             }
 
             styleSheet.innerHTML = stylesStr;
@@ -81,7 +81,7 @@ define(['underscore', 'app/chromecast/receiver/visualizers/base'], function (_, 
             var numBars = this.settings.numOfBars;
 
             for (var j = 0; j < numBars; j++) {
-                var magnitude = (Math.floor(waveform[j]*1000)/1000);
+                var magnitude = waveform[j];
                 bars[j].parentNode.style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
             }
         }
