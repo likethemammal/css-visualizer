@@ -43,7 +43,7 @@ define([
         },
 
         onWaveform: function(waveform) {
-            var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier);
+            var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier, 3);
             var currentSecond = Math.floor(Model.audio.currentTime);
 
             this.audioDataPacket.packFrame(sampleAvgs, currentSecond);

@@ -114,13 +114,17 @@ function fadeToColor(rgbColor1, rgbColor2, ratio) {
 
 }
 
-function sampleArray(arrayToSample, numOfSamples, modifier) {
+function sampleArray(arrayToSample, numOfSamples, modifier, decimalDigits) {
     var arrayMiddle = arrayToSample.length/ 2,
         sampleLength = Math.floor((arrayMiddle) / numOfSamples),
         sampleAvgs = [],
+        precision,
         sample;
 
     modifier = modifier || 1;
+    decimalDigits = decimalDigits || 0;
+
+    precision = Math.pow(10, decimalDigits);
 
     for (var j = 0; j < numOfSamples; j++) {
         sample = 0;
@@ -132,7 +136,7 @@ function sampleArray(arrayToSample, numOfSamples, modifier) {
                 
         sample /= sampleLength*2;
                 
-        sampleAvgs.push(sample * modifier);
+        sampleAvgs.push(Math.round(sample * modifier * precision) / precision);
     }
     
     return sampleAvgs;

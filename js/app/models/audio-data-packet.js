@@ -17,25 +17,31 @@ define(['underscore', 'backbone'], function (_, Backbone) {
         },
 
         getFrame: function(second) {
-            var frames = this.seconds[second] || []; //get all the frame at a particular second
+            var frames = this.smartParse(this.seconds[second]); //get all the frame at a particular second
             var currentFrame = frames.shift(); //take first frame from frames
 
-            this.seconds[second] = frames;
+            this.seconds[second] = JSON.stringify(frames);
 
-            return currentFrame || [];
+            //Parse stored stringified value
+            return currentFrame ? JSON.parse(currentFrame) : [];
         },
 
         packFrame: function(frame, second) {
             //Set the frame to the position in the seconds obj that's specified
-            var frames = this.seconds[second] || [];
+            var frames = this.smartParse(this.seconds[second]);
 
-            frames.push(frame);
+            //Stringify value to make it easier to send
+            frames.push(JSON.stringify(frame));
 
-            this.seconds[second] = frames;
+            this.seconds[second] = JSON.stringify(frames);
 
             if (second > this.lastCompleteSecond) {
                 this.lastCompleteSecond = second - 1;
             }
+        },
+
+        smartParse: function(array) {
+            return array ? JSON.parse(array) : []
         }
     });
 
