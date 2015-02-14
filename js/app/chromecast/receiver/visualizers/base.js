@@ -1,6 +1,7 @@
 define(['app/options', 'bean', 'app/chromecast/receiver/player', 'app/chromecast/receiver/queue'], function (Options, Bean, Player, Queue) {
     var Base = {
         visualizer: document.getElementById('visualizer'),
+        currentFrame: 0,
 
         run: function() {
             this.clear();
@@ -25,10 +26,14 @@ define(['app/options', 'bean', 'app/chromecast/receiver/player', 'app/chromecast
 
         getData: function() {
             if (Player.isPlaying) {
-                var currentSecond = Math.floor(Player.audio.currentTime);
+                var currentSecond = Player.currentTime;
+                var currentFrame = Player.currentFrame;
 
                 //Get the data packet for the currentTime of the song
-                var data = Queue.audioDataPacket.getFrame(currentSecond);
+                var data = Queue.audioDataPacket.getFrame(currentSecond, currentFrame);
+
+                //Increment currentFrame on Player so it can be read later.
+                Player.currentFrame++;
 
                 if (this.onSpectrum) {
                     this.onSpectrum(data);
