@@ -1,6 +1,7 @@
 define([
     'app/options',
     'bean',
+    'app/views/player',
     'app/visualizers/bars',
     'app/visualizers/circles',
     'app/visualizers/hexagons',
@@ -8,6 +9,7 @@ define([
 ], function (
     Options,
     Bean,
+    Player,
     bars,
     circles,
     hexagons,
@@ -26,11 +28,8 @@ define([
         chooser: document.getElementById('chooser'),
         uiContainer: document.getElementById('ui-container'),
         ui: document.getElementById('ui'),
-        playPause: document.getElementById('play-pause'),
-        next: document.getElementById('next'),
         searchBtn: document.getElementById('search-btn'),
         searchInput: document.getElementById('search-input'),
-        duration: document.getElementById('duration'),
         randomColor: document.getElementById('random-color'),
         fullscreen: document.getElementById('fullscreen'),
         colorPickers: [
@@ -38,9 +37,10 @@ define([
             document.getElementById('color-picker2'),
             document.getElementById('color-picker3')
         ],
-        volumeSlider: document.getElementById('volume-slider'),
 
         init: function() {
+            Player.init();
+
             var body = document.body;
             Bean.on(this.chooser, 'change', _.bind(this.switchVisualizers, this));
             if (Options.loadFromSC) {
@@ -51,8 +51,6 @@ define([
                     }
                 }, this));
             }
-            Bean.on(this.playPause, 'click', _.bind(this.onPlayPause, this));
-            Bean.on(this.next, 'click', this.onNext);
 
             var toggleUIFunc = _.bind(this.toggleUI, this);
             Bean.on(body, {
@@ -63,14 +61,8 @@ define([
 
             this.setupColorEvents();
 
-            Bean.on(this.volumeSlider, 'change', _.bind(this.onVolumeChange, this));
-
             Bean.on(window, 'view.loadVis', _.bind(this.switchVisualizers, this));
-            Bean.on(window, 'view.setVolume', _.bind(this.setVolume, this));
             Bean.on(window, 'pageLoaded', this.setupResizeEvent);
-            Bean.on(window, 'view.metadata', _.bind(this.attachMetaData, this));
-            Bean.on(window, 'view.resetDuration', _.bind(this.setDuration, this));
-            Bean.on(window, 'view.durationProgress', _.bind(this.setDuration, this));
             Bean.on(window, 'view.setupFullscreen', _.bind(this.setupFullscreen, this));
             Bean.on(window, 'view.resetColors', _.bind(this.resetColors, this));
             Bean.on(window, 'chromecastConnected', _.bind(function(visualizerSettings) {
@@ -85,23 +77,6 @@ define([
             this.visualizers[circles.name] = circles;
             this.visualizers[hexagons.name] = hexagons;
             this.visualizers[chromecastVis.name] = chromecastVis;
-        },
-
-        setVolume: function() {
-            var modifer = 100;
-
-            if (Options.debug) {
-                this.volumeSlider.value = Options.debugVolume * modifer;
-            } else {
-                this.volumeSlider.value = Options.defaultVolume * modifer;
-            }
-
-            Bean.fire(this.volumeSlider, 'change');
-        },
-
-        setDuration: function(val) {
-            val = val || '100%';
-            this.duration.style.right = val;
         },
 
         setupColorEvents: function() {
@@ -177,13 +152,6 @@ define([
             }
         },
 
-        onVolumeChange: function(ev) {
-            var el = ev.currentTarget;
-            var volume =  el.value / 100;
-
-            Bean.fire(window, 'model.setVolume', volume);
-        },
-
         switchVisualizers: function(ev) {
             var visName = (this.chromecastConnected) ? 'Chromecast' : this.chooser.value;
             var current = this.visualizers.current;
@@ -201,19 +169,6 @@ define([
             Bean.fire(window, 'model.search', this.searchInput.value);
         },
 
-        onNext: function() {
-            Bean.fire(window, 'next');
-        },
-
-        onPlayPause: function() {
-            if (dancer.isPlaying()) {
-                this.playPause.style['background-image'] = "url('imgs/glyphicons_173_play.png')";
-            } else {
-                this.playPause.style['background-image'] = "url('imgs/glyphicons_174_pause.png')";
-            }
-            Bean.fire(window, 'playPause');
-        },
-
         toggleUI: _.throttle(function() {
             this.visualizerContainer.style.cursor = 'auto';
             this.ui.style.opacity = 1;
@@ -228,22 +183,6 @@ define([
             }
 
         }),
-
-        attachMetaData: function(trackInfo) {
-            var artistStr = trackInfo[0] || '';
-            var titleStr = trackInfo[1] || '';
-            var artistUrl = trackInfo[2] || '';
-            var titleUrl = trackInfo[3] || '';
-            var artist = document.getElementById('artist');
-            var title = document.getElementById('title');
-
-            artist.innerText = artistStr;
-            title.innerText = titleStr;
-            artist.href = artistUrl;
-            title.href = titleUrl;
-
-            this.ui.style.opacity = 1;
-        },
 
         resetColors: function(colors) {
             for (var i = 0; i < colors.length; i++) {

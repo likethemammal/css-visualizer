@@ -11,7 +11,7 @@ define(['app/options', 'bean', 'app/models/audio-data-packet'], function(Options
 
         onAudiodata: function(data) {
             if (data.songChanged) {
-                this.audioDataPacket.empty();
+                this.audioDataPacket.emptyPackets();
             }
 
             //Parse fake audioDataPacket from string into simple obj with seconds data.
