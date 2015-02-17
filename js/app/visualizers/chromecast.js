@@ -1,13 +1,13 @@
 define([
     'app/visualizers/base',
-    'app/model',
+    'app/models/player',
     'app/models/audio-data-packet',
     'app/options',
     'underscore',
     'bean'
 ], function (
     Base,
-    Model,
+    PlayerModel,
     AudioDataPacket,
     Options,
     _,
@@ -44,7 +44,7 @@ define([
 
         onWaveform: function(waveform) {
             var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier, 3);
-            var currentSecond = Math.floor(Model.audio.currentTime);
+            var currentSecond = Math.floor(PlayerModel.audio.currentTime);
 
             this.audioDataPacket.packFrame(sampleAvgs, currentSecond);
         },

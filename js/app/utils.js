@@ -122,7 +122,7 @@ function sampleArray(arrayToSample, numOfSamples, modifier, decimalDigits) {
         sample;
 
     modifier = modifier || 1;
-    decimalDigits = decimalDigits || 0;
+    decimalDigits = decimalDigits || 10;
 
     precision = Math.pow(10, decimalDigits);
 

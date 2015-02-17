@@ -43,6 +43,7 @@ define([
 
             var body = document.body;
             Bean.on(this.chooser, 'change', _.bind(this.switchVisualizers, this));
+
             if (Options.loadFromSC) {
                 Bean.on(this.searchBtn, 'click', _.bind(this.onSearch, this));
                 Bean.on(this.searchInput, 'keyup', _.bind(function(e) {

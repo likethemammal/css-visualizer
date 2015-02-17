@@ -1,27 +1,42 @@
 define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Options, Bean, SC, Q, _) {
 
-    var Model = {
+    var QueueModel = {
 
         audio: new Audio(),
         audioLoaded: false,
 
         tracksListenedTo: [],
+        tracksQueue: [],
         currentTrack: 0,
         playbackRate: 1,
 
         DurationTimer: 0,
 
-        chromecastAudioData: false,
-
         init: function() {
             Bean.on(window, 'model.setupMusic', _.bind(this.setupMusic, this));
             Bean.on(window, 'model.search', _.bind(this.search, this));
-            Bean.on(window, 'loadAndPlay', _.bind(this.loadAndPlay, this));
-            Bean.on(window, 'next', _.bind(this.nextSongFromCache, this));
-            Bean.on(window, 'playPause', this.togglePlayPause, this);
-            Bean.on(window, 'model.setVolume', _.bind(this.setVolume, this));
             Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
+            Bean.on(window, 'queue.requestNextSong', _.bind(this.sendNextSong, this));
+        },
 
+        setupMusic: function() {
+            var tracksLoaded = 0;
+
+            for (var i = 0; i < this.tracksCache.length; i++) {
+                var promise = this.search(this.tracksCache[i].streamUrl);
+
+                promise.then(_.bind(function() {
+                    tracksLoaded++;
+
+                    if (tracksLoaded >= this.tracksCache.length) {
+                        if (Options.autoplayRandom) {
+                            this.currentTrack = this.getRandomTrackNum();
+                        }
+
+                        Bean.fire(window, 'next');
+                    }
+                }, this));
+            }
         },
 
         search: function(searchVal) {
@@ -37,8 +52,6 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
                 SC.get('/resolve', { url: searchVal }, _.bind(function(urlData) {
                     var userID = urlData.id;
                     var fetchingURL = '';
-
-                    this.resetTracks();
 
                     switch (urlData.kind) {
                         case "user":
@@ -63,25 +76,15 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
                     }, this));
 
                 }, this));
+
+                return promise;
             } else if (hostname === 'grooveshark') {
                 console.log('grooveshark url');
             }
         },
 
-        setupMusic: function() {
-            if (Options.autoplayRandom) {
-                this.currentTrack = Math.floor(Math.random()*this.tracksCache.length);
-            }
-
-            for (var i = 0; i < this.tracksCache.length; i++) {
-                this.search(this.tracksCache[i].streamUrl);
-            }
-
-            this.nextSongFromCache();
-        },
-
         resetTracks: function() {
-            this.tracksCache = [];
+            this.tracksQueue = [];
             this.tracksListenedTo = [];
             this.currentTrack = 0;
         },
@@ -100,7 +103,7 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
         },
 
         addTrack: function(track) {
-            this.tracksCache.push({
+            this.tracksQueue.push({
                 streamUrl: track.stream_url + '?client_id=' + clientID,
                 title: track.title,
                 titleUrl: track.permalink_url,
@@ -113,11 +116,11 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
         getRandomTrackNum: function() {
             var randomNum;
 
-            if (this.tracksListenedTo.length !== this.tracksCache.length) {
+            if (this.tracksListenedTo.length < this.tracksQueue.length) {
 
-                randomNum = Math.ceil(Math.random()*this.tracksCache.length - 1);
+                randomNum = Math.floor(Math.random()*this.tracksQueue.length);
 
-                if (this.tracksListenedTo.indexOf(randomNum) < 0) {
+                if (_.indexOf(this.tracksListenedTo.indexOf, randomNum) < 0) {
                     return randomNum;
                 } else {
                     return this.getRandomTrackNum();
@@ -130,94 +133,49 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             }
         },
 
-        loadAndPlay: function() {
-            if (!this.audioLoaded) {
-                dancer.load(this.audio);
-                this.audioLoaded = true;
-            }
+        sendNextSong: function() {
+            this.lineupNextSong();
 
-            dancer.play();
-        },
-
-        togglePlayPause: function() {
-            if (dancer.isPlaying()) {
-                dancer.pause();
-            } else {
-                dancer.play();
-            }
-        },
-
-        nextSongFromCache: function() {
-            // todo: fix error for "Failed to execute 'createMediaElementSource' on 'AudioContext'", might be a Chrome bug;
-            dancer.pause();
-
-            var trackInfo = this.tracksCache[this.currentTrack];
+            var trackInfo = this.getTrackInfo();
 
             if (this.chromecastConnected) {
-                this.setVolume(Options.chromecastVolume);
-                this.playbackRate = Options.chromecastPlaybackRate;
                 Bean.fire(window, 'sender.loadMedia', trackInfo.streamUrl);
             }
 
-            Bean.fire(window, 'view.resetDuration');
-
-            clearInterval(this.DurationTimeout);
-
-            this.DurationTimeout = setInterval(_.bind(function() {
-                if (this.audio.duration) {
-                    var totalDuration = Math.floor(this.audio.duration);
-                    var currentDuration = this.audio.currentTime;
-                    var percentComplete = currentDuration/totalDuration || 0;
-                    var precision = 100;
-                    var percentLeft = Math.floor((1 - percentComplete)*100 * precision) / precision;
-
-
-                    Bean.fire(window, 'view.durationProgress', percentLeft + '%');
-                }
-            }, this) , (1000 / 60) * this.playbackRate);
-
-            Bean.fire(window, 'view.metadata', [[trackInfo.artist, trackInfo.title, trackInfo.artistUrl, trackInfo.titleUrl]]);
-
-            this.tracksListenedTo.push(this.currentTrack);
-            this.currentTrack = this.getRandomTrackNum();
-
-            this.audio.src = trackInfo.streamUrl;
-            this.audio.playbackRate = this.playbackRate;
-
-            Bean.off(this.audio, 'ended');
-            Bean.on(this.audio, 'ended', _.bind(this.nextSongFromCache, this));
-
-            Bean.fire(window, 'loadAndPlay');
+            Bean.fire(window, 'player.trackInfo', trackInfo);
         },
 
-        setVolume: function(volume) {
-            this.audio.volume = volume;
-            Bean.fire(window, 'visualizer.setVolume', volume);
+        lineupNextSong: function() {
+            this.tracksListenedTo.push(this.currentTrack);
+            this.currentTrack = this.getRandomTrackNum();
+        },
+
+        getTrackInfo: function() {
+            return this.tracksQueue[this.currentTrack];
         },
 
         onChromecastConnected: function() {
             this.chromecastConnected = true;
-            this.nextSongFromCache();
         },
 
         tracksCache: [
+//            {
+//                artist: 'Alex Metric',
+//                title: 'Scandalism',
+//                format: 'mp3',
+//                streamUrl: 'https://soundcloud.com/alexmetric/scandalism'
+//            },
             {
-                artist: 'Alex Metric',
-                title: 'Scandalism',
+                artist: 'Kygo',
+                title: 'Sexual Healing (Remix)',
                 format: 'mp3',
-                streamUrl: 'https://soundcloud.com/alexmetric/scandalism'
-//            },
-//            {
-//                artist: 'Kygo',
-//                title: 'Sexual Healing (Remix)',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
-//            },
-//            {
-//                artist: 'Bondax',
-//                title: 'All Inside',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/bondax/all-inside'
+                streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
+            },
+            {
+                artist: 'Bondax',
+                title: 'All Inside',
+                format: 'mp3',
+                streamUrl: 'https://soundcloud.com/bondax/all-inside'
 //            },
 //            {
 //                artist: 'Estelle Miller',
@@ -271,6 +229,6 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
 
     };
 
-    return Model;
+    return QueueModel;
 
 });

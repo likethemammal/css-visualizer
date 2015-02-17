@@ -15,14 +15,13 @@ define([
         volumeSlider: document.getElementById('volume-slider'),
 
         init: function() {
-            var body = document.body;
-
             Bean.on(this.playPause, 'click', _.bind(this.onPlayPause, this));
             Bean.on(this.next, 'click', this.onNext);
 
             Bean.on(this.volumeSlider, 'change', _.bind(this.onVolumeChange, this));
+            Bean.on(window, 'playerView.redefineVolume', _.bind(this.onVolumeChange, this));
 
-            Bean.on(window, 'view.setVolume', _.bind(this.setVolume, this));
+            Bean.on(window, 'playerView.setupVolume', _.bind(this.setupVolume, this));
             Bean.on(window, 'view.metadata', _.bind(this.attachMetaData, this));
             Bean.on(window, 'view.resetDuration', _.bind(this.setDuration, this));
             Bean.on(window, 'view.durationProgress', _.bind(this.setDuration, this));
@@ -33,7 +32,7 @@ define([
             }, this));
         },
 
-        setVolume: function() {
+        setupVolume: function() {
             var modifer = 100;
 
             if (Options.debug) {
@@ -51,8 +50,7 @@ define([
         },
 
         onVolumeChange: function(ev) {
-            var el = ev.currentTarget;
-            var volume =  el.value / 100;
+            var volume =  this.volumeSlider.value / 100;
 
             Bean.fire(window, 'model.setVolume', volume);
         },
