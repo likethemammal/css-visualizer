@@ -57,11 +57,10 @@ require.config({
 require([
     'app/app',
     'app/models/player',
-    'app/chromecast/sender/sender',
     'app/chromecast/sender/socket',
     'Dancer',
     'soundcloud'
-], function (app, PlayerModel, sender, socket, Dancer, SC) {
+], function (app, PlayerModel, socket, Dancer, SC) {
     clientID = '587aa2d384f7333a886010d5f52f302a';
 
     SC.initialize({
@@ -71,7 +70,6 @@ require([
     dancer = new Dancer();
 
     socket.init();
-    sender.init();
 
     PlayerModel.init();
     app.init();

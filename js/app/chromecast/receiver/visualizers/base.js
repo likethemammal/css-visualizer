@@ -30,7 +30,7 @@ define(['app/options', 'bean', 'app/chromecast/receiver/player', 'app/chromecast
                 var currentFrame = Player.currentFrame;
 
                 //Get the data packet for the currentTime of the song
-                var data = Queue.audioDataPacket.getFrame(currentSecond, currentFrame);
+                var data = Queue.getCurrentSongFrame(currentSecond, currentFrame);
 
                 //Increment currentFrame on Player so it can be read later.
                 Player.currentFrame++;

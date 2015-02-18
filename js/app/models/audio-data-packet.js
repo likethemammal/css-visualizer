@@ -20,6 +20,8 @@ define(['underscore', 'backbone'], function (_, Backbone) {
         },
 
         mergePackets: function(packet) {
+            packet = this.deserializeData(packet);
+
             for (var i = 0; i < packet.secondNums.length; i++) {
                 var secondNumber = packet.secondNums[i];
                 var packetFrames = this.smartParse(packet.seconds[secondNumber]);
@@ -69,10 +71,17 @@ define(['underscore', 'backbone'], function (_, Backbone) {
 
         serializeData: function() {
             //Complex objects can be sent through the socket so we just send the data.
-            return JSON.stringify({
-                seconds: this.seconds,
-                secondNums: this.secondNums
-            });
+            return {
+                seconds: JSON.stringify(this.seconds),
+                secondNums: JSON.stringify(this.secondNums)
+            };
+        },
+
+        deserializeData: function(packet) {
+            return {
+                seconds: this.smartParse(packet.seconds),
+                secondNums: this.smartParse(packet.secondNums)
+            };
         }
     });
 

@@ -3,6 +3,7 @@ define(['app/options', 'bean'], function(Options, Bean) {
     var Player = {
 
         isLoaded: false,
+        isMetadataLoaded: false,
         isPlaying: false,
         audio: window.mediaElement,
 
@@ -20,6 +21,7 @@ define(['app/options', 'bean'], function(Options, Bean) {
 //            this.mediaManager.onLoad = this.onLoad.bind(this);
 //            this.mediaManager.onLoad = this.onLoad.bind(this);
 
+            Bean.on(window, 'player.metadata', this.onMetadataLoad.bind(this));
             Bean.on(window, 'player.connected', this.onSocketConnected.bind(this));
         },
 
@@ -48,21 +50,27 @@ define(['app/options', 'bean'], function(Options, Bean) {
         onLoad: function(ev) {
             this.isLoaded = true;
 
-            if (this.socketConnected) {
-                this.startPlayback();
-            }
+            this.startPlayback();
+        },
+
+        onMetadataLoad: function(ev) {
+            this.isMetadataLoaded = true;
+
+            Bean.fire(window, 'receiver.message', 'chromecast.metadataReceived');
+
+            this.startPlayback();
         },
 
         onSocketConnected: function() {
             this.socketConnected = true;
 
-            if (this.isLoaded) {
-                this.startPlayback();
-            }
+            this.startPlayback();
         },
 
         startPlayback: function() {
-            this.audio.play();
+            if (this.socketConnected && this.isLoaded && this.isMetadataLoaded) {
+                this.audio.play();
+            }
         },
 
         secondClock: function() {

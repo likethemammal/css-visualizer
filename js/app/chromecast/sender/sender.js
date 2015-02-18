@@ -1,4 +1,4 @@
-define(['app/options', 'bean', 'chromecast'], function (Options, Bean) {
+define(['app/options', 'bean', 'app/models/Queue', 'chromecast'], function (Options, Bean, Queue) {
 
     var Sender = {
 
@@ -116,6 +116,12 @@ define(['app/options', 'bean', 'chromecast'], function (Options, Bean) {
                 console.log('media updated');
             });
             this.currentMedia = media;
+
+            var song = Queue.getCurrentSong();
+            this.sendMessage({
+                event: 'queue.metadata',
+                value: song.getMetadata(true)
+            });
         },
 
         stopSession: function() {

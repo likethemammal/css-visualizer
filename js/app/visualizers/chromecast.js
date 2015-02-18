@@ -32,7 +32,10 @@ define([
             var sampleAvgs = sampleArray(waveform, this.numOfBars, this.volumeModifier, 3);
             var currentSecond = Math.floor(PlayerModel.audio.currentTime);
 
-            Bean.fire(window, 'queue.packFrame', sampleAvgs, currentSecond);
+            Bean.fire(window, 'queue.packFrame', {
+                frame: sampleAvgs,
+                second: currentSecond
+            });
         }
 
     }, Base);

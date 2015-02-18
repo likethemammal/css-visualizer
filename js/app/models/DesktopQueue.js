@@ -1,4 +1,4 @@
-define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscore'], function (Options, Bean, Queue, SC, Q, _) {
+define(['app/options', 'bean', 'app/models/Queue', 'app/chromecast/sender/sender', 'soundcloud', 'q', 'underscore'], function (Options, Bean, Queue, sender, SC, Q, _) {
 
     var DesktopQueue = _.extend({
 
@@ -7,6 +7,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
         init: function() {
             Bean.on(window, 'model.search', _.bind(this.search, this));
             Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
+            Bean.on(window, 'chromecast.metadataReceived', _.bind(this.onMetadataSent, this));
             Bean.on(window, 'chromecastDisconnected', this.onChromecastDisconnected.bind(this));
             Bean.on(window, 'queue.requestNextSong', _.bind(this.sendNextSong, this));
             Bean.on(window, 'queue.packFrame', _.bind(this.packSongData, this));
@@ -27,6 +28,8 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
                         if (Options.autoplayRandom) {
                             this.currentSong = this.getRandomSongNum();
                         }
+
+                        sender.init();
 
                         Bean.fire(window, 'next');
                     }
@@ -105,6 +108,10 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
         onChromecastConnected: function() {
             this.chromecastConnected = true;
+        },
+
+        onMetadataSent: function() {
+            console.log('metadata sent');
             this.dataPacketTimer = setInterval(this.sendDataPacket.bind(this), 1000);
         },
 
@@ -119,7 +126,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
                 Bean.fire(window, 'socket.audiodata', {
                     songChanged: this.songChanged,
-                    audioDataPacket: song.audioDataPacket
+                    audioDataPacket: song.audioDataPacket.serializeData()
                 });
 
                 song.audioDataPacket.emptyPackets();
@@ -128,9 +135,9 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
             }
         },
 
-        packSongData: function(frame, second) {
+        packSongData: function(data) {
             var song = this.getCurrentSong();
-            song.audioDataPacket.packFrame(frame, second);
+            song.audioDataPacket.packFrame(data.frame, data.second);
             this.setCurrentSong(song);
         },
 

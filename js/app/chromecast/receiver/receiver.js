@@ -11,12 +11,17 @@ define(['app/options', 'bean'], function(Options, Bean) {
             this.castReceiverManager.onSenderDisconnected = this.onSenderDisconnected.bind(this);
             this.castReceiverManager.onSenderConnected = this.onSenderConnected.bind(this);
             this.castReceiverManager.start();
-        },
 
+            Bean.on(window, 'receiver.message', _.bind(this.sendMessage, this));
+        },
 
         onMessage: function(ev) {
             var data = JSON.parse(ev.data);
             Bean.fire(window, data.event, data.value);
+        },
+
+        sendMessage: function(message) {
+            this.customMessageBus.send(this.sender, message)
         },
 
         onSenderConnected: function(sender) {

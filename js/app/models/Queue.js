@@ -23,6 +23,12 @@ define(['app/models/Song'], function (Song) {
             this.songs.push(song);
         },
 
+        addSongFromMetadata: function(metadata) {
+            var song = new Song();
+            song.setMetadata(metadata, true);
+            this.songs.push(song);
+        },
+
         getRandomSongNum: function() {
             var randomNum;
             var songsListened = this.getListenedSongs();

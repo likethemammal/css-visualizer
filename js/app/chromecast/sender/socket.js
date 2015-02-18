@@ -76,7 +76,7 @@ define(['app/options', 'bean', 'socketio'], function (Options, Bean, io) {
             this.socket.emit('server-audiodata', {
                 room: this.room,
                 songChanged: data.songChanged,
-                audioDataPacket: data.audioDataPacket.serializeData()
+                audioDataPacket: data.audioDataPacket
             });
         }
     };

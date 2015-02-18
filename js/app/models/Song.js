@@ -6,8 +6,12 @@ define(['app/models/audio-data-packet' ,'backbone'], function(AudioDataPacket, B
         listened: false,
         audioDataPacket: new AudioDataPacket(),
 
-        setMetadata: function(songInfo) {
-            this.metadata = songInfo;
+        setMetadata: function(songInfo, serialized) {
+            this.metadata = (serialized) ? JSON.parse(songInfo) : songInfo;
+        },
+
+        getMetadata: function(serialize) {
+            return (serialize) ? JSON.stringify(this.metadata) : this.metadata;
         },
 
         showData: function() {
