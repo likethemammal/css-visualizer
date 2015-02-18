@@ -158,8 +158,6 @@ define([
             var visName = (this.chromecastConnected) ? 'Chromecast' : this.chooser.value;
             var current = this.visualizers.current;
 
-            console.log(visName)
-
             if (current) {
                 this.visualizers[current].destroy();
             }

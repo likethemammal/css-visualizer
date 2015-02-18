@@ -1,4 +1,4 @@
-define(['app/visualizers/base', 'underscore', 'bean', 'app/models/queue', 'app/view'], function (Base, _, Bean, queue, view) {
+define(['app/visualizers/base', 'underscore', 'bean', 'app/models/DesktopQueue', 'app/view'], function (Base, _, Bean, DesktopQueue, view) {
 
     var App = {
 
@@ -7,7 +7,7 @@ define(['app/visualizers/base', 'underscore', 'bean', 'app/models/queue', 'app/v
             var onLoadFunc = function () {
                 Bean.off(document, 'onload');
 
-                queue.init();
+                DesktopQueue.init();
                 view.init();
             };
 

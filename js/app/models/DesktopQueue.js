@@ -1,16 +1,6 @@
-define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Options, Bean, SC, Q, _) {
+define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscore'], function (Options, Bean, Queue, SC, Q, _) {
 
-    var QueueModel = {
-
-        audio: new Audio(),
-        audioLoaded: false,
-
-        tracksListenedTo: [],
-        tracksQueue: [],
-        currentTrack: 0,
-        playbackRate: 1,
-
-        DurationTimer: 0,
+    var DesktopQueue = _.extend({
 
         init: function() {
             Bean.on(window, 'model.search', _.bind(this.search, this));
@@ -23,15 +13,15 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
         setupMusic: function() {
             var tracksLoaded = 0;
 
-            for (var i = 0; i < this.tracksCache.length; i++) {
-                var promise = this.search(this.tracksCache[i].streamUrl);
+            for (var i = 0; i < this.songsCache.length; i++) {
+                var promise = this.search(this.songsCache[i].streamUrl);
 
                 promise.then(_.bind(function() {
                     tracksLoaded++;
 
-                    if (tracksLoaded >= this.tracksCache.length) {
+                    if (tracksLoaded >= this.songsCache.length) {
                         if (Options.autoplayRandom) {
-                            this.currentTrack = this.getRandomTrackNum();
+                            this.currentSong = this.getRandomSongNum();
                         }
 
                         Bean.fire(window, 'next');
@@ -57,18 +47,18 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
                     switch (urlData.kind) {
                         case "user":
                             fetchingURL = '/users/' + userID + '/tracks';
-                            this.getMultipleTracks(fetchingURL, deferred);
+                            this.getMultipleSongs(fetchingURL, deferred);
 
                             break;
 
                         case "track":
-                            this.addTrack(urlData);
+                            this.addSong(urlData);
                             deferred.resolve();
                             break;
 
                         case "playlist":
                             fetchingURL = '/playlist/' + userID + '/tracks';
-                            this.getMultipleTracks(fetchingURL, deferred);
+                            this.getMultipleSongs(fetchingURL, deferred);
                             break;
                     }
 
@@ -84,17 +74,11 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             }
         },
 
-        resetTracks: function() {
-            this.tracksQueue = [];
-            this.tracksListenedTo = [];
-            this.currentTrack = 0;
-        },
-
-        getMultipleTracks: function(fetchingURL, deferred) {
+        getMultipleSongs: function(fetchingURL, deferred) {
             SC.get(fetchingURL, _.bind(function(tracks) {
                 for (var i = 0; i < tracks.length; i++) {
                     var track = tracks[i];
-                    this.addTrack(track);
+                    this.addSong(track);
                 }
 
                 if (deferred) {
@@ -103,63 +87,23 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             }, this));
         },
 
-        addTrack: function(track) {
-            this.tracksQueue.push({
-                streamUrl: track.stream_url + '?client_id=' + clientID,
-                title: track.title,
-                titleUrl: track.permalink_url,
-                artist: track.user.username,
-                artistUrl: track.user.permalink_url,
-                length: track.duration
-            });
-        },
-
-        getRandomTrackNum: function() {
-            var randomNum;
-
-            if (this.tracksListenedTo.length < this.tracksQueue.length) {
-
-                randomNum = Math.floor(Math.random()*this.tracksQueue.length);
-
-                if (_.indexOf(this.tracksListenedTo.indexOf, randomNum) < 0) {
-                    return randomNum;
-                } else {
-                    return this.getRandomTrackNum();
-                }
-
-            } else {
-                this.tracksListenedTo = [];
-
-                return 0;
-            }
-        },
-
         sendNextSong: function() {
-            this.lineupNextSong();
+            this.setNextSong();
 
-            var trackInfo = this.getTrackInfo();
+            var songInfo = this.getCurrentSong();
 
             if (this.chromecastConnected) {
-                Bean.fire(window, 'sender.loadMedia', trackInfo.streamUrl);
+                Bean.fire(window, 'sender.loadMedia', songInfo.streamUrl);
             }
 
-            Bean.fire(window, 'player.trackInfo', trackInfo);
-        },
-
-        lineupNextSong: function() {
-            this.tracksListenedTo.push(this.currentTrack);
-            this.currentTrack = this.getRandomTrackNum();
-        },
-
-        getTrackInfo: function() {
-            return this.tracksQueue[this.currentTrack];
+            Bean.fire(window, 'player.trackInfo', songInfo);
         },
 
         onChromecastConnected: function() {
             this.chromecastConnected = true;
         },
 
-        tracksCache: [
+        songsCache: [
 //            {
 //                artist: 'Alex Metric',
 //                title: 'Scandalism',
@@ -228,8 +172,8 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
             }
         ]
 
-    };
+    }, Queue);
 
-    return QueueModel;
+    return DesktopQueue;
 
 });
