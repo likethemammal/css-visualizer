@@ -1,10 +1,9 @@
-define(['app/options', 'bean'], function (Options, Bean) {
+define(['app/models/Song'], function (Song) {
 
     var Queue = {
         songsListenedTo: [],
         songs: [],
         currentSong: 0,
-        playbackRate: 1,
 
         resetSongs: function() {
             this.songs = [];
@@ -12,7 +11,8 @@ define(['app/options', 'bean'], function (Options, Bean) {
         },
 
         addSong: function(track) {
-            this.songs.push({
+            var song = new Song();
+            song.setMetadata({
                 streamUrl: track.stream_url + '?client_id=' + clientID,
                 title: track.title,
                 titleUrl: track.permalink_url,
@@ -20,6 +20,7 @@ define(['app/options', 'bean'], function (Options, Bean) {
                 artistUrl: track.user.permalink_url,
                 length: track.duration
             });
+            this.songs.push(song);
         },
 
         getRandomSongNum: function() {
@@ -62,6 +63,10 @@ define(['app/options', 'bean'], function (Options, Bean) {
 
         getCurrentSong: function() {
             return this.songs[this.currentSong];
+        },
+
+        setCurrentSong: function(song) {
+            this.songs[this.currentSong] = song;
         }
 
     };

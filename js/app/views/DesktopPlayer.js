@@ -12,6 +12,8 @@ define([
 
     var DesktopPlayer = _.extend({
 
+        volumeSlider: document.getElementById('volume-slider'),
+
         init: function() {
             PlayerController.init();
 

@@ -2,10 +2,14 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
     var DesktopQueue = _.extend({
 
+        dataPacketTimer: '',
+
         init: function() {
             Bean.on(window, 'model.search', _.bind(this.search, this));
             Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
+            Bean.on(window, 'chromecastDisconnected', this.onChromecastDisconnected.bind(this));
             Bean.on(window, 'queue.requestNextSong', _.bind(this.sendNextSong, this));
+            Bean.on(window, 'queue.packFrame', _.bind(this.packSongData, this));
 
             this.setupMusic();
         },
@@ -90,7 +94,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
         sendNextSong: function() {
             this.setNextSong();
 
-            var songInfo = this.getCurrentSong();
+            var songInfo = this.getCurrentSong().metadata;
 
             if (this.chromecastConnected) {
                 Bean.fire(window, 'sender.loadMedia', songInfo.streamUrl);
@@ -101,6 +105,33 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
         onChromecastConnected: function() {
             this.chromecastConnected = true;
+            this.dataPacketTimer = setInterval(this.sendDataPacket.bind(this), 1000);
+        },
+
+        onChromecastDisconnected: function() {
+            this.chromecastConnected = false;
+            clearTimeout(this.dataPacketTimer);
+        },
+
+        sendDataPacket: function() {
+            if (dancer.isPlaying()) {
+                var song = this.getCurrentSong();
+
+                Bean.fire(window, 'socket.audiodata', {
+                    songChanged: this.songChanged,
+                    audioDataPacket: song.audioDataPacket
+                });
+
+                song.audioDataPacket.emptyPackets();
+
+                this.setCurrentSong(song);
+            }
+        },
+
+        packSongData: function(frame, second) {
+            var song = this.getCurrentSong();
+            song.audioDataPacket.packFrame(frame, second);
+            this.setCurrentSong(song);
         },
 
         songsCache: [
