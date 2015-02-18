@@ -1,47 +1,22 @@
 define([
-    'app/options',
-    'bean',
-    'app/controllers/Player'
+    'bean'
 ], function (
-    Options,
-    Bean,
-    PlayerController
+    Bean
     ) {
 
     var Player = {
 
         ui: document.getElementById('ui'),
         duration: document.getElementById('duration'),
-        volumeSlider: document.getElementById('volume-slider'),
+        playPause: document.getElementById('play-pause'),
 
-        init: function() {
-            PlayerController.init();
-
+        setupBaseEvents: function() {
             Bean.on(window, 'playerView.next', this.onNext);
             Bean.on(window, 'playerView.playPause', _.bind(this.onPlayPause, this));
 
             Bean.on(window, 'view.metadata', _.bind(this.attachMetaData, this));
             Bean.on(window, 'view.resetDuration', _.bind(this.setDuration, this));
             Bean.on(window, 'view.durationProgress', _.bind(this.setDuration, this));
-            Bean.on(window, 'chromecastConnected', _.bind(function(visualizerSettings) {
-                if (!this.chromecastConnected) {
-                    this.chromecastConnected = true;
-                }
-            }, this));
-
-            this.setupVolume();
-        },
-
-        setupVolume: function() {
-            var modifer = 100;
-
-            if (Options.debug) {
-                this.volumeSlider.value = Options.debugVolume * modifer;
-            } else {
-                this.volumeSlider.value = Options.defaultVolume * modifer;
-            }
-
-            Bean.fire(this.volumeSlider, 'change');
         },
 
         setDuration: function(val) {

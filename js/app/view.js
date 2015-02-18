@@ -1,7 +1,7 @@
 define([
     'app/options',
     'bean',
-    'app/views/player',
+    'app/views/DesktopPlayer',
     'app/visualizers/bars',
     'app/visualizers/circles',
     'app/visualizers/hexagons',
@@ -9,7 +9,7 @@ define([
 ], function (
     Options,
     Bean,
-    Player,
+    DesktopPlayer,
     bars,
     circles,
     hexagons,
@@ -39,7 +39,7 @@ define([
         ],
 
         init: function() {
-            Player.init();
+            DesktopPlayer.init();
 
             var body = document.body;
             Bean.on(this.chooser, 'change', _.bind(this.switchVisualizers, this));
