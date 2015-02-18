@@ -1,16 +1,14 @@
-define(['app/visualizers/base', 'underscore', 'bean'], function (Base, _, Bean) {
+define(['app/visualizers/base', 'underscore', 'bean', 'app/models/queue', 'app/view'], function (Base, _, Bean, queue, view) {
 
     var App = {
 
         init: function() {
-            Bean.fire(window, 'playerView.setupVolume');
 
             var onLoadFunc = function () {
-                Bean.fire(window, 'view.setupFullscreen');
-                Bean.fire(window, 'view.loadVis');
-                Bean.fire(window, 'playerView.setupVolume');
-                Bean.fire(window, 'pageLoaded');
-                Bean.fire(window, 'model.setupMusic');
+                Bean.off(document, 'onload');
+
+                queue.init();
+                view.init();
             };
 
             if (document.readyState === "complete") {

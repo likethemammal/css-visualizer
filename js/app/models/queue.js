@@ -13,10 +13,11 @@ define(['app/options', 'bean', 'soundcloud', 'q', 'underscore'], function (Optio
         DurationTimer: 0,
 
         init: function() {
-            Bean.on(window, 'model.setupMusic', _.bind(this.setupMusic, this));
             Bean.on(window, 'model.search', _.bind(this.search, this));
             Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
             Bean.on(window, 'queue.requestNextSong', _.bind(this.sendNextSong, this));
+
+            this.setupMusic();
         },
 
         setupMusic: function() {

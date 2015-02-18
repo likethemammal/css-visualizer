@@ -21,7 +21,6 @@ define([
             Bean.on(this.volumeSlider, 'change', _.bind(this.onVolumeChange, this));
             Bean.on(window, 'playerView.redefineVolume', _.bind(this.onVolumeChange, this));
 
-            Bean.on(window, 'playerView.setupVolume', _.bind(this.setupVolume, this));
             Bean.on(window, 'view.metadata', _.bind(this.attachMetaData, this));
             Bean.on(window, 'view.resetDuration', _.bind(this.setDuration, this));
             Bean.on(window, 'view.durationProgress', _.bind(this.setDuration, this));
@@ -30,6 +29,8 @@ define([
                     this.chromecastConnected = true;
                 }
             }, this));
+
+            this.setupVolume();
         },
 
         setupVolume: function() {

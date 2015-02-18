@@ -60,11 +60,7 @@ define([
                 'keyup': toggleUIFunc
             });
 
-            this.setupColorEvents();
 
-            Bean.on(window, 'view.loadVis', _.bind(this.switchVisualizers, this));
-            Bean.on(window, 'pageLoaded', this.setupResizeEvent);
-            Bean.on(window, 'view.setupFullscreen', _.bind(this.setupFullscreen, this));
             Bean.on(window, 'view.resetColors', _.bind(this.resetColors, this));
             Bean.on(window, 'chromecastConnected', _.bind(function(visualizerSettings) {
                 if (!this.chromecastConnected) {
@@ -78,6 +74,11 @@ define([
             this.visualizers[circles.name] = circles;
             this.visualizers[hexagons.name] = hexagons;
             this.visualizers[chromecastVis.name] = chromecastVis;
+
+            this.switchVisualizers();
+            this.setupFullscreen();
+            this.setupColorEvents();
+            this.setupResizeEvent();
         },
 
         setupColorEvents: function() {
@@ -153,9 +154,11 @@ define([
             }
         },
 
-        switchVisualizers: function(ev) {
+        switchVisualizers: function() {
             var visName = (this.chromecastConnected) ? 'Chromecast' : this.chooser.value;
             var current = this.visualizers.current;
+
+            console.log(visName)
 
             if (current) {
                 this.visualizers[current].destroy();
