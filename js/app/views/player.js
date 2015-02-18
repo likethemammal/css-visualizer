@@ -1,25 +1,24 @@
 define([
     'app/options',
-    'bean'
+    'bean',
+    'app/controllers/Player'
 ], function (
     Options,
-    Bean
+    Bean,
+    PlayerController
     ) {
 
     var Player = {
 
         ui: document.getElementById('ui'),
-        playPause: document.getElementById('play-pause'),
-        next: document.getElementById('next'),
         duration: document.getElementById('duration'),
         volumeSlider: document.getElementById('volume-slider'),
 
         init: function() {
-            Bean.on(this.playPause, 'click', _.bind(this.onPlayPause, this));
-            Bean.on(this.next, 'click', this.onNext);
+            PlayerController.init();
 
-            Bean.on(this.volumeSlider, 'change', _.bind(this.onVolumeChange, this));
-            Bean.on(window, 'playerView.redefineVolume', _.bind(this.onVolumeChange, this));
+            Bean.on(window, 'playerView.next', this.onNext);
+            Bean.on(window, 'playerView.playPause', _.bind(this.onPlayPause, this));
 
             Bean.on(window, 'view.metadata', _.bind(this.attachMetaData, this));
             Bean.on(window, 'view.resetDuration', _.bind(this.setDuration, this));
@@ -50,23 +49,18 @@ define([
             this.duration.style.right = val;
         },
 
-        onVolumeChange: function(ev) {
-            var volume =  this.volumeSlider.value / 100;
-
-            Bean.fire(window, 'model.setVolume', volume);
-        },
-
         onNext: function() {
             Bean.fire(window, 'next');
         },
 
-        onPlayPause: function() {
-            if (dancer.isPlaying()) {
+        onPlayPause: function(playing) {
+            if (playing) {
                 this.playPause.style['background-image'] = "url('imgs/glyphicons_173_play.png')";
             } else {
                 this.playPause.style['background-image'] = "url('imgs/glyphicons_174_pause.png')";
             }
-            Bean.fire(window, 'playPause');
+
+            Bean.fire(window, 'playerModel.playPause');
         },
 
         attachMetaData: function(trackInfo) {

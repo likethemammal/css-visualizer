@@ -12,8 +12,8 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
         init: function() {
             Bean.on(window, 'loadAndPlay', _.bind(this.loadAndPlay, this));
             Bean.on(window, 'next', _.bind(this.nextSong, this));
-            Bean.on(window, 'playPause', this.togglePlayPause, this);
-            Bean.on(window, 'model.setVolume', _.bind(this.setVolume, this));
+            Bean.on(window, 'playerModel.playPause', this.togglePlayPause, this);
+            Bean.on(window, 'playerModel.volumeChange', _.bind(this.setVolume, this));
             Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
             Bean.on(window, 'player.trackInfo', _.bind(this.onNewTrackInfo, this));
         },

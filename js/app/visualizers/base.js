@@ -14,7 +14,7 @@ define(['app/options', 'bean'], function (Options, Bean) {
             this.clear();
 
             Bean.on(window, 'visualizer.setVolume', _.bind(this.setVolumeModifier, this));
-            Bean.fire(window, 'playerView.redefineVolume'); //Needed to set volumeModifer each time visualizer switches
+            Bean.fire(window, 'playerController.announceVolume'); //Needed to set volumeModifer each time visualizer switches
 
             this.resetColors();
             this.resetInputColors();
