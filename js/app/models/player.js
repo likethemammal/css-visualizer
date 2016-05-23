@@ -10,11 +10,12 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
         DurationTimer: 0,
 
         init: function() {
+            this.audio.crossOrigin = "anonymous";
+
             Bean.on(window, 'loadAndPlay', _.bind(this.loadAndPlay, this));
             Bean.on(window, 'next', _.bind(this.nextSong, this));
             Bean.on(window, 'playerModel.playPause', this.togglePlayPause, this);
             Bean.on(window, 'playerModel.volumeChange', _.bind(this.setVolume, this));
-            Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
             Bean.on(window, 'player.trackInfo', _.bind(this.onNewTrackInfo, this));
         },
 
@@ -24,7 +25,7 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
                 this.audioLoaded = true;
             }
 
-            dancer.play();
+            setTimeout(dancer.play.bind(dancer), 10);
         },
 
         togglePlayPause: function() {
@@ -44,11 +45,6 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
         },
 
         onNewTrackInfo: function(trackInfo) {
-            if (this.chromecastConnected) {
-                this.setVolume(Options.chromecastVolume);
-                this.playbackRate = Options.chromecastPlaybackRate;
-            }
-
             Bean.fire(window, 'view.resetDuration');
 
             clearInterval(this.DurationTimeout);
@@ -80,10 +76,6 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
         setVolume: function(volume) {
             this.audio.volume = volume;
             Bean.fire(window, 'visualizer.setVolume', volume);
-        },
-
-        onChromecastConnected: function() {
-            this.chromecastConnected = true;
         }
     };
 

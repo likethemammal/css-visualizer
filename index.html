@@ -119,16 +119,6 @@ var prefix = (function () {
   };
 })();
 
-
-//Initial check for chromecast loaded. Needed to catch single time event.
-window['__onGCastApiAvailable'] = function(loaded, errorInfo) {
-    if (loaded) {
-        window.chromecastLoaded = true;
-    } else {
-        console.log(errorInfo);
-    }
-};
-
 </script>
 
 

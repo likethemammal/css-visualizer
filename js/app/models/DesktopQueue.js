@@ -1,4 +1,4 @@
-define(['app/options', 'bean', 'app/models/Queue', 'app/chromecast/sender/sender', 'soundcloud', 'q', 'underscore'], function (Options, Bean, Queue, sender, SC, Q, _) {
+define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscore'], function (Options, Bean, Queue, SC, Q, _) {
 
     var DesktopQueue = _.extend({
 
@@ -6,11 +6,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'app/chromecast/sender/sender
 
         init: function() {
             Bean.on(window, 'model.search', _.bind(this.search, this));
-            Bean.on(window, 'chromecastConnected', this.onChromecastConnected.bind(this));
-            Bean.on(window, 'chromecast.metadataReceived', _.bind(this.onMetadataSent, this));
-            Bean.on(window, 'chromecastDisconnected', this.onChromecastDisconnected.bind(this));
             Bean.on(window, 'queue.requestNextSong', _.bind(this.sendNextSong, this));
-            Bean.on(window, 'queue.packFrame', _.bind(this.packSongData, this));
 
             this.setupMusic();
         },
@@ -28,8 +24,6 @@ define(['app/options', 'bean', 'app/models/Queue', 'app/chromecast/sender/sender
                         if (Options.autoplayRandom) {
                             this.currentSong = this.getRandomSongNum();
                         }
-
-                        sender.init();
 
                         Bean.fire(window, 'next');
                     }
@@ -99,46 +93,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'app/chromecast/sender/sender
 
             var songInfo = this.getCurrentSong().metadata;
 
-            if (this.chromecastConnected) {
-                Bean.fire(window, 'sender.loadMedia', songInfo.streamUrl);
-            }
-
             Bean.fire(window, 'player.trackInfo', songInfo);
-        },
-
-        onChromecastConnected: function() {
-            this.chromecastConnected = true;
-        },
-
-        onMetadataSent: function() {
-            console.log('metadata sent');
-            this.dataPacketTimer = setInterval(this.sendDataPacket.bind(this), 1000);
-        },
-
-        onChromecastDisconnected: function() {
-            this.chromecastConnected = false;
-            clearTimeout(this.dataPacketTimer);
-        },
-
-        sendDataPacket: function() {
-            if (dancer.isPlaying()) {
-                var song = this.getCurrentSong();
-
-                Bean.fire(window, 'socket.audiodata', {
-                    songChanged: this.songChanged,
-                    audioDataPacket: song.audioDataPacket.serializeData()
-                });
-
-                song.audioDataPacket.emptyPackets();
-
-                this.setCurrentSong(song);
-            }
-        },
-
-        packSongData: function(data) {
-            var song = this.getCurrentSong();
-            song.audioDataPacket.packFrame(data.frame, data.second);
-            this.setCurrentSong(song);
         },
 
         songsCache: [
@@ -148,12 +103,12 @@ define(['app/options', 'bean', 'app/models/Queue', 'app/chromecast/sender/sender
 //                format: 'mp3',
 //                streamUrl: 'https://soundcloud.com/alexmetric/scandalism'
 //            },
-            {
-                artist: 'Kygo',
-                title: 'Sexual Healing (Remix)',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
-            },
+//             {
+//                 artist: 'Kygo',
+//                 title: 'Sexual Healing (Remix)',
+//                 format: 'mp3',
+//                 streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
+//             },
             {
                 artist: 'Bondax',
                 title: 'All Inside',

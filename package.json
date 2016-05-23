@@ -4,15 +4,7 @@
     "name": "Nodejitsu Inc.",
     "email": "support@nodejitsu.com"
   },
-  "scripts": {
-    "start": "node server.js"
-  },
   "version": "0.1.3",
-  "dependencies": {
-    "express": "3.0.x",
-    "node-uuid": "^1.4.2",
-    "socket.io": "1.0.x"
-  },
   "engines": {
     "node": "0.8.x"
   },

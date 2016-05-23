@@ -8,11 +8,7 @@ define([], function() {
         autoplayRandom: true,
         hideVis: false,
         fadeUI: true,
-        loadFromSC: true,
-        chromecastAppID: '80CEE4EA',
-        chromecastNamespace: 'urn:x-cast:css.visualizer',
-        chromecastPlaybackRate: 4,
-        chromecastVolume: 0.00001
+        loadFromSC: true
     };
 
     return Options;

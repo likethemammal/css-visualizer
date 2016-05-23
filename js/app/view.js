@@ -4,16 +4,14 @@ define([
     'app/views/DesktopPlayer',
     'app/visualizers/bars',
     'app/visualizers/circles',
-    'app/visualizers/hexagons',
-    'app/visualizers/chromecast'
+    'app/visualizers/hexagons'
 ], function (
     Options,
     Bean,
     DesktopPlayer,
     bars,
     circles,
-    hexagons,
-    chromecastVis
+    hexagons
     ) {
 
     var View = {
@@ -62,18 +60,10 @@ define([
 
 
             Bean.on(window, 'view.resetColors', _.bind(this.resetColors, this));
-            Bean.on(window, 'chromecastConnected', _.bind(function(visualizerSettings) {
-                if (!this.chromecastConnected) {
-                    this.chromecastConnected = true;
-                    this.visualizerSettings = visualizerSettings;
-                    this.switchVisualizers();
-                }
-            }, this));
 
             this.visualizers[bars.name] = bars;
             this.visualizers[circles.name] = circles;
             this.visualizers[hexagons.name] = hexagons;
-            this.visualizers[chromecastVis.name] = chromecastVis;
 
             this.switchVisualizers();
             this.setupFullscreen();
@@ -155,13 +145,12 @@ define([
         },
 
         switchVisualizers: function() {
-            var visName = (this.chromecastConnected) ? 'Chromecast' : this.chooser.value;
+            var visName = this.chooser.value;
             var current = this.visualizers.current;
 
             if (current) {
                 this.visualizers[current].destroy();
             }
-            this.visualizers[visName].chromecastConnected = this.chromecastConnected;
             this.visualizers[visName].visualizerSettings = this.visualizerSettings;
             this.visualizers[visName].run();
             this.visualizers.current = visName;
