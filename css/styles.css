@@ -164,6 +164,29 @@ body {
 	border-radius: 0 2px 2px 0;
 }
 
+.colors {
+	padding: 5px 15px;
+}
+
+.colors .ui-btn {
+	width: 25px;
+	height: 29px;
+	padding: 0;
+	margin-right: 10px;
+}
+
+#random-color {
+	background: red;
+}
+
+#volume-slider {
+	height: 45px;
+	margin-left: 15px;
+	padding-left: 5px;
+}
+
+
+
 #meta-data {
 	bottom: 0;
 }

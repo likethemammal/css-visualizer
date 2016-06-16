@@ -48,23 +48,29 @@
             <div id="ui">
                 <div id="controls" class="ui-outer">
                     <nav class="ui-inner cf">
-                        <select id="chooser" title="Select a type of visualizer">
-                            <option id="circles">Circles</option>
-                            <option id="hexagons">Hexagons</option>
-                            <option id="bars">Bars</option>
-                        </select>
-                        <button id="play-pause" class="ui-btn" title="Play/Pause"></button>
-                        <button id="next" class="ui-btn" title="Next"></button>
-                        <button id="fullscreen" class="ui-btn" title="Fullscreen"></button>
-                        <input id="search-input" type="search" title="Enter song name, genre, or artist">
-                        <button id="search-btn" class="ui-btn" title="Search"></button>
-                        <input type="color" id="color-picker1" class="ui-btn" title="Search">
-                        <input type="color" id="color-picker2" class="ui-btn" title="Search">
-                        <input type="color" id="color-picker3" class="ui-btn" title="Search">
-                        <button id="random-color" class="ui-btn"></button>
-                        <button id="chromecast" class="ui-btn">C</button>
-                        <input id="volume-slider" type="range" value="100">
-                        <a target="_blank" id="about" href="http://github.com/likethemammal/css-visualizer" title="About, Github page" class="ui-btn"></a>
+                        <div class="cf">
+                            <select id="chooser" title="Select a type of visualizer">
+                                <option id="hexagons">Hexagons</option>
+                                <option id="circles">Circles</option>
+                                <option id="bars">Bars</option>
+                            </select>
+                            <button id="play-pause" class="ui-btn" title="Play/Pause"></button>
+                            <button id="next" class="ui-btn" title="Next"></button>
+                            <button id="fullscreen" class="ui-btn" title="Fullscreen"></button>
+                        </div>
+                        <!--<input id="search-input" type="search" title="Enter song name, genre, or artist">-->
+                        <!--<button id="search-btn" class="ui-btn" title="Search"></button>-->
+                        <div class="colors cf">
+                            <input type="color" id="color-picker1" class="ui-btn" title="Search">
+                            <input type="color" id="color-picker2" class="ui-btn" title="Search">
+                            <input type="color" id="color-picker3" class="ui-btn" title="Search">
+                            <button id="random-color" class="ui-btn"></button>
+                        </div>
+                        <!--<button id="chromecast" class="ui-btn">C</button>-->
+                        <div class="cf">
+                            <input id="volume-slider" type="range" value="100">
+                            <a target="_blank" id="about" href="http://github.com/likethemammal/css-visualizer" title="About, Github page" class="ui-btn"></a>
+                        </div>
                     </nav>
                 </div>
                 <div id="meta-data" class="ui-outer">

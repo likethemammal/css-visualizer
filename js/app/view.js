@@ -26,8 +26,8 @@ define([
         chooser: document.getElementById('chooser'),
         uiContainer: document.getElementById('ui-container'),
         ui: document.getElementById('ui'),
-        searchBtn: document.getElementById('search-btn'),
-        searchInput: document.getElementById('search-input'),
+        // searchBtn: document.getElementById('search-btn'),
+        // searchInput: document.getElementById('search-input'),
         randomColor: document.getElementById('random-color'),
         fullscreen: document.getElementById('fullscreen'),
         colorPickers: [
@@ -43,12 +43,12 @@ define([
             Bean.on(this.chooser, 'change', _.bind(this.switchVisualizers, this));
 
             if (Options.loadFromSC) {
-                Bean.on(this.searchBtn, 'click', _.bind(this.onSearch, this));
-                Bean.on(this.searchInput, 'keyup', _.bind(function(e) {
-                    if (e.keyCode === 13) {
-                        this.onSearch();
-                    }
-                }, this));
+                // Bean.on(this.searchBtn, 'click', _.bind(this.onSearch, this));
+                // Bean.on(this.searchInput, 'keyup', _.bind(function(e) {
+                //     if (e.keyCode === 13) {
+                //         this.onSearch();
+                //     }
+                // }, this));
             }
 
             var toggleUIFunc = _.bind(this.toggleUI, this);
@@ -156,9 +156,9 @@ define([
             this.visualizers.current = visName;
         },
 
-        onSearch: function() {
-            Bean.fire(window, 'model.search', this.searchInput.value);
-        },
+        // onSearch: function() {
+        //     Bean.fire(window, 'model.search', this.searchInput.value);
+        // },
 
         toggleUI: _.throttle(function() {
             this.visualizerContainer.style.cursor = 'auto';
