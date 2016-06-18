@@ -14,21 +14,31 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
         setupMusic: function() {
             var tracksLoaded = 0;
 
-            for (var i = 0; i < this.songsCache.length; i++) {
-                var promise = this.search(this.songsCache[i].streamUrl);
+            var promise = this.search('https://soundcloud.com');
 
-                promise.then(_.bind(function() {
-                    tracksLoaded++;
+            promise.then(_.bind(function() {
+                if (Options.autoplayRandom) {
+                    this.currentSong = this.getRandomSongNum();
+                }
 
-                    if (tracksLoaded >= this.songsCache.length) {
-                        if (Options.autoplayRandom) {
-                            this.currentSong = this.getRandomSongNum();
-                        }
+                Bean.fire(window, 'next');
+            }, this));
 
-                        Bean.fire(window, 'next');
-                    }
-                }, this));
-            }
+            // for (var i = 0; i < this.songsCache.length; i++) {
+            //     var promise = this.search(this.songsCache[i].streamUrl);
+            //
+            //     promise.then(_.bind(function() {
+            //         tracksLoaded++;
+            //
+            //         if (tracksLoaded >= this.songsCache.length) {
+            //             if (Options.autoplayRandom) {
+            //                 this.currentSong = this.getRandomSongNum();
+            //             }
+            //
+            //             Bean.fire(window, 'next');
+            //         }
+            //     }, this));
+            // }
         },
 
         search: function(searchVal) {
@@ -41,31 +51,38 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
                 var deferred = Q.defer();
                 var promise = deferred.promise;
 
-                SC.get('/resolve', { url: searchVal }, _.bind(function(urlData) {
-                    var userID = urlData.id;
-                    var fetchingURL = '';
+                SC.get('/search/sounds?q=electro%20pop', {}, _.bind(function(urlData) {
+                    var collection = urlData.collection;
 
-                    switch (urlData.kind) {
-                        case "user":
-                            fetchingURL = '/users/' + userID + '/tracks';
-                            this.getMultipleSongs(fetchingURL, deferred);
+                    for (var i = 0; i < collection.length; i++) {
+                        var track = collection[0];
 
-                            break;
+                        var userID = urlData.id;
+                        var fetchingURL = '';
 
-                        case "track":
-                            this.addSong(urlData);
-                            deferred.resolve();
-                            break;
+                        switch (track.kind) {
+                            // case "user":
+                            //     fetchingURL = '/users/' + userID + '/tracks';
+                            //     this.getMultipleSongs(fetchingURL, deferred);
+                            //
+                            //     break;
 
-                        case "playlist":
-                            fetchingURL = '/playlist/' + userID + '/tracks';
-                            this.getMultipleSongs(fetchingURL, deferred);
-                            break;
+                            case "track":
+                                this.addSong(track);
+                                break;
+
+                            // case "playlist":
+                            //     fetchingURL = '/playlist/' + userID + '/tracks';
+                            //     this.getMultipleSongs(fetchingURL, deferred);
+                            //     break;
+                        }
+
+
+
+
                     }
 
-                    promise.then(_.bind(function() {
-                        Bean.fire(window, 'next');
-                    }, this));
+                    deferred.resolve();
 
                 }, this));
 

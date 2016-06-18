@@ -52,7 +52,9 @@ require([
         client_id: clientID
     });
 
-    dancer = new Dancer();
+    // dancer = new Dancer();
+
+    window.PlayerModel = PlayerModel;
     
     PlayerModel.init();
     app.init();

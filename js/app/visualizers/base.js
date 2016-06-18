@@ -26,6 +26,9 @@ define(['app/options', 'bean'], function (Options, Bean) {
                 fps = this.fps;
             }
 
+            this.binCount = analyser.frequencyBinCount;
+            this.dataArray = new Uint8Array(this.binCount);
+
             this.AnimationTimer = setInterval(_.bind(this.getData, this), 50 + (60 - this.fps));
         },
 
@@ -38,23 +41,62 @@ define(['app/options', 'bean'], function (Options, Bean) {
         },
 
         getData: function() {
-            if (dancer.isPlaying() && !Options.hideVis) {
+            if (!PlayerModel.audio.paused && !Options.hideVis) {
                 var spectrum, waveform;
 
                 this.isPlaying = true;
 
                 if (this.onSpectrum) {
-                    spectrum = float32ToArray(dancer.getSpectrum());
+                    spectrum = this.getSpectrum();
                     this.onSpectrum(spectrum);
                 }
 
                 if (this.onWaveform) {
-                    waveform = float32ToArray(dancer.getWaveform());
+                    waveform = this.getWaveform();
                     this.onWaveform(waveform);
                 }
             } else {
                 this.isPlaying = false;
             }
+        },
+
+        getSpectrum: function() {
+            var spectrum = [];
+            var binCount = this.binCount;
+            var spectrumLength = this.dataArray.length;
+            var value;
+
+            analyser.getByteFrequencyData(this.dataArray);
+
+            for (var i = 0; i < spectrumLength; i++) {
+                value = this.dataArray[i];
+
+                value = value / (binCount * 4);
+
+                spectrum.push(value);
+            }
+
+            return spectrum;
+        },
+
+
+        getWaveform: function() {
+            var spectrum = [];
+            var waveformLength = this.dataArray.length;
+            var value;
+
+            analyser.getByteTimeDomainData(this.dataArray);
+
+            for (var i = 0; i < waveformLength; i++) {
+                value = this.dataArray[i];
+
+                value = value - 128;
+                value = value / 128;
+
+                spectrum.push(value);
+            }
+
+            return spectrum;
         },
 
         onColorChange: function() {

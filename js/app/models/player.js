@@ -3,6 +3,7 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
     var PlayerModel = {
 
         audio: new Audio(),
+        context: new AudioContext(),
         audioLoaded: false,
 
         playbackRate: 1,
@@ -11,56 +12,69 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
 
         init: function() {
             this.audio.crossOrigin = "anonymous";
+            this.audio.id = 'audio';
+            document.body.appendChild(this.audio);
+            window.analyser = this.context.createAnalyser();
 
             Bean.on(window, 'loadAndPlay', _.bind(this.loadAndPlay, this));
             Bean.on(window, 'next', _.bind(this.nextSong, this));
-            Bean.on(window, 'playerModel.playPause', this.togglePlayPause, this);
+            Bean.on(window, 'playerModel.playPause', _.bind(this.togglePlayPause, this));
             Bean.on(window, 'playerModel.volumeChange', _.bind(this.setVolume, this));
             Bean.on(window, 'player.trackInfo', _.bind(this.onNewTrackInfo, this));
+
+            this.audio.addEventListener('canplaythrough', function() {
+                Bean.fire(window, 'loadAndPlay');
+            });
         },
 
         loadAndPlay: function() {
             if (!this.audioLoaded) {
-                dancer.load(this.audio);
+                var source = this.context.createMediaElementSource(this.audio);
+
+                source.connect(analyser);
+                analyser.connect(this.context.destination);
+
                 this.audioLoaded = true;
             }
 
-            setTimeout(dancer.play.bind(dancer), 10);
+            this.audio.play();
         },
 
         togglePlayPause: function() {
-            if (dancer.isPlaying()) {
-                dancer.pause();
+            if (!this.audio.paused) {
+                this.audio.pause();
             } else {
-                dancer.play();
+                this.audio.play();
             }
         },
 
         nextSong: function() {
-            // todo: fix error for "Failed to execute 'createMediaElementSource' on 'AudioContext'", might be a Chrome bug;
-            dancer.pause();
+            this.audio.pause();
 
             Bean.fire(window, 'queue.requestNextSong');
 
         },
 
+        onDuration: function() {
+            if (this.audio.duration) {
+                var totalDuration = Math.floor(this.audio.duration);
+                var currentDuration = this.audio.currentTime;
+                var percentComplete = currentDuration/totalDuration || 0;
+                var precision = 100;
+                var percentLeft = Math.floor((1 - percentComplete)*100 * precision) / precision;
+
+
+                Bean.fire(window, 'view.durationProgress', percentLeft + '%');
+            }
+        },
+
         onNewTrackInfo: function(trackInfo) {
             Bean.fire(window, 'view.resetDuration');
+            console.log('new track info');
 
             clearInterval(this.DurationTimeout);
 
-            this.DurationTimeout = setInterval(_.bind(function() {
-                if (this.audio.duration) {
-                    var totalDuration = Math.floor(this.audio.duration);
-                    var currentDuration = this.audio.currentTime;
-                    var percentComplete = currentDuration/totalDuration || 0;
-                    var precision = 100;
-                    var percentLeft = Math.floor((1 - percentComplete)*100 * precision) / precision;
-
-
-                    Bean.fire(window, 'view.durationProgress', percentLeft + '%');
-                }
-            }, this) , (1000 / 60) * this.playbackRate);
+            this.DurationTimeout = setInterval(_.bind(this.onDuration, this) , (1000 / 60) * this.playbackRate);
 
             Bean.fire(window, 'view.metadata', [[trackInfo.artist, trackInfo.title, trackInfo.artistUrl, trackInfo.titleUrl]]);
 
@@ -70,7 +84,6 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
             Bean.off(this.audio, 'ended');
             Bean.on(this.audio, 'ended', _.bind(this.nextSong, this));
 
-            Bean.fire(window, 'loadAndPlay');
         },
 
         setVolume: function(volume) {

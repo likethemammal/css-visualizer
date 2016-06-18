@@ -34,7 +34,7 @@ define([
         },
 
         onPlayPause: function() {
-            var playing = dancer.isPlaying();
+            var playing = !PlayerModel.audio.paused;
 
             Bean.fire(window, 'playerView.playPause', playing);
         }
