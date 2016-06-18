@@ -64,7 +64,9 @@ define(['app/models/Song'], function (Song) {
 
         setNextSong: function() {
             this.songs[this.currentSong].listened = true;
-            this.currentSong = this.getRandomSongNum();
+            var randoSongNum = this.getRandomSongNum();
+            
+            this.currentSong = randoSongNum;
         },
 
         getCurrentSong: function() {

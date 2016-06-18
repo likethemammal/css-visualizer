@@ -51,11 +51,11 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
                 var deferred = Q.defer();
                 var promise = deferred.promise;
 
-                SC.get('/search/sounds?q=electro%20pop', {}, _.bind(function(urlData) {
-                    var collection = urlData.collection;
+                SC.get('/tracks', {genres: 'reggae'}, _.bind(function(urlData) {
+                    var collection = urlData;
 
                     for (var i = 0; i < collection.length; i++) {
-                        var track = collection[0];
+                        var track = collection[i];
 
                         var userID = urlData.id;
                         var fetchingURL = '';
