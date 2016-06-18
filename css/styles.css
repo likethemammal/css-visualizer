@@ -176,7 +176,14 @@ body {
 }
 
 #random-color {
-	background: red;
+	font-size: 1.5rem;
+	color: white;
+	outline: 0;
+}
+
+#random-color:before {
+	position: relative;
+	top: -3px;
 }
 
 #volume-slider {

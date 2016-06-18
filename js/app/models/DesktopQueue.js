@@ -114,7 +114,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
                 title: 'All Inside',
                 format: 'mp3',
                 streamUrl: 'https://soundcloud.com/bondax/all-inside'
-//            },
+           },
 //            {
 //                artist: 'Estelle Miller',
 //                title: 'Jacknjill',
@@ -133,12 +133,12 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 //                format: 'mp3',
 //                streamUrl: 'https://soundcloud.com/final-fantasy-soundtracks/final-fantasy-x-ost-to'
 //            },
-//            {
-//                artist: 'Koji Kondo',
-//                title: 'Song of Storms',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/user6966642/the-legend-of-zelda-song-of-storms'
-//            },
+           {
+               artist: 'Koji Kondo',
+               title: 'Song of Storms',
+               format: 'mp3',
+               streamUrl: 'https://soundcloud.com/user6966642/the-legend-of-zelda-song-of-storms'
+           },
 //            {
 //                artist: 'Carl Douglas',
 //                title: 'Kung Fu Fighting 1974 Disco',
@@ -151,12 +151,12 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 //                format: 'mp3',
 //                streamUrl: 'https://soundcloud.com/maha-khalid-1/ella-fitzgerald-someone-to'
 //            },
-//            {
-//                artist: 'Neon Indian',
-//                title: 'Polish Girl',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/mgmtneonindian/polish-girl'
-//            },
+           {
+               artist: 'Neon Indian',
+               title: 'Polish Girl',
+               format: 'mp3',
+               streamUrl: 'https://soundcloud.com/mgmtneonindian/polish-girl'
+           // },
 //            {
 //                artist: 'Toto',
 //                title: 'Africa',
