@@ -7,7 +7,6 @@ require.config({
         underscore: 'libs/underscore-min',
         backbone: 'libs/backbone',
         jquery: 'libs/jquery-2.1.3.min',
-        Dancer: 'libs/dancer',
         soundcloud: 'libs/soundcloud-sdk',
         q: 'libs/q.min'
     },
@@ -18,9 +17,6 @@ require.config({
         },
         'soundcloud': {
             exports: 'SC'
-        },
-        'Dancer': {
-            exports: 'Dancer'
         },
         'underscore': {
             exports: '_'
@@ -43,9 +39,8 @@ require.config({
 require([
     'app/app',
     'app/models/player',
-    'Dancer',
     'soundcloud'
-], function (app, PlayerModel, Dancer, SC) {
+], function (app, PlayerModel, SC) {
     clientID = '587aa2d384f7333a886010d5f52f302a';
 
     SC.initialize({
