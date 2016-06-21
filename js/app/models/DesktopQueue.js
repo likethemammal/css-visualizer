@@ -3,18 +3,25 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
     var DesktopQueue = _.extend({
 
         dataPacketTimer: '',
+        currentGenre: 'electro pop',
+        nextHref: false,
 
         init: function() {
             Bean.on(window, 'model.search', _.bind(this.search, this));
-            Bean.on(window, 'queue.requestNextSong', _.bind(this.sendNextSong, this));
+            Bean.on(window, 'queue.requestNextSong', _.bind(this.prepareNextSong, this));
+            Bean.on(window, 'queue.switchGenre', _.bind(this.onSwitchGenre, this));
 
             this.setupMusic();
         },
 
-        setupMusic: function() {
-            var tracksLoaded = 0;
+        onSwitchGenre: function (genre) {
+            this.currentGenre = genre.toLowerCase();
+            this.nextHref = false;
+            this.setupMusic();
+        },
 
-            var promise = this.search('https://soundcloud.com');
+        setupMusic: function() {
+            var promise = this.search();
 
             promise.then(_.bind(function() {
                 if (Options.autoplayRandom) {
@@ -23,87 +30,56 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
                 Bean.fire(window, 'next');
             }, this));
-
-            // for (var i = 0; i < this.songsCache.length; i++) {
-            //     var promise = this.search(this.songsCache[i].streamUrl);
-            //
-            //     promise.then(_.bind(function() {
-            //         tracksLoaded++;
-            //
-            //         if (tracksLoaded >= this.songsCache.length) {
-            //             if (Options.autoplayRandom) {
-            //                 this.currentSong = this.getRandomSongNum();
-            //             }
-            //
-            //             Bean.fire(window, 'next');
-            //         }
-            //     }, this));
-            // }
         },
 
-        search: function(searchVal) {
-            var hostname = getLocation(searchVal);
-            var dotlocation = hostname.indexOf('.');
+        search: function() {
+            var deferred = Q.defer();
+            var promise = deferred.promise;
+            var url = '/tracks';
+            var opts = {
+                tags: this.currentGenre,
+                limit: 10,
+                linked_partitioning: 1
+            };
 
-            hostname = hostname.substr(0, dotlocation);
-
-            if (hostname === 'soundcloud') {
-                var deferred = Q.defer();
-                var promise = deferred.promise;
-
-                SC.get('/tracks', {genres: 'reggae'}, _.bind(function(urlData) {
-                    var collection = urlData;
-
-                    for (var i = 0; i < collection.length; i++) {
-                        var track = collection[i];
-
-                        var userID = urlData.id;
-                        var fetchingURL = '';
-
-                        switch (track.kind) {
-                            // case "user":
-                            //     fetchingURL = '/users/' + userID + '/tracks';
-                            //     this.getMultipleSongs(fetchingURL, deferred);
-                            //
-                            //     break;
-
-                            case "track":
-                                this.addSong(track);
-                                break;
-
-                            // case "playlist":
-                            //     fetchingURL = '/playlist/' + userID + '/tracks';
-                            //     this.getMultipleSongs(fetchingURL, deferred);
-                            //     break;
-                        }
-
-
-
-
-                    }
-
-                    deferred.resolve();
-
-                }, this));
-
-                return promise;
-            } else if (hostname === 'grooveshark') {
-                console.log('grooveshark url');
+            if (this.nextHref) {
+                url = this.nextHref;
+                opts = {};
             }
-        },
 
-        getMultipleSongs: function(fetchingURL, deferred) {
-            SC.get(fetchingURL, _.bind(function(tracks) {
-                for (var i = 0; i < tracks.length; i++) {
-                    var track = tracks[i];
+            SC.get(url, opts, _.bind(function(urlData) {
+                var collection = urlData.collection;
+
+                for (var i = 0; i < collection.length; i++) {
+                    var track = collection[i];
+
                     this.addSong(track);
                 }
 
-                if (deferred) {
-                    deferred.resolve();
-                }
+                this.nextHref = urlData.nextHref;
+
+                deferred.resolve();
+
             }, this));
+
+            return promise;
         },
+
+        prepareNextSong: function() {
+            var songsListened = this.getListenedSongs();
+            var promise;
+
+            if (songsListened.length >= this.songs.length - 1) {
+                promise = this.search();
+
+                promise.then(_.bind(this.sendNextSong, this));
+            } else {
+                this.sendNextSong();
+            }
+
+        },
+
+
 
         sendNextSong: function() {
             this.setNextSong();
@@ -111,76 +87,8 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
             var songInfo = this.getCurrentSong().metadata;
 
             Bean.fire(window, 'player.trackInfo', songInfo);
-        },
+        }
 
-        songsCache: [
-//            {
-//                artist: 'Alex Metric',
-//                title: 'Scandalism',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/alexmetric/scandalism'
-//            },
-//             {
-//                 artist: 'Kygo',
-//                 title: 'Sexual Healing (Remix)',
-//                 format: 'mp3',
-//                 streamUrl: 'https://soundcloud.com/kygo/marvin-gaye-sexual-healing'
-//             },
-            {
-                artist: 'Bondax',
-                title: 'All Inside',
-                format: 'mp3',
-                streamUrl: 'https://soundcloud.com/bondax/all-inside'
-           },
-//            {
-//                artist: 'Estelle Miller',
-//                title: 'Jacknjill',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/estelle-miller/jacknjill'
-//            },
-//            {
-//                artist: 'Estelle Miller',
-//                title: 'Delicate Words',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/estelle-miller/delicate-words'
-//            },
-//            {
-//                artist: 'Nobuo Uematsu',
-//                title: 'To Zanarkand',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/final-fantasy-soundtracks/final-fantasy-x-ost-to'
-//            },
-           {
-               artist: 'Koji Kondo',
-               title: 'Song of Storms',
-               format: 'mp3',
-               streamUrl: 'https://soundcloud.com/user6966642/the-legend-of-zelda-song-of-storms'
-           },
-//            {
-//                artist: 'Carl Douglas',
-//                title: 'Kung Fu Fighting 1974 Disco',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/kuploadr3/carl-douglas-kung-fu-fighting'
-//            },
-//            {
-//                artist: 'Ella Fitzgerald',
-//                title: 'Someone To Watch Over Me',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/maha-khalid-1/ella-fitzgerald-someone-to'
-//            },
-           {
-               artist: 'Neon Indian',
-               title: 'Polish Girl',
-               format: 'mp3',
-               streamUrl: 'https://soundcloud.com/mgmtneonindian/polish-girl'
-           // },
-//            {
-//                artist: 'Toto',
-//                title: 'Africa',
-//                format: 'mp3',
-//                streamUrl: 'https://soundcloud.com/kuploadr/toto-africa'
-            }
-        ]
 
     }, Queue);
 

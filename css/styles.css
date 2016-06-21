@@ -86,7 +86,7 @@ body {
 	opacity: 1;
 }
 
-#chooser {
+.chooser {
 	display: block;
 	background: #212121;
 	color: #fff;
@@ -105,11 +105,11 @@ body {
 	border-radius: 2px 0 0 2px;
 }
 
-#chooser:hover {
+.chooser:hover {
 	background-color: #111;
 }
 
-#chooser option {
+.chooser option {
 	background-color: #212121;
 }
 

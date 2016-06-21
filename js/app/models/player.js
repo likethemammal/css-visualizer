@@ -70,7 +70,6 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
 
         onNewTrackInfo: function(trackInfo) {
             Bean.fire(window, 'view.resetDuration');
-            console.log('new track info');
 
             clearInterval(this.DurationTimeout);
 

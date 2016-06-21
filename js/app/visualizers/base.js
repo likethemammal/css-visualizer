@@ -71,7 +71,7 @@ define(['app/options', 'bean'], function (Options, Bean) {
             for (var i = 0; i < spectrumLength; i++) {
                 value = this.dataArray[i];
 
-                value = value / (binCount * 4);
+                value = (value / this.volumeModifier) / (binCount * 4);
 
                 spectrum.push(value);
             }

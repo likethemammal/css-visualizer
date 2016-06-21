@@ -23,7 +23,8 @@ define([
         },
 
         visualizerContainer: document.getElementById('visualizer-container'),
-        chooser: document.getElementById('chooser'),
+        vizChooser: document.getElementById('viz-chooser'),
+        genreChooser: document.getElementById('genre-chooser'),
         uiContainer: document.getElementById('ui-container'),
         ui: document.getElementById('ui'),
         // searchBtn: document.getElementById('search-btn'),
@@ -40,7 +41,8 @@ define([
             DesktopPlayer.init();
 
             var body = document.body;
-            Bean.on(this.chooser, 'change', _.bind(this.switchVisualizers, this));
+            Bean.on(this.vizChooser, 'change', _.bind(this.switchVisualizers, this));
+            Bean.on(this.genreChooser, 'change', _.bind(this.switchGenre, this));
 
             if (Options.loadFromSC) {
                 // Bean.on(this.searchBtn, 'click', _.bind(this.onSearch, this));
@@ -145,7 +147,7 @@ define([
         },
 
         switchVisualizers: function() {
-            var visName = this.chooser.value;
+            var visName = this.vizChooser.value;
             var current = this.visualizers.current;
 
             if (current) {
@@ -154,6 +156,10 @@ define([
             this.visualizers[visName].visualizerSettings = this.visualizerSettings;
             this.visualizers[visName].run();
             this.visualizers.current = visName;
+        },
+
+        switchGenre: function() {
+            Bean.fire(window, 'queue.switchGenre', this.genreChooser.value);
         },
 
         // onSearch: function() {
