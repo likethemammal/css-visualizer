@@ -43,9 +43,12 @@ define([
             var titleStr = trackInfo[1] || '';
             var artistUrl = trackInfo[2] || '';
             var titleUrl = trackInfo[3] || '';
+            var albumSrc = trackInfo[4] || '';
             var artist = document.getElementById('artist');
             var title = document.getElementById('title');
+            var album = document.getElementById('album');
 
+            album.src = albumSrc;
             artist.innerText = artistStr;
             title.innerText = titleStr;
             artist.href = artistUrl;

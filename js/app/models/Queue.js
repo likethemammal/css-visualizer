@@ -4,14 +4,21 @@ define(['app/models/Song'], function (Song) {
         songs: [],
         currentSong: 0,
 
+        reset: function() {
+            this.songs = [];
+            this.currentSong = 0;
+        },
+
         addSong: function(track) {
             var song = new Song();
+            var artwork = track.artwork_url || '';
             song.setMetadata({
                 streamUrl: track.stream_url + '?client_id=' + clientID,
                 title: track.title,
                 titleUrl: track.permalink_url,
                 artist: track.user.username,
                 artistUrl: track.user.permalink_url,
+                albumSrc: artwork.replace('large.jpg', 'crop.jpg'),
                 length: track.duration
             });
             this.songs.push(song);

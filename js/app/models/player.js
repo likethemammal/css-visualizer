@@ -75,7 +75,7 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
 
             this.DurationTimeout = setInterval(_.bind(this.onDuration, this) , (1000 / 60) * this.playbackRate);
 
-            Bean.fire(window, 'view.metadata', [[trackInfo.artist, trackInfo.title, trackInfo.artistUrl, trackInfo.titleUrl]]);
+            Bean.fire(window, 'view.metadata', [[trackInfo.artist, trackInfo.title, trackInfo.artistUrl, trackInfo.titleUrl, trackInfo.albumSrc]]);
 
             this.audio.src = trackInfo.streamUrl;
             this.audio.playbackRate = this.playbackRate;

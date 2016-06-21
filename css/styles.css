@@ -213,6 +213,15 @@ body {
     opacity: 0.25;
 }
 
+#album {
+	float: left;
+	height: 82px;
+	width: 82px;
+	-webkit-border-radius: 2px 0 0 2px;
+	-moz-border-radius: 2px 0 0 2px;
+	border-radius: 2px 0 0 2px;
+}
+
 #artist {
 	text-transform: uppercase;
 	font-weight: normal;
@@ -230,7 +239,6 @@ body {
 
 .meta-data-words {
     display: block;
-	width: 100%;
     color: #fff;
 
 	white-space: nowrap;

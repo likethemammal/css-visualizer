@@ -17,6 +17,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
         },
 
         onSwitchGenre: function (genre) {
+            this.reset();
             this.currentGenre = genre.toLowerCase();
             this.paginationNumber = 0;
             this.nextHref = false;
