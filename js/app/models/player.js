@@ -1,4 +1,5 @@
 define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
 
     var PlayerModel = {
 
