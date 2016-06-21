@@ -1,10 +1,10 @@
 define([], function() {
 
     var Options = {
-        debug: true,
+        debug: false,
         debugVolume: 0.5,
 
-        defaultVolume: 0.25,
+        defaultVolume: 0.2,
         autoplayRandom: true,
         hideVis: false,
         fadeUI: false,

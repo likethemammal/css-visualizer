@@ -3,10 +3,12 @@ define(['app/visualizers/base', 'underscore'], function (Base, _) {
     var Circles = _.extend({
         name: 'Circles',
         numOfCircles: 0,
+        numOfCirclePatterns: 5,
         circleDiameter: 50,
         init: function() {
             var styleSheet = document.createElement('style');
             var circleContainer = document.createElement('div');
+            var patternNum = Math.floor(Math.random()*this.numOfCirclePatterns);
             circleContainer.id = 'circle-container';
 
             this.numOfCircles = Math.ceil(window.innerHeight / this.circleDiameter);
@@ -17,7 +19,7 @@ define(['app/visualizers/base', 'underscore'], function (Base, _) {
                 var circle = document.createElement('div');
                 var circleWrapper = document.createElement('div');
 
-                circle.className = 'circle';
+                circle.className = 'circle circle-pattern-' + patternNum;
                 circleWrapper.className = 'circle-wrapper';
                 circleWrapper.appendChild(circle);
                 circleContainer.appendChild(circleWrapper);
@@ -53,7 +55,7 @@ define(['app/visualizers/base', 'underscore'], function (Base, _) {
         onWaveform: function(waveform) {
             var sampleAvgs = sampleArray(waveform, this.numOfCircles, this.volumeModifier);
             var circles = this.circles;
-            var diluter = 2;
+            var diluter = 3.5; //how harsh the spin is
             var precision = 10; //Will affect framerate as it becomes more precise
 
             for (var j = 0; j < this.numOfCircles; j++) {

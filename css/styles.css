@@ -405,6 +405,13 @@ body {
     z-index: 1;
     width: 100%;
     height: 100%;
+
+    -webkit-animation: rotating 110s linear infinite;
+    -moz-animation: rotating 10s linear infinite;
+    -ms-animation: rotating 10s linear infinite;
+    -o-animation: rotating 10s linear infinite;
+    animation: rotating 110s linear infinite;
+
 }
 
 .circle-wrapper {
@@ -420,13 +427,6 @@ body {
     bottom: 0;
     right: 0;
     margin: auto;
-    background:
-        linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
-        linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
-        linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
-        linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
-    background-size: 100px 100px;
-    background-color: #EC173A;
 
     border: 3px solid black;
     box-shadow: 0 0 5px rgba(0,0,0,0.9);
@@ -434,8 +434,70 @@ body {
     border-radius: 50%;
     -webkit-transform: translateX(-50%) translateZ(0px);
     -webkit-transform-origin: 0;
-
     -webkit-transition: transform 100ms linear;
+
+    -ms-transform: translateX(-50%) translateZ(0px);
+    -ms-transform-origin: 0;
+    -ms-transition: transform 100ms linear;
+
+    -moz-transform: translateX(-50%) translateZ(0px);
+    -moz-transform-origin: 0;
+    -moz-transition: transform 100ms linear;
+
+    -o-transform: translateX(-50%) translateZ(0px);
+    -o-transform-origin: 0;
+    -o-transition: transform 100ms linear;
+
+    transform: translateX(-50%) translateZ(0px);
+    transform-origin: 0;
+    transition: transform 100ms linear;
+
+}
+
+.circle-pattern-0 {
+    background:
+            linear-gradient(63deg, rgba(0,0,0,0.3) 23%, transparent 23%) 7px 0,
+            linear-gradient(63deg, transparent 74%, rgba(0,0,0,0.3) 78%),
+            linear-gradient(63deg, transparent 34%, rgba(0,0,0,0.3) 38%, rgba(0,0,0,0.3) 58%, transparent 62%),
+            #444;
+    background-size: 16px 48px;
+}
+
+.circle-pattern-1 {
+    background:
+            linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
+            linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
+            linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
+            linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: #EC173A;
+}
+
+.circle-pattern-2 {
+    background-color: #eee;
+    background-image: linear-gradient(45deg, rgba(0,0,0,0.5) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.5) 75%, rgba(0,0,0,0.5)),
+    linear-gradient(45deg, rgba(0,0,0,0.5) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.5) 75%, rgba(0,0,0,0.5));
+    background-size:60px 60px;
+    background-position:0 0, 30px 30px
+}
+
+.circle-pattern-3 {
+    background: #000000;
+    background:
+            linear-gradient(115deg, transparent 75%, rgba(255,255,255,.8) 75%) 0 0,
+            linear-gradient(245deg, transparent 75%, rgba(255,255,255,.8) 75%) 0 0,
+            linear-gradient(115deg, transparent 75%, rgba(255,255,255,.8) 75%) 7px -15px,
+            linear-gradient(245deg, transparent 75%, rgba(255,255,255,.8) 75%) 7px -15px,
+            #000000;
+    background-size: 15px 30px
+}
+
+.circle-pattern-4 {
+    background:
+            radial-gradient(circle at 0% 50%, rgba(96, 16, 48, 0) 9px, #000000 10px, rgba(96, 16, 48, 0) 11px) 0px 10px,
+            radial-gradient(at 100% 100%,      rgba(96, 16, 48, 0) 9px, #000000 10px, rgba(96, 16, 48, 0) 11px),
+            #000;
+    background-size: 20px 20px;
 }
 
 /* Keyframes */
@@ -596,5 +658,55 @@ body {
 	
 	100% {
 		background-image: url('../imgs/glyphicons_214_resize_small.png');
+	}
+}
+
+@-moz-keyframes rotating /* Firefox */ {
+	from {
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	to {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+	from {
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	to {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes rotating {
+	from {
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	to {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
 	}
 }
