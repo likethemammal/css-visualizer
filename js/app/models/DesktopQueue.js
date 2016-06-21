@@ -5,6 +5,8 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
         dataPacketTimer: '',
         currentGenre: 'electro pop',
         nextHref: false,
+        paginationNumber: 0,
+        numSongsToGrab: 100,
 
         init: function() {
             Bean.on(window, 'model.search', _.bind(this.search, this));
@@ -16,6 +18,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
         onSwitchGenre: function (genre) {
             this.currentGenre = genre.toLowerCase();
+            this.paginationNumber = 0;
             this.nextHref = false;
             this.setupMusic();
         },
@@ -38,8 +41,9 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
             var url = '/tracks';
             var opts = {
                 tags: this.currentGenre,
-                limit: 10,
-                linked_partitioning: 1
+                //bug in SC sdk causes it to only return a few unless limit is set
+                limit: ((this.paginationNumber + 1) * this.numSongsToGrab) + 3,
+                linked_partitioning: this.paginationNumber + 1
             };
 
             if (this.nextHref) {
@@ -50,7 +54,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
             SC.get(url, opts, _.bind(function(urlData) {
                 var collection = urlData.collection;
 
-                for (var i = 0; i < collection.length; i++) {
+                for (var i = this.paginationNumber * this.numSongsToGrab; i < collection.length; i++) {
                     var track = collection[i];
 
                     this.addSong(track);
@@ -70,6 +74,7 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
             var promise;
 
             if (songsListened.length >= this.songs.length - 1) {
+                this.paginationNumber++;
                 promise = this.search();
 
                 promise.then(_.bind(this.sendNextSong, this));
@@ -78,8 +83,6 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
             }
 
         },
-
-
 
         sendNextSong: function() {
             this.setNextSong();

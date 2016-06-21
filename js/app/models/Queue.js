@@ -1,14 +1,8 @@
 define(['app/models/Song'], function (Song) {
 
     var Queue = {
-        songsListenedTo: [],
         songs: [],
         currentSong: 0,
-
-        resetSongs: function() {
-            this.songs = [];
-            this.currentSong = 0;
-        },
 
         addSong: function(track) {
             var song = new Song();
@@ -64,9 +58,8 @@ define(['app/models/Song'], function (Song) {
 
         setNextSong: function() {
             this.songs[this.currentSong].listened = true;
-            var randoSongNum = this.getRandomSongNum();
-            
-            this.currentSong = randoSongNum;
+
+            this.currentSong = this.getRandomSongNum();
         },
 
         getCurrentSong: function() {
