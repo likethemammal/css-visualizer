@@ -7,8 +7,7 @@ define([], function() {
         defaultVolume: 0.2,
         autoplayRandom: true,
         hideVis: false,
-        fadeUI: false,
-        loadFromSC: true
+        fadeUI: true
     };
 
     return Options;

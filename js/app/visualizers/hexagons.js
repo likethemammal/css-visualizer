@@ -7,6 +7,7 @@ define(['app/visualizers/base', 'underscore'], function (Base, _) {
         numOfHexs: 15,
         hexDefaultTransformStr: 'rotate(0deg)',
         currentOverlay: '',
+        colorsNeeded: 3,
         fps: 70,
 
         init: function() {

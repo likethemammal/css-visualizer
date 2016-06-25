@@ -47,8 +47,6 @@ require([
         client_id: clientID
     });
 
-    // dancer = new Dancer();
-
     window.PlayerModel = PlayerModel;
     
     PlayerModel.init();

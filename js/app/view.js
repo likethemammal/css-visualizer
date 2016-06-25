@@ -27,8 +27,6 @@ define([
         genreChooser: document.getElementById('genre-chooser'),
         uiContainer: document.getElementById('ui-container'),
         ui: document.getElementById('ui'),
-        // searchBtn: document.getElementById('search-btn'),
-        // searchInput: document.getElementById('search-input'),
         randomColor: document.getElementById('random-color'),
         fullscreen: document.getElementById('fullscreen'),
         colorPickers: [
@@ -43,15 +41,6 @@ define([
             var body = document.body;
             Bean.on(this.vizChooser, 'change', _.bind(this.switchVisualizers, this));
             Bean.on(this.genreChooser, 'change', _.bind(this.switchGenre, this));
-
-            if (Options.loadFromSC) {
-                // Bean.on(this.searchBtn, 'click', _.bind(this.onSearch, this));
-                // Bean.on(this.searchInput, 'keyup', _.bind(function(e) {
-                //     if (e.keyCode === 13) {
-                //         this.onSearch();
-                //     }
-                // }, this));
-            }
 
             var toggleUIFunc = _.bind(this.toggleUI, this);
             Bean.on(body, {
@@ -162,10 +151,6 @@ define([
             Bean.fire(window, 'queue.switchGenre', this.genreChooser.value);
         },
 
-        // onSearch: function() {
-        //     Bean.fire(window, 'model.search', this.searchInput.value);
-        // },
-
         toggleUI: _.throttle(function() {
             this.visualizerContainer.style.cursor = 'auto';
             this.ui.style.opacity = 1;
@@ -181,13 +166,19 @@ define([
 
         }),
 
-        resetColors: function(colors) {
-            for (var i = 0; i < colors.length; i++) {
-                // Needs to be hexcolor for some reason.
-                var color = rgbToHex(colors[i]);
+        resetColors: function(colors, colorsNeeded) {
+            var colorsLength = colors.length;
+
+            for (var i = 0; i < colorsLength; i++) {
                 var picker = this.colorPickers[i];
 
-                picker.value = color;
+                if (i > colorsNeeded - 1) {
+                    picker.disabled = true;
+                } else {
+                    picker.disabled = false;
+                    // Needs to be hexcolor for some reason.
+                    picker.value = rgbToHex(colors[i]);
+                }
             }
         }
 

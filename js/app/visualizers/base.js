@@ -114,7 +114,7 @@ define(['app/options', 'bean'], function (Options, Bean) {
         },
 
         resetInputColors: function() {
-            Bean.fire(window, 'view.resetColors', [[this.color1, this.color2, this.color3]]);
+            Bean.fire(window, 'view.resetColors', [[this.color1, this.color2, this.color3], this.colorsNeeded]);
         },
 
         setVolumeModifier: function(volume) {

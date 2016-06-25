@@ -5,6 +5,7 @@ define(['app/visualizers/base', 'underscore'], function (Base, _) {
         numOfCircles: 0,
         numOfCirclePatterns: 5,
         circleDiameter: 50,
+        colorsNeeded: 2,
         init: function() {
             var styleSheet = document.createElement('style');
             var circleContainer = document.createElement('div');

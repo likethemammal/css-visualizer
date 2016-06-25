@@ -6,6 +6,7 @@ define(['app/visualizers/base', 'underscore', 'bean'], function (Base, _, Bean) 
         currentAmp: 0,
         fps: 40,
         barWidth: 24,
+        colorsNeeded: 2,
         init: function() {
             var styleSheet = document.createElement('style');
 

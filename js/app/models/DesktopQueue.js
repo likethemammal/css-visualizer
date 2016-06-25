@@ -6,10 +6,9 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
         currentGenre: 'electro pop',
         nextHref: false,
         paginationNumber: 0,
-        numSongsToGrab: 100,
+        numSongsToGrab: 15,
 
         init: function() {
-            Bean.on(window, 'model.search', _.bind(this.search, this));
             Bean.on(window, 'queue.requestNextSong', _.bind(this.prepareNextSong, this));
             Bean.on(window, 'queue.switchGenre', _.bind(this.onSwitchGenre, this));
 
@@ -33,7 +32,9 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
                 }
 
                 Bean.fire(window, 'next');
-            }, this));
+            }, this), function(err) {
+                console.warn('Something went wrong retrieving the collection of songs from Soundcloud: ', err);
+            });
         },
 
         search: function() {
@@ -65,7 +66,9 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
 
                 deferred.resolve();
 
-            }, this));
+            }, this), function(err) {
+                deferred.reject(err);
+            });
 
             return promise;
         },
@@ -78,7 +81,9 @@ define(['app/options', 'bean', 'app/models/Queue', 'soundcloud', 'q', 'underscor
                 this.paginationNumber++;
                 promise = this.search();
 
-                promise.then(_.bind(this.sendNextSong, this));
+                promise.then(_.bind(this.sendNextSong, this), function(err) {
+                    console.warn('Something went wrong preparing the next batch of songs from Soundcloud: ', err);
+                });
             } else {
                 this.sendNextSong();
             }

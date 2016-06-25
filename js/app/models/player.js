@@ -22,8 +22,7 @@ define(['app/options', 'bean', 'underscore'], function (Options, Bean, _) {
             Bean.on(window, 'playerModel.playPause', _.bind(this.togglePlayPause, this));
             Bean.on(window, 'playerModel.volumeChange', _.bind(this.setVolume, this));
             Bean.on(window, 'player.trackInfo', _.bind(this.onNewTrackInfo, this));
-
-            this.audio.addEventListener('canplaythrough', function() {
+            Bean.on(this.audio, 'canplaythrough', function() {
                 Bean.fire(window, 'loadAndPlay');
             });
         },

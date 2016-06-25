@@ -164,6 +164,10 @@ body {
 	border-radius: 0 2px 2px 0;
 }
 
+.ui-btn[type="color"]:disabled {
+	display: none;
+}
+
 .colors {
 	padding: 5px 15px;
 }
