@@ -34,6 +34,10 @@ define([
             var volume =  this.volumeSlider.value / 100;
 
             this.oldVolume = volume;
+            if (this.isMuted) {
+                this.volume.className = 'ion-android-volume-up';
+                this.isMuted = false;
+            }
 
             Bean.fire(window, 'playerModel.volumeChange', volume);
         },
@@ -44,10 +48,10 @@ define([
 
             if (isMuted) {
                 newVolume = this.oldVolume;
-                this.volume.className = 'ion-android-volume-up ui-btn';
+                this.volume.className = 'ion-android-volume-up';
             } else {
                 newVolume = 0;
-                this.volume.className = 'ion-android-volume-off ui-btn';
+                this.volume.className = 'ion-android-volume-off';
             }
 
             Bean.fire(window, 'playerModel.volumeChange', newVolume);
