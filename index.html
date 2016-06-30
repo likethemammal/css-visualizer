@@ -70,7 +70,6 @@
                         </div>
                         <!--<button id="chromecast" class="ui-btn">C</button>-->
                         <div class="cf">
-                            <input id="volume-slider" type="range" value="100">
                             <select id="genre-chooser" title="Select a genre" class="chooser">
                                 <option>Electro Pop</option>
                                 <option>Hip Hop</option>
@@ -88,6 +87,8 @@
                                 <option>Country</option>
                                 <option>Dance</option>
                             </select>
+                            <i id="volume-icon" class="ion-android-volume-up"></i>
+                            <input id="volume-slider" type="range" value="100">
                         </div>
                     </nav>
                 </div>
@@ -101,6 +102,9 @@
                       </div>
                   </div>
                 </div>
+                <a id="soundcloud-logo" title="This project uses the SoundCloud API" href="https://developers.soundcloud.com/">
+                    <img src="imgs/sc_gradient_240x120.png"/>
+                </a>
             </div>
             <audio id="audio"></audio>
         </div>

@@ -86,6 +86,17 @@ body {
 	opacity: 1;
 }
 
+#soundcloud-logo {
+	position: absolute;
+	bottom: 15px;
+	right: 20px;
+	width: 120px;
+}
+
+#soundcloud-logo img {
+	max-width: 100%;
+}
+
 .chooser {
 	display: block;
 	background: #212121;
@@ -190,9 +201,29 @@ body {
 	top: -3px;
 }
 
+#volume-icon {
+	float: left;
+	height: 45px;
+	width: 45px;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+	background: #212121 no-repeat center center;
+}
+
+#volume-icon:before {
+	display: inline-block;
+	width: 100%;
+	line-height: 47px;
+	font-size: 35px;
+	margin-left: 5px;
+}
+
 #volume-slider {
 	height: 45px;
-	margin-left: 15px;
+	width: 95px;
+	margin-left: 5px;
 	padding-left: 5px;
 }
 
