@@ -74,11 +74,20 @@ class Bars extends Base {
         var sampleAvgs = sampleArray(waveform, numOfBars, 1);
         var bars = this.bars;
 
-
-
         for (var j = 0; j < numOfBars; j++) {
-            var magnitude = (Math.floor(sampleAvgs[j]*1000)/1000);
-            bars[j].parentNode.style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
+            const magnitude = Math.floor(sampleAvgs[j]*1000)/1000
+
+            const bar = bars[j]
+
+            if (bar) {
+                bar.parentNode
+                    .style[prefix.css + 'transform'] =
+                    [
+                        "scaleY(",
+                        magnitude,
+                        ") translate3d(0,0,0)"
+                    ].join("")
+            }
         }
     }
 
