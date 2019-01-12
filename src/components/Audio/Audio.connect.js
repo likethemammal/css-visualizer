@@ -6,9 +6,10 @@ import { actions } from './Audio.actions'
 
 export default (Component) => connect((state) => {
     return {
-        audioMounted: state.Audio.audioMounted,
+        fakeTriggered: state.Audio.fakeTriggered,
         visualizerLoaded: state.Audio.visualizerLoaded,
-        vm: state.Audio.vm
+        vm: state.Audio.vm,
+        audio: state.Audio.audio,
     }
 }, {
     ...actions,

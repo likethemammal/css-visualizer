@@ -4,41 +4,47 @@ class _Audio extends Component {
 
     constructor(props) {
         super(props)
-        this.audioEl = React.createRef();
     }
 
     onAudioLoaded = () => {
-        this.props.vm.load(this.audioEl.current, this.props.onVisualizerLoaded)
+        const {
+            onVisualizerLoaded,
+            vm,
+            audio,
+        } = this.props
+
+        vm.load(audio, onVisualizerLoaded)
+        audio.play()
     }
 
-    onAudioMounted = () => {
+    onPlay = () => {
 
-        const { current } = this.audioEl
+        const { audio } = this.props
 
-        if (current.readyState === 3 || current.readyState === 4) {
+        if (audio.readyState === 3 || audio.readyState === 4) {
             this.onAudioLoaded()
         } else {
-            current.addEventListener('canplay', this.onAudioLoaded)
+            audio.addEventListener('canplay', this.onAudioLoaded)
         }
 
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.audioMounted && !prevProps.audioMounted) {
-            this.onAudioMounted()
+        if (this.props.fakeTriggered && !prevProps.fakeTriggered) {
+            this.onPlay()
         }
 
     }
 
     componentDidMount() {
-        this.audioEl.current.crossOrigin = "anonymous"
+        this.props.audio.crossOrigin = "anonymous"
+        this.props.audio.src = 'https://likethemammal.github.io/visualizer-micro/sample.mp3'
     }
 
     render() {
 
         return <div>
-            <button onClick={this.props.onAudioMounted}>Start</button>
-            <audio ref={this.audioEl} controls src={'https://likethemammal.github.io/visualizer-micro/sample.mp3'}></audio>
+            <button onClick={this.props.onFakeTriggered}>Play</button>
             {this.props.children}
         </div>
     }

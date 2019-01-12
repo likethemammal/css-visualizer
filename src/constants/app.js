@@ -14,3 +14,7 @@ export const prefix = (function () {
     };
 })();
 
+
+export const genres = ["Electro Pop", "Hip Hop", "Chillwave", "Classical", "Indie", "Jazz", "Folk", "Metal", "Latin", "Reggae", "World", "Piano", "Electronic", "Country", "Dance"]
+
+export const GITHUB_LINK = 'http://github.com/likethemammal/css-visualizer'

@@ -3,8 +3,9 @@ import VisualizerMicro from "visualizer-micro"
 
 export const initialState = {
     visualizerLoaded: false,
-    audioMounted: false,
+    fakeTriggered: false,
     vm: new VisualizerMicro(),
+    audio: new Audio(),
 }
 
 export const reducer = {
@@ -14,10 +15,10 @@ export const reducer = {
             visualizerLoaded: true,
         }
     },
-    [types.AUDIO__AUDIO_MOUNTED]: (state, action) => {
+    [types.AUDIO__FAKE_TRIGGERED]: (state, action) => {
         return {
             ...state,
-            audioMounted: true,
+            fakeTriggered: true,
         }
     },
 }
