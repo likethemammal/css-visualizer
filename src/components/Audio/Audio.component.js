@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component, Fragment} from 'react'
 
 class _Audio extends Component {
 
@@ -43,10 +43,7 @@ class _Audio extends Component {
 
     render() {
 
-        return <div>
-            <button onClick={this.props.onFakeTriggered}>Play</button>
-            {this.props.children}
-        </div>
+        return <Fragment />
     }
 }
 

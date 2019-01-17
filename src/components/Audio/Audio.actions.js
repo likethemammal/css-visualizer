@@ -1,33 +1,46 @@
 const AUDIO__VISUALIZER_LOADED = 'AUDIO__VISUALIZER_LOADED'
-const AUDIO__AUDIO_MOUNTED = 'AUDIO__AUDIO_MOUNTED'
-const AUDIO__FAKE_TRIGGERED = 'AUDIO__FAKE_TRIGGERED'
+const AUDIO__PLAY_FAKED = 'AUDIO__PLAY_FAKED'
+const AUDIO__VOLUME_CHANGE = 'AUDIO__VOLUME_CHANGE'
+const AUDIO__AUDIO_UPDATED = 'AUDIO__AUDIO_UPDATED'
+
+import _ from 'lodash'
 
 export const types = {
     AUDIO__VISUALIZER_LOADED,
-    AUDIO__AUDIO_MOUNTED,
-    AUDIO__FAKE_TRIGGERED,
+    AUDIO__PLAY_FAKED,
+    AUDIO__VOLUME_CHANGE,
+    AUDIO__AUDIO_UPDATED,
 }
 
-const onAudioMounted = () => {
+const onPlayFaked = () => {
     return {
-        type: types.AUDIO__AUDIO_MOUNTED,
+        type: types.AUDIO__PLAY_FAKED,
     }
 }
 
-const onFakeTriggered = () => {
+const onVolumeChange = (ev) => {
     return {
-        type: types.AUDIO__FAKE_TRIGGERED,
+        type: types.AUDIO__VOLUME_CHANGE,
+        volume: parseFloat(ev.target.value),
     }
 }
 
-const onVisualizerLoaded = () => {
+const onVisualizerLoaded = _.throttle(() => {
     return {
         type: types.AUDIO__VISUALIZER_LOADED,
+    }
+}, 100)
+
+const onAudioUpdate = (audio) => {
+    return {
+        type: types.AUDIO__AUDIO_UPDATED,
+        audio,
     }
 }
 
 export const actions = {
-    onAudioMounted,
-    onFakeTriggered,
+    onAudioUpdate,
+    onPlayFaked,
+    onVolumeChange,
     onVisualizerLoaded,
 }

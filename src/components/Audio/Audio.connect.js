@@ -2,15 +2,17 @@ import {
     connect
 } from 'react-redux'
 
+import _ from 'lodash'
+
 import { actions } from './Audio.actions'
 
+import * as selectors from './Audio.selectors'
+
 export default (Component) => connect((state) => {
-    return {
-        fakeTriggered: state.Audio.fakeTriggered,
-        visualizerLoaded: state.Audio.visualizerLoaded,
-        vm: state.Audio.vm,
-        audio: state.Audio.audio,
-    }
+    return _.mapValues(selectors, (selector, key) => {
+        const value = selector(state)
+        return value
+    })
 }, {
     ...actions,
 })(Component)

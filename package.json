@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@storybook/addon-knobs": "^4.1.6",
+    "@storybook/addons": "^4.1.6",
     "@storybook/react": "^4.1.6",
     "react-hot-loader": "^4.6.3",
     "redux-devtools-extension": "^2.13.7",

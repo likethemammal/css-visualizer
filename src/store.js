@@ -9,7 +9,7 @@ export const IS_STORYBOOK = process.env.NODE_ENV === 'storybook'
 
 // import selectors from './selectors'
 import rootReducer from './reducers'
-// import rootSaga from './sagas'
+import rootSaga from './sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 const middlewares = [
@@ -42,7 +42,7 @@ const STORE_NAME = 'CSS Visualizer'
 
 const store = configureStore(rootReducer, STORE_NAME)
 
-// sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(rootSaga)
 
 //Reselect Devtools
 // registerSelectors(selectors)

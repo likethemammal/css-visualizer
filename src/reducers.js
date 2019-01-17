@@ -20,5 +20,5 @@ const createReducer = function(initialState, reducer) {
 
 
 export default combineReducers({
-    Audio: createReducer(AudioInitialState, AudioActions),
+    _Audio: createReducer(AudioInitialState, AudioActions),
 })
