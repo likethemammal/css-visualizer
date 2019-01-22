@@ -79,7 +79,7 @@ class Base extends Component {
 
         window.addEventListener('resize', this.resize)
 
-        this.props.resetColors()
+        this.props.resetColors(this.numColors)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

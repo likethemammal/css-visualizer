@@ -47,7 +47,6 @@ class Player extends Component {
                 })}
             </select>
 
-            <div>color selector</div>
             <div>visualizer selector</div>
 
             <Metadata

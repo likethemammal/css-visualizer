@@ -16,7 +16,7 @@ class Bars extends Base {
     name = 'Bars'
     currentAmp = 0
     fps = 40
-    colorsNeeded = 2
+    numColors = 2
 
     bars = []
 
