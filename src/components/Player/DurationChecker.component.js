@@ -1,10 +1,17 @@
 import React, {Component, Fragment} from 'react'
 
 class DurationChecker extends Component {
+
+    timer = false
+
     componentDidMount() {
-        setInterval(() => {
+        this.timer = setInterval(() => {
             this.props.onAudioUpdate(this.props.audio)
-        }, 1000)
+        }, 50)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer)
     }
 
     render() {

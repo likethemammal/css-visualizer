@@ -10,6 +10,7 @@ function loadStories() {
     require('../src/components/Audio/Audio.story');
     require('../src/components/Player/Duration.story');
     require('../src/components/Player/Player.story');
+    require('../src/components/Player/Metadata.story');
     require('../src/components/Visualizer/Visualizer.story');
 }
 

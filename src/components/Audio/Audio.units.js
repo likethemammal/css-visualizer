@@ -11,7 +11,7 @@ export const timestamp = ({ timestamp }) => timestamp
 export const _Audio = ({ _Audio }) => _Audio || {}
 
 export const ratioComplete = (duration, currentTime) => {
-    return (currentTime / duration).toFixed(2)
+    return (currentTime / duration).toFixed(4)
 }
 
 export const percentComplete = (ratioComplete) => {

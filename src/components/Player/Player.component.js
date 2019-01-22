@@ -3,7 +3,16 @@ import React, { Component } from 'react'
 import { GITHUB_LINK, genres } from '../../constants/app'
 
 import _Audio from '../Audio'
-import Duration from "./Duration.component"
+import Metadata from "./Metadata.component"
+
+import colors from '../../constants/colors'
+
+const localColors = {
+}
+
+const styles = {
+
+}
 
 class Player extends Component {
 
@@ -48,20 +57,9 @@ class Player extends Component {
 
             <div>color selector</div>
 
-            <div
-                style={{
-                    width: 200,
-                    height: 60,
-                }}
-            >
-                <div>
-                    song info
-                </div>
-                <div>artist name</div>
-                <div>album name</div>
-                <div>album artwork</div>
-                <Duration percentComplete={percentComplete}/>
-            </div>
+            <Metadata
+                percentComplete={percentComplete}
+            />
 
         </div>
     }
