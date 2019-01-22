@@ -1,6 +1,7 @@
 export const audio = ({ audio }) => audio
 export const volume = ({ volume }) => volume
-export const playing = ({ playing }) => playing
+export const paused = ({ paused }) => paused
+export const playing = (paused)  => !paused
 export const duration = ({ duration }) => duration
 export const currentTime = ({ currentTime }) => currentTime
 export const fakeTriggered = ({ fakeTriggered }) => fakeTriggered

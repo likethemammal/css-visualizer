@@ -5,6 +5,11 @@ import {
     reducer as AudioActions,
 } from './components/Audio/Audio.reducer'
 
+import {
+    initialState as ControlsInitialState,
+    reducer as ControlsActions,
+} from './components/Player/Controls.reducer'
+
 const createReducer = function(initialState, reducer) {
 
     return function(state = initialState, action) {
@@ -21,4 +26,5 @@ const createReducer = function(initialState, reducer) {
 
 export default combineReducers({
     _Audio: createReducer(AudioInitialState, AudioActions),
+    Controls: createReducer(ControlsInitialState, ControlsActions),
 })

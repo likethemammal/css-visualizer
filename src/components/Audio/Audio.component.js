@@ -17,7 +17,7 @@ class _Audio extends Component {
         audio.play()
     }
 
-    onPlay = () => {
+    onPlayFaked = () => {
 
         const { audio } = this.props
 
@@ -31,7 +31,11 @@ class _Audio extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.fakeTriggered && !prevProps.fakeTriggered) {
-            this.onPlay()
+            this.onPlayFaked()
+        }
+
+        if (this.props.visualizerLoaded && !prevProps.visualizerLoaded) {
+            this.props.onPlay()
         }
 
     }

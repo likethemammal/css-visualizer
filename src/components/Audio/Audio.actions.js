@@ -1,4 +1,5 @@
 const AUDIO__VISUALIZER_LOADED = 'AUDIO__VISUALIZER_LOADED'
+const AUDIO__PLAY = 'AUDIO__PLAY'
 const AUDIO__PLAY_FAKED = 'AUDIO__PLAY_FAKED'
 const AUDIO__VOLUME_CHANGE = 'AUDIO__VOLUME_CHANGE'
 const AUDIO__AUDIO_UPDATED = 'AUDIO__AUDIO_UPDATED'
@@ -7,14 +8,15 @@ import _ from 'lodash'
 
 export const types = {
     AUDIO__VISUALIZER_LOADED,
+    AUDIO__PLAY,
     AUDIO__PLAY_FAKED,
     AUDIO__VOLUME_CHANGE,
     AUDIO__AUDIO_UPDATED,
 }
 
-const onPlayFaked = () => {
+const onPlay = () => {
     return {
-        type: types.AUDIO__PLAY_FAKED,
+        type: types.AUDIO__PLAY,
     }
 }
 
@@ -40,7 +42,7 @@ const onAudioUpdate = (audio) => {
 
 export const actions = {
     onAudioUpdate,
-    onPlayFaked,
+    onPlay,
     onVolumeChange,
     onVisualizerLoaded,
 }

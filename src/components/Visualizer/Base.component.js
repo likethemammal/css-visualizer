@@ -26,11 +26,12 @@ class Base extends Component {
     }
 
     getData = () => {
-        // if playing is false, return
-
         // if options.hideVis is true, return
 
-        if (!this.props.visualizerLoaded) {
+        if (
+            !this.props.visualizerLoaded ||
+            this.props.paused
+        ) {
             return
         }
 
@@ -78,14 +79,18 @@ class Base extends Component {
 
         window.addEventListener('resize', this.resize)
 
-        if (this.onMount) {
-            this.onMount()
-        }
+        this.props.resetColors()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.width !== prevProps.width) {
             this.resize()
+        }
+
+        if (this.props.color1 !== prevProps.color1) {
+            if (this.onMount) {
+                this.onMount()
+            }
         }
     }
 

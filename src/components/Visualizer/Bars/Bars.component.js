@@ -49,7 +49,9 @@ class Bars extends Base {
     setupColors = () => {
         const styleSheet = document.getElementById('visualizer-css');
         var stylesStr = '';
-        var color = this.props.color1;
+        const { color1, color2 } = this.props
+
+        let color = color1
 
         const numOfBars = _numOfBars(window.innerWidth, BAR_WIDTH)
 
@@ -62,7 +64,7 @@ class Bars extends Base {
 
             stylesStr += beforeStr + afterStr + barStr;
 
-            color = fadeToColor(color, this.props.color2, i/numOfBars);
+            color = fadeToColor(color, color2, 1/numOfBars);
         }
 
         styleSheet.innerHTML = stylesStr;

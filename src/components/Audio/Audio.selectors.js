@@ -5,7 +5,7 @@ import {
 import {
     _Audio,
     audio as _audio,
-    playing as _playing,
+    paused as _paused,
     volume as _volume,
     fakeTriggered as _fakeTriggered,
     vm as _vm,
@@ -44,10 +44,15 @@ export const visualizerLoaded = createSelector(
     _visualizerLoaded,
 )
 
-export const playing = createSelector(
+export const paused = createSelector(
     audio,
     timestamp,
-    _playing,
+    _paused,
+)
+
+export const playing = createSelector(
+    paused,
+    _paused,
 )
 
 export const volume = createSelector(
