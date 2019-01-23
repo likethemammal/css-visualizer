@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
 import colors from '../../constants/colors'
+import { genres, GITHUB_LINK, visualizerLabels, } from '../../constants/app'
+
+import { toggleFullscreen } from '../../units/utils/general'
 
 import { Icon } from 'react-icons-kit'
 import { ic_play_arrow } from 'react-icons-kit/md/ic_play_arrow'
@@ -10,11 +13,21 @@ import { ic_volume_off } from 'react-icons-kit/md/ic_volume_off'
 import { ic_volume_down } from 'react-icons-kit/md/ic_volume_down'
 import { ic_refresh } from 'react-icons-kit/md/ic_refresh'
 import { ic_pause } from 'react-icons-kit/md/ic_pause'
+import { ic_fullscreen } from 'react-icons-kit/md/ic_fullscreen'
+import { github } from 'react-icons-kit/entypo/github'
+
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+
+import { withStyles } from '@material-ui/core/styles'
 
 const localColors = {
     ICON: colors.WHITE,
     BACKGROUND: colors.DARK_GREY,
     ICON_HOVER_BACKGROUND: colors.DARK_GREY,
+    CONTAINER_SHADOW: colors.BLACK,
 }
 
 const iconHeight = 39
@@ -25,21 +38,38 @@ const iconCalculatedSize = iconHeight + (iconPadding * 2)
 const swatchWidth = 30
 const swatchHeight = swatchWidth * (33/30)
 
+const iconContainer = {
+    padding: iconPadding,
+    paddingTop: iconPaddingVertical,
+    paddingBottom: iconPaddingVertical,
+    cursor: 'pointer',
+    height: iconHeight,
+    width: iconHeight,
+    background: localColors.BACKGROUND,
+    '&:hover': {
+        background: localColors.ICON_HOVER_BACKGROUND,
+    },
+}
+
 const styles = {
     container: {
         color: localColors.ICON,
         background: localColors.BACKGROUND,
+        maxWidth: 300,
+        marginLeft: 30,
+        marginTop: 30,
+        boxShadow: `0px 3px 5px ${localColors.CONTAINER_SHADOW}`,
+        borderRadius: 2,
+        overflow: 'hidden'
     },
-    iconContainer: {
-        padding: iconPadding,
-        paddingTop: iconPaddingVertical,
-        paddingBottom: iconPaddingVertical,
-        cursor: 'pointer',
-        height: iconHeight,
-        width: iconHeight,
-        background: localColors.BACKGROUND,
-        '&:hover': {
-            background: localColors.ICON_HOVER_BACKGROUND,
+    iconContainer,
+    linkContainer: {
+        ...iconContainer,
+        padding: '5px 10px',
+        position: 'relative',
+        top: 3,
+        '&:visited': {
+            color: 'inherit',
         }
     },
     row: {
@@ -49,9 +79,14 @@ const styles = {
     },
     colorRow: {
         display: 'grid',
-        gridTemplateColumns: `repeat(3, ${swatchWidth}px) auto`,
         gridColumnGap: 10,
         paddingLeft: 15,
+        paddingBottom: 10,
+    },
+    iconRow: {
+        display: 'grid',
+        paddingLeft: 5,
+        paddingBottom: 10,
     },
     slider: {
         marginRight: 15,
@@ -66,23 +101,90 @@ const styles = {
     },
     swatchContainer: {
         paddingTop: 9,
-    }
+    },
 }
 
-const SimpleIcon = ({ icon, onClick}) => {
-    return <div onClick={() => onClick()} style={styles.iconContainer}>
-        <Icon icon={icon} size={iconHeight}/>
+const selectStyles = {
+    select_root: {
+        colors: colors.WHITE,
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    select: {
+        color: colors.WHITE,
+        paddingLeft: 15,
+    },
+    label_root: {
+        color: colors.WHITE,
+        paddingLeft: 20,
+    },
+    label_focused: {
+        color: `${colors.WHITE} !important`,
+    },
+    icon: {
+        color: colors.WHITE,
+    },
+}
+
+const SimpleIcon = ({ icon, onClick, href, size }) => {
+
+    const iconComponent = <Icon icon={icon} size={size || iconHeight}/>
+
+    return href ? <a
+        href={href}
+        target={'_blank'}
+        style={styles.linkContainer}
+    >
+        {iconComponent}
+    </a> : <div
+        onClick={() => onClick()}
+        style={styles.iconContainer}
+    >
+        {iconComponent}
     </div>
 }
 
-const ColorSwatch = ({value, onChange}) => {
+const ColorSwatch = ({value, onChange, index}) => {
     return <div style={styles.swatchContainer}><input
         style={styles.swatch}
         type={'color'}
         value={value}
-        onChange={onChange}
+        onChange={(ev) => onChange(ev.target.value, index)}
     /></div>
 }
+
+const SelectComponent = withStyles(selectStyles)(({
+    classes, label, items, value, onChange, name,
+}) => {
+    return <FormControl className={classes.formControl}>
+
+        <InputLabel
+            classes={{
+                root: classes.label_root,
+                focused: classes.label_focused,
+            }}
+            htmlFor="select-item">{label}</InputLabel>
+        <Select
+            value={value}
+            onChange={ev => onChange(ev.target.value)}
+            inputProps={{
+                name,
+                id: 'select-item'
+            }}
+            classes={{
+                select: classes.select,
+                root: classes.select_root,
+                icon: classes.icon,
+            }}
+        >
+            {items.map((item, i) => {
+                return <MenuItem key={i} value={i}>
+                    {item}
+                </MenuItem>
+            })}
+        </Select>
+    </FormControl>
+})
 
 class Controls extends Component {
 
@@ -95,8 +197,12 @@ class Controls extends Component {
             duration,
             currentTime,
             playing,
+            numColors,
+            genreIndex,
+            visualizerIndex,
             paused,
             colors = [],
+            classes,
         } = this.props
 
         return <div
@@ -116,20 +222,43 @@ class Controls extends Component {
                     style={styles.slider}
                 />
             </div>
-            <div style={styles.colorRow}>
+            <div style={{
+                ...styles.colorRow,
+                gridTemplateColumns: `repeat(${numColors}, ${swatchWidth}px) repeat(3, ${42}px) auto`,
+            }}>
                 {colors.map((color, i) => {
                     return <ColorSwatch
                         key={i}
+                        index={i}
                         value={color}
-                        onChange={() => {}}
+                        onChange={this.props.setColor}
                     />
                 })}
                 <SimpleIcon icon={ic_refresh} onClick={this.props.resetColors}/>
+                <SimpleIcon icon={ic_fullscreen} onClick={toggleFullscreen}/>
+                <SimpleIcon icon={github} href={GITHUB_LINK} size={34}/>
             </div>
+
+            <SelectComponent
+                label={'Genre'}
+                value={genreIndex}
+                name={'genreIndex'}
+                items={genres}
+                onChange={this.props.setGenre}
+            />
+
+            <SelectComponent
+                label={'Visualizer'}
+                value={visualizerIndex}
+                name={'visualizerIndex'}
+                items={visualizerLabels}
+                onChange={this.props.setVisualizer}
+            />
+
         </div>
     }
 }
 
-export default Controls
+export default withStyles(styles)(Controls)
 
 

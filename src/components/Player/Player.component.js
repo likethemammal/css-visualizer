@@ -36,19 +36,6 @@ class Player extends Component {
 
             <Controls/>
 
-            <a href={GITHUB_LINK}>Info</a>
-
-            <button onClick={this.props.onPlayFaked}>Full Screen</button>
-
-            <div>genre selector</div>
-            <select>
-                {genres.map((genre, i) => {
-                    return <option key={i}>{genre}</option>
-                })}
-            </select>
-
-            <div>visualizer selector</div>
-
             <Metadata
                 percentComplete={percentComplete}
             />

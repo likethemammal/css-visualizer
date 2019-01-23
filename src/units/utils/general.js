@@ -8,7 +8,7 @@ export const pad = (num, totalChars) => {
     return num;
 }
 
-export const toggleFullscreen = (el) => {
+export const toggleFullscreen = (el = document.body) => {
     var isFullscreen;
 
     if (

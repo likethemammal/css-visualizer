@@ -87,7 +87,11 @@ class Base extends Component {
             this.resize()
         }
 
-        if (this.props.color1 !== prevProps.color1) {
+        if (
+            this.props.color1 !== prevProps.color1 ||
+            this.props.color2 !== prevProps.color2 ||
+            this.props.color3 !== prevProps.color3
+        ) {
             if (this.onMount) {
                 this.onMount()
             }

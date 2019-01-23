@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const prefix = (function () {
     var styles = window.getComputedStyle(document.documentElement, ''),
         pre = (Array.prototype.slice
@@ -16,5 +18,17 @@ export const prefix = (function () {
 
 
 export const genres = ["Electro Pop", "Hip Hop", "Chillwave", "Classical", "Indie", "Jazz", "Folk", "Metal", "Latin", "Reggae", "World", "Piano", "Electronic", "Country", "Dance"]
+
+
+export const visualizers = {
+    HEXAGONS: 'Hexagons',
+    CIRCLES: 'Circles',
+    BARS: 'Bars',
+}
+
+export const visualizerLabels = _.map(
+    visualizers,
+    label => label,
+)
 
 export const GITHUB_LINK = 'http://github.com/likethemammal/css-visualizer'
