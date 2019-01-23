@@ -1,13 +1,24 @@
 import { call, put, takeEvery, takeLatest, select} from 'redux-saga/effects'
+import randomColor from "randomcolor"
+
 import { types } from './Controls.actions'
 
-import randomColor from "randomcolor";
+import {
+    numColors as _numColors,
+} from './Controls.selectors'
 
-function* onSetColors({ numColors = 3 }) {
+function* onSetColors({ numColors }) {
 
+    const currentNumColors = yield select(_numColors)
 
+    let newNumColors = currentNumColors
 
-    const colors = [...Array(numColors)].map(() => {
+    if (numColors) {
+        newNumColors = numColors
+        yield put({type: types.CONTROLS__SET_NUM_COLORS, numColors: newNumColors,});
+    }
+
+    const colors = [...Array(newNumColors)].map(() => {
         return randomColor()
     })
 

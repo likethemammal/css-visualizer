@@ -7,6 +7,7 @@ import {
     colors as _colors,
     visualizerIndex as _visualizerIndex,
     genreIndex as _genreIndex,
+    numColors as _numColors,
     color1 as _color1,
     color2 as _color2,
     color3 as _color3,
@@ -27,6 +28,11 @@ export const genreIndex = createSelector(
     _genreIndex,
 )
 
+export const numColors = createSelector(
+    Controls,
+    _numColors,
+)
+
 export const color1 = createSelector(
     colors,
     _color1,
@@ -41,4 +47,3 @@ export const color3 = createSelector(
     colors,
     _color3,
 )
-

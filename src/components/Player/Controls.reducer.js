@@ -4,6 +4,7 @@ import _ from 'lodash'
 export const initialState = {
     genreIndex: 0,
     visualizerIndex: 0,
+    numColors: 3,
     colors: [],
 }
 
@@ -30,6 +31,14 @@ export const reducer = {
         return {
             ...state,
             genreIndex: index,
+        }
+    },
+    [types.CONTROLS__SET_NUM_COLORS]: (state, action) => {
+        const { numColors } = action
+
+        return {
+            ...state,
+            numColors,
         }
     },
 
