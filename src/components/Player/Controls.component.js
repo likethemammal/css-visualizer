@@ -23,7 +23,7 @@ import Select from '@material-ui/core/Select'
 
 import { withStyles } from '@material-ui/core/styles'
 
-const localColors = {
+export const localColors = {
     ICON: colors.WHITE,
     BACKGROUND: colors.DARK_GREY,
     ICON_HOVER_BACKGROUND: colors.DARK_GREY,
@@ -51,7 +51,7 @@ const iconContainer = {
     },
 }
 
-const styles = {
+export const styles = {
     container: {
         color: localColors.ICON,
         background: localColors.BACKGROUND,
