@@ -26,6 +26,16 @@ class DurationChecker extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.playing && !prevProps.playing) {
+            this.setTimer()
+        }
+
+        if (this.props.paused && !prevProps.paused) {
+            this.clearTimer()
+        }
+    }
+
     render() {
         return <Fragment />
     }

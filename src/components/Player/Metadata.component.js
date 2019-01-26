@@ -77,6 +77,8 @@ class Metadata extends Component {
 
         return <div
                 style={styles.container}
+                onMouseOut={this.props.setHoverInactive}
+                onMouseOver={this.props.setHoverActive}
             >
                 <Duration percentComplete={percentComplete}/>
 

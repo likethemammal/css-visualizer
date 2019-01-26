@@ -4,6 +4,8 @@ import {
 
 import _ from 'lodash'
 
+import { select } from '../../units/utils/connect'
+
 import { actions as actionsAudio } from '../Audio/Audio.actions'
 import { actions } from './Controls.actions'
 
@@ -11,13 +13,12 @@ import * as selectorsAudio from '../Audio/Audio.selectors'
 import * as selectors from './Controls.selectors'
 
 export default (Component) => connect((state) => {
-    return _.mapValues({
+    const selected = select({
         ...selectorsAudio,
         ...selectors,
-    }, (selector, key) => {
-        const value = selector(state)
-        return value
-    })
+    }, state)
+
+    return selected
 }, {
     ...actionsAudio,
     ...actions,

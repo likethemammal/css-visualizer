@@ -62,6 +62,10 @@ class Base extends Component {
 
         window.removeEventListener('resize', this.resize)
 
+        this.setState({
+            loaded: false,
+        })
+
         if (this.onUnmount) {
             this.onUnmount()
         }
@@ -106,6 +110,7 @@ class Base extends Component {
             this.props.color2 !== prevProps.color2 ||
             this.props.color3 !== prevProps.color3
         ) {
+            console.log('on color change')
             if (this.onColorChange) {
                 this.onColorChange()
             }

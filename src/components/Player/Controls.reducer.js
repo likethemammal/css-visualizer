@@ -6,6 +6,8 @@ export const initialState = {
     visualizerIndex: 0,
     numColors: 3,
     colors: [],
+    idle: false,
+    hovered: false,
 }
 
 export const reducer = {
@@ -41,5 +43,28 @@ export const reducer = {
             numColors,
         }
     },
-
+    [types.CONTROLS__SET_IDLE_ACTIVE]: (state, action) => {
+        return {
+            ...state,
+            idle: true,
+        }
+    },
+    [types.CONTROLS__SET_IDLE_INACTIVE]: (state, action) => {
+        return {
+            ...state,
+            idle: false,
+        }
+    },
+    [types.CONTROLS__SET_HOVER_ACTIVE]: (state, action) => {
+        return {
+            ...state,
+            hovered: true,
+        }
+    },
+    [types.CONTROLS__SET_HOVER_INACTIVE]: (state, action) => {
+        return {
+            ...state,
+            hovered: false,
+        }
+    },
 }

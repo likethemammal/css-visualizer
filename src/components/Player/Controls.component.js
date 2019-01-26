@@ -207,6 +207,8 @@ class Controls extends Component {
 
         return <div
                 style={styles.container}
+                onMouseOut={this.props.setHoverInactive}
+                onMouseOver={this.props.setHoverActive}
             >
             <div style={styles.row}>
                 <SimpleIcon icon={paused ? ic_play_arrow : ic_pause} onClick={this.props.onPlay}/>

@@ -11,11 +11,23 @@ import {
     color1 as _color1,
     color2 as _color2,
     color3 as _color3,
+    idle as _idle,
+    hovered as _hovered,
 } from './Controls.units'
+
+export const idle = createSelector(
+    Controls,
+    _idle,
+)
 
 export const colors = createSelector(
     Controls,
     _colors,
+)
+
+export const hovered = createSelector(
+    Controls,
+    _hovered,
 )
 
 export const visualizerIndex = createSelector(

@@ -1,13 +1,17 @@
 export const audio = ({ audio }) => audio
 export const volume = ({ volume }) => volume
-export const paused = ({ paused }) => paused
-export const playing = (paused)  => !paused
-export const duration = ({ duration }) => duration
+export const paused = ({ paused }) => {
+    return paused
+}
+export const duration = ({ duration }) => {
+    return duration
+}
 export const currentTime = ({ currentTime }) => currentTime
 export const fakeTriggered = ({ fakeTriggered }) => fakeTriggered
 export const vm = ({ vm }) => vm
 export const visualizerLoaded = ({ visualizerLoaded }) => visualizerLoaded
 export const timestamp = ({ timestamp }) => timestamp
+export const playing = (paused)  => !paused
 
 export const _Audio = ({ _Audio }) => _Audio || {}
 
