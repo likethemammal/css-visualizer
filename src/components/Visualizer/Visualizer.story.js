@@ -12,7 +12,16 @@ storiesOf('Visualizer', module)
     .addDecorator(withProvider)
     .add('default', () => {
         return <div>
-            <Player/>
+            <Player settings={{
+            }}/>
+            <Visualizer/>
+        </div>
+    })
+    .add('ignoreIdle', () => {
+        return <div>
+            <Player settings={{
+                ignoreIdle: true,
+            }}/>
             <Visualizer/>
         </div>
     })

@@ -30,13 +30,15 @@ export const localColors = {
     CONTAINER_SHADOW: colors.BLACK,
 }
 
-const iconHeight = 39
+const iconHeight = 34
 const iconPadding = 5
 const iconPaddingVertical = iconPadding + 1
 const iconCalculatedSize = iconHeight + (iconPadding * 2)
 
-const swatchWidth = 30
+const swatchWidth = 26
 const swatchHeight = swatchWidth * (33/30)
+const swatchPadding = 5
+const swatchCalculatedSize = swatchWidth + (swatchPadding * 2)
 
 const iconContainer = {
     padding: iconPadding,
@@ -65,9 +67,8 @@ export const styles = {
     iconContainer,
     linkContainer: {
         ...iconContainer,
-        padding: '5px 10px',
         position: 'relative',
-        top: 3,
+        // top: 3,
         '&:visited': {
             color: 'inherit',
         }
@@ -79,8 +80,8 @@ export const styles = {
     },
     colorRow: {
         display: 'grid',
-        gridColumnGap: 10,
-        paddingLeft: 15,
+        gridColumnGap: 0,
+        paddingLeft: 8,
         paddingBottom: 10,
     },
     iconRow: {
@@ -90,17 +91,20 @@ export const styles = {
     },
     slider: {
         marginRight: 15,
+        paddingRight: 5,
+        paddingLeft: 5,
     },
     swatch: {
         width: swatchWidth,
         height: swatchHeight,
         border: 'none',
         margin: 0,
-        padding: 0,
-        background: 'none'
+        padding: swatchPadding,
+        background: 'none',
+        transition: '5000ms linear'
     },
     swatchContainer: {
-        paddingTop: 9,
+        paddingTop: 5,
     },
 }
 
@@ -226,7 +230,7 @@ class Controls extends Component {
             </div>
             <div style={{
                 ...styles.colorRow,
-                gridTemplateColumns: `repeat(${numColors}, ${swatchWidth}px) repeat(3, ${42}px) auto`,
+                gridTemplateColumns: `repeat(${numColors}, ${swatchCalculatedSize}px) repeat(3, ${iconCalculatedSize}px) auto`,
             }}>
                 {colors.map((color, i) => {
                     return <ColorSwatch

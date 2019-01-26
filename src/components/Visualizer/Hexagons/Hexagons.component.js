@@ -114,7 +114,7 @@ class Bars extends Base {
     }
 
     onSpectrum = (spectrum) => {
-        var sampleAvgs = sampleArray(spectrum, NUM_HEXS, 0.2);
+        var sampleAvgs = sampleArray(spectrum, NUM_HEXS, 0.14);
 
         for (var i = 0; i < NUM_HEXS; i++) {
             this.hexWrappers[i].style[prefix.css + 'transform'] = HEX_DEFAULT_TRANSFORM_STR + ' scale(' + (sampleAvgs[i]*100 + 1) + ')';

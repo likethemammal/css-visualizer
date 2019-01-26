@@ -110,7 +110,6 @@ class Base extends Component {
             this.props.color2 !== prevProps.color2 ||
             this.props.color3 !== prevProps.color3
         ) {
-            console.log('on color change')
             if (this.onColorChange) {
                 this.onColorChange()
             }

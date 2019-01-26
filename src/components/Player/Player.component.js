@@ -42,6 +42,7 @@ class Player extends Component {
             currentTime,
             idle,
             hovered,
+            settings = {},
         } = this.props
 
         //hasNextSong,
@@ -58,14 +59,14 @@ class Player extends Component {
             }}
         >
 
-            <IdleTimer
+            {settings.ignoreIdle ? '' : <IdleTimer
                 ref={this.idleTimer}
                 element={document}
                 onActive={this.props.setIdleInactive}
                 onIdle={!hovered ? this.props.setIdleActive : () => {}}
                 debounce={1000}
                 timeout={1000 * 2}
-            />
+            />}
 
             <_Audio/>
 
