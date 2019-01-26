@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
 import colors from '../../constants/colors'
-import { genres, GITHUB_LINK, visualizerLabels, } from '../../constants/app'
+import { genres, GITHUB_LINK, } from '../../constants/app'
+import { visualizerLabelsOrdered, } from '../../constants/visualizerComponents'
 
 import { toggleFullscreen } from '../../units/utils/general'
 
@@ -257,7 +258,7 @@ class Controls extends Component {
                 label={'Visualizer'}
                 value={visualizerIndex}
                 name={'visualizerIndex'}
-                items={visualizerLabels}
+                items={visualizerLabelsOrdered}
                 onChange={this.props.setVisualizer}
             />
 

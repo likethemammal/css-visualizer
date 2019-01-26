@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 
-import Bars from './Bars'
-import Hexagons from './Hexagons'
+import _ from 'lodash'
+
+import { visualizersOrdered } from '../../constants/visualizerComponents'
+
 
 class Visualizer extends Component {
 
@@ -10,7 +12,14 @@ class Visualizer extends Component {
     }
 
     render() {
-        return <Hexagons />
+
+        const {
+            visualizerIndex,
+        } = this.props
+
+        const Current = visualizersOrdered[visualizerIndex]
+
+        return <Current />
     }
 }
 

@@ -13,7 +13,6 @@ const BAR_WIDTH = 24
 
 class Bars extends Base {
 
-    name = 'Bars'
     currentAmp = 0
     fps = 40
     numColors = 2
@@ -98,11 +97,14 @@ class Bars extends Base {
         this.setupColors()
     }
 
+    onColorChange = () => {
+        this.setupColors()
+    }
+
     onResize = () => {
         this.setupElements()
         this.setupColors()
     }
-
 
 }
 

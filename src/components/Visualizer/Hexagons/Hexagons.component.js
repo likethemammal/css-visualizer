@@ -13,7 +13,6 @@ const HEX_DEFAULT_TRANSFORM_STR = `rotate(0deg)`
 
 class Bars extends Base {
 
-    name = 'Hexagons'
     numColors = 3
     fps = 70
 
