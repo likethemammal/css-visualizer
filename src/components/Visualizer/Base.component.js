@@ -19,6 +19,10 @@ class Base extends Component {
     timer = false
     fps = 60
 
+    state = {
+        loaded: false,
+    }
+
     constructor(props) {
         super(props)
 
@@ -48,7 +52,7 @@ class Base extends Component {
         }
     }
 
-    destroy = () => {
+    unmount = () => {
         clearInterval(this.timer)
 
         const styleSheet = document.getElementById('visualizer-css');
@@ -58,8 +62,8 @@ class Base extends Component {
 
         window.removeEventListener('resize', this.resize)
 
-        if (this.onDestroy) {
-            this.onDestroy()
+        if (this.onUnmount) {
+            this.onUnmount()
         }
     }
 
@@ -80,6 +84,10 @@ class Base extends Component {
         window.addEventListener('resize', this.resize)
 
         this.props.resetColors(this.numColors)
+
+        this.setState({
+            loaded: true,
+        })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -87,24 +95,32 @@ class Base extends Component {
             this.resize()
         }
 
+        if (this.state.loaded && !prevState.loaded) {
+            if (this.onMount) {
+                this.onMount()
+            }
+        }
+
         if (
             this.props.color1 !== prevProps.color1 ||
             this.props.color2 !== prevProps.color2 ||
             this.props.color3 !== prevProps.color3
         ) {
-            if (this.onMount) {
-                this.onMount()
+            if (this.onColorChange) {
+                this.onColorChange()
             }
         }
     }
 
     componentWillUnmount() {
 
-        this.destroy()
+        this.unmount()
     }
 
     render() {
-        return <div ref={this.visualizer} style={styles.container}/>
+        return <div ref={this.visualizer} style={styles.container}>
+            {this.children ? this.children() : ''}
+        </div>
     }
 }
 

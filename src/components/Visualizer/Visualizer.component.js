@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import Bars from './Bars'
+import Hexagons from './Hexagons'
 
 class Visualizer extends Component {
 
@@ -9,7 +10,7 @@ class Visualizer extends Component {
     }
 
     render() {
-        return <Bars />
+        return <Hexagons />
     }
 }
 

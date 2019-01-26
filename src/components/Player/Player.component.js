@@ -31,6 +31,11 @@ class Player extends Component {
             currentTime,
         } = this.props
 
+        //hasNextSong,
+        //hasGenreSelect
+        //hasVisualizerSelect
+        //hasMetaData
+
         return <div>
             <_Audio />
 
