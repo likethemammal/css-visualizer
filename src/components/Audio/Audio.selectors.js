@@ -6,8 +6,10 @@ import {
     _Audio,
     audio as _audio,
     paused as _paused,
+    muted as _muted,
     playing as _playing,
     volume as _volume,
+    volumeFormatted as _volumeFormatted,
     fakeTriggered as _fakeTriggered,
     vm as _vm,
     visualizerLoaded as _visualizerLoaded,
@@ -44,6 +46,12 @@ export const visualizerLoaded = createSelector(
     _visualizerLoaded,
 )
 
+export const muted = createSelector(
+    audio,
+    timestamp,
+    _muted,
+)
+
 export const paused = createSelector(
     audio,
     timestamp,
@@ -59,6 +67,12 @@ export const volume = createSelector(
     audio,
     timestamp,
     _volume,
+)
+
+export const volumeFormatted = createSelector(
+    volume,
+    muted,
+    _volumeFormatted,
 )
 
 export const duration = createSelector(

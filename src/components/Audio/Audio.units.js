@@ -12,6 +12,12 @@ export const vm = ({ vm }) => vm
 export const visualizerLoaded = ({ visualizerLoaded }) => visualizerLoaded
 export const timestamp = ({ timestamp }) => timestamp
 export const playing = (paused)  => !paused
+export const muted = ({ muted })  => muted
+
+export const volumeFormatted = (volume, muted) => {
+    return muted ? 0 : volume
+}
+
 
 export const _Audio = ({ _Audio }) => _Audio || {}
 

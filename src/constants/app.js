@@ -32,3 +32,7 @@ export const visualizerLabels = _.map(
 )
 
 export const GITHUB_LINK = 'http://github.com/likethemammal/css-visualizer'
+
+export const SC_ID = '587aa2d384f7333a886010d5f52f302a'
+
+export const SONG_BATCH_SIZE = 15

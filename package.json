@@ -37,6 +37,8 @@
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
     "reselect": "^4.0.0",
+    "soundcloud": "^3.2.2",
+    "soundcloud-audio": "^1.4.0",
     "visualizer-micro": "^0.1.0"
   }
 }

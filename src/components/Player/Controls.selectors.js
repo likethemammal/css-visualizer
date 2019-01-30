@@ -13,6 +13,8 @@ import {
     color3 as _color3,
     idle as _idle,
     hovered as _hovered,
+    currentGenre as _currentGenre,
+    currentGenreFormatted as _currentGenreFormatted,
 } from './Controls.units'
 
 export const idle = createSelector(
@@ -38,6 +40,16 @@ export const visualizerIndex = createSelector(
 export const genreIndex = createSelector(
     Controls,
     _genreIndex,
+)
+
+export const currentGenre = createSelector(
+    genreIndex,
+    _currentGenre,
+)
+
+export const currentGenreFormatted = createSelector(
+    currentGenre,
+    _currentGenreFormatted,
 )
 
 export const numColors = createSelector(

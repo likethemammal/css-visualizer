@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { registerSelectors, getStateWith, selectorGraph } from 'reselect-tools'
 
-// import createStorybookListener from 'storybook-addon-redux-listener'
+import createStorybookListener from 'storybook-addon-redux-listener'
 
 export const IS_STORYBOOK = process.env.NODE_ENV === 'storybook'
 
@@ -17,9 +17,9 @@ const middlewares = [
 ]
 
 // if (IS_STORYBOOK) {
-//     const storybookMiddleware = createStorybookListener()
-//
-//     middlewares.push(storybookMiddleware)
+    const storybookMiddleware = createStorybookListener()
+
+    middlewares.push(storybookMiddleware)
 // }
 
 const compose = (name, middleware) => composeWithDevTools({

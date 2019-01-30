@@ -197,6 +197,8 @@ class Controls extends Component {
 
         const {
             volume,
+            volumeFormatted,
+            muted,
             audio,
             percentComplete,
             duration,
@@ -217,11 +219,11 @@ class Controls extends Component {
             >
             <div style={styles.row}>
                 <SimpleIcon icon={paused ? ic_play_arrow : ic_pause} onClick={this.props.onPlay}/>
-                <SimpleIcon icon={ic_skip_next} onClick={this.props.onPlay}/>
-                <SimpleIcon icon={ic_volume_up} onClick={this.props.onPlay}/>
+                <SimpleIcon icon={ic_skip_next} onClick={this.props.onNext}/>
+                <SimpleIcon icon={muted ? ic_volume_off : ic_volume_up} onClick={this.props.onVolumeMuteToggle}/>
                 <input
                     type="range"
-                    value={volume}
+                    value={volumeFormatted}
                     onChange={this.props.onVolumeChange}
                     min={0}
                     max={1}

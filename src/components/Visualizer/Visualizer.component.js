@@ -11,6 +11,10 @@ class Visualizer extends Component {
         super(props)
     }
 
+    componentDidMount() {
+        this.props.onLoad()
+    }
+
     render() {
 
         const {

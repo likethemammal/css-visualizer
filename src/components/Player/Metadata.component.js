@@ -9,6 +9,8 @@ const localColors = {
 }
 
 const metadataHeight = 82
+const metadataColumnGap = 15
+const containerWidth = 300
 
 const words = {
     fontFamily: `"Helvetica Neue", sans-serif`,
@@ -23,8 +25,8 @@ const words = {
 }
 const styles = {
     container: {
-        maxWidth: 300,
-        width: '100%',
+        maxWidth: containerWidth,
+        // width: '100%',
         height: metadataHeight,
         position: 'absolute',
         zIndex: 0,
@@ -33,7 +35,7 @@ const styles = {
         marginBottom: 30,
         display: 'grid',
         gridTemplateColumns: `${metadataHeight}px auto`,
-        gridColumnGap: 15,
+        gridColumnGap: metadataColumnGap,
         boxShadow: `0px 3px 5px ${localColors.CONTAINER_SHADOW}`,
         borderRadius: 2,
         overflow: 'hidden'
@@ -50,8 +52,10 @@ const styles = {
     metadata: {
         paddingTop: 15,
         paddingRight: 15,
+        width: containerWidth - (metadataHeight + metadataColumnGap),
     },
     title: {
+        display: 'block',
         ...words,
         opacity: 0.8,
     },
@@ -69,11 +73,17 @@ class Metadata extends Component {
     render() {
 
         const {
-            artist,
-            title,
-            albumSrc,
             percentComplete,
+            currentSongFormatted,
         } = this.props
+
+        const {
+            streamUrl,
+            titleName,
+            artistName,
+            albumSrc,
+            titleUrl,
+        } = currentSongFormatted || {}
 
         return <div
                 style={styles.container}
@@ -97,13 +107,14 @@ class Metadata extends Component {
                     <div
                         style={styles.artist}
                     >
-                        {artist}
+                        {artistName}
                     </div>
-                    <div
+                    <a
                         style={styles.title}
+                        href={titleUrl}
                     >
-                        {title}
-                    </div>
+                        {titleName}
+                    </a>
                 </div>
             </div>
     }

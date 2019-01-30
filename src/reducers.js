@@ -10,6 +10,11 @@ import {
     reducer as ControlsActions,
 } from './components/Player/Controls.reducer'
 
+import {
+    initialState as SoundCloudInitialState,
+    reducer as SoundCloudActions,
+} from './components/SoundCloud/SoundCloud.reducer'
+
 const createReducer = function(initialState, reducer) {
 
     return function(state = initialState, action) {
@@ -27,4 +32,5 @@ const createReducer = function(initialState, reducer) {
 export default combineReducers({
     _Audio: createReducer(AudioInitialState, AudioActions),
     Controls: createReducer(ControlsInitialState, ControlsActions),
+    SoundCloud: createReducer(SoundCloudInitialState, SoundCloudActions),
 })

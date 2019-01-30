@@ -43,6 +43,7 @@ class Player extends Component {
             idle,
             hovered,
             settings = {},
+            currentSongFormatted,
         } = this.props
 
         //hasNextSong,
@@ -74,6 +75,7 @@ class Player extends Component {
 
             <Metadata
                 percentComplete={percentComplete}
+                currentSongFormatted={currentSongFormatted}
             />
 
         </div>
