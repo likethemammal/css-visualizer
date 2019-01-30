@@ -14,7 +14,6 @@ class _Audio extends Component {
         } = this.props
 
         vm.load(audio, onVisualizerLoaded)
-        audio.play()
     }
 
     onPlayFaked = () => {
@@ -38,11 +37,10 @@ class _Audio extends Component {
             this.props.onPlay()
         }
 
-    }
+        if (this.props.currentSongId !== prevProps.currentSongId) {
+            this.props.onSetSrc()
+        }
 
-    componentDidMount() {
-        this.props.audio.crossOrigin = "anonymous"
-        this.props.audio.src = 'https://likethemammal.github.io/visualizer-micro/sample.mp3'
     }
 
     render() {

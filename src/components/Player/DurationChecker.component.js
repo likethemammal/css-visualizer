@@ -5,9 +5,9 @@ class DurationChecker extends Component {
     timer = false
 
     setTimer = () => {
-        // this.timer = setInterval(() => {
-        //     this.props.onAudioUpdate(this.props.audio)
-        // }, 50)
+        this.timer = setInterval(() => {
+            this.props.onAudioUpdate(this.props.audio)
+        }, 50)
     }
 
     clearTimer = () => {

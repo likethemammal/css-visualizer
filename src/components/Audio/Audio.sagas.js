@@ -27,7 +27,7 @@ function* onVolumeMuteToggle() {
         audio.muted = false
     }
 
-    yield put({type: types.AUDIO__AUDIO_UPDATED, audio,});
+    yield put({type: types.AUDIO__AUDIO_UPDATED, audio,})
 }
 
 function* onPlay() {
@@ -35,10 +35,8 @@ function* onPlay() {
     const audio = yield select(_audio)
     const paused = yield select(_paused)
 
-    console.log(fakeTriggered, paused)
-
     if (!fakeTriggered) {
-        yield put({type: types.AUDIO__PLAY_FAKED,});
+        yield put({type: types.AUDIO__PLAY_FAKED,})
         return
     }
 
@@ -48,7 +46,7 @@ function* onPlay() {
         audio.pause()
     }
 
-    yield put({type: types.AUDIO__AUDIO_UPDATED, audio,});
+    yield put({type: types.AUDIO__AUDIO_UPDATED, audio,})
 }
 
 const sagas = [

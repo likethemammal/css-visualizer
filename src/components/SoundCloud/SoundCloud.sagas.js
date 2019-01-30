@@ -20,7 +20,12 @@ import {
     currentSongId as _currentSongId,
     nextSongId as _nextSongId,
     collection as _collection,
+    currentSongFormatted as _currentSongFormatted,
 } from './SoundCloud.selectors'
+import {
+    audio as _audio,
+    visualizerLoaded as _visualizerLoaded,
+} from '../Audio/Audio.selectors'
 
 
 function* onStartSoundCloud() {
@@ -119,6 +124,25 @@ function* presetCurrentSong() {
     yield put({type: types.SC__SET_CURRENT_SONG_ID, id: nextSongId,});
 }
 
+function* onSetAudioSrc() {
+    const audio = yield select(_audio)
+    const currentSongFormatted = yield select(_currentSongFormatted)
+    const visualizerLoaded = yield select(_visualizerLoaded)
+
+    const { streamUrl } = currentSongFormatted
+
+    audio.pause()
+    audio.src = streamUrl
+    audio.crossOrigin = 'anonymous'
+
+    yield put({type: AudioTypes.AUDIO__AUDIO_UPDATED, audio,})
+
+    if (visualizerLoaded) {
+        yield put({type: AudioTypes.AUDIO__PLAY, });
+    }
+}
+
+
 const sagas = [
     takeLatest(types.SC__SET_SONG_AS_LISTENED, onAddSongToListenedToIds),
     takeLatest(types.SC__LOAD, onStartSoundCloud),
@@ -127,6 +151,7 @@ const sagas = [
     takeLatest(types.SC__SET_NEXT_SONG, onSetNextSong),
     takeLatest(types.SC__GET_SONGS_SUCCESS, onAddSongsToCollection),
     takeLatest(types.SC__SET_COLLECTION, presetCurrentSong),
+    takeLatest(types.SC__AUDIO_SET_SRC, onSetAudioSrc),
 ]
 
 export default sagas

@@ -8,6 +8,7 @@ const SC__GET_SONGS_ERROR = 'SC__GET_SONGS_ERROR'
 const SC__SET_COLLECTION = 'SC__SET_COLLECTION'
 const SC__SET_SONG_AS_LISTENED = 'SC__SET_SONG_AS_LISTENED'
 const SC__SET_SONG_AS_LISTENED_SUCCESS = 'SC__SET_SONG_AS_LISTENED_SUCCESS'
+const SC__AUDIO_SET_SRC = 'SC__AUDIO_SET_SRC'
 
 export const types = {
     SC__GET_SONGS,
@@ -20,6 +21,7 @@ export const types = {
     SC__SET_NEXT_SONG,
     SC__SET_COLLECTION,
     SC__LOAD,
+    SC__AUDIO_SET_SRC,
 }
 
 const onLoad = () => {
@@ -34,7 +36,14 @@ const onNext = () => {
     }
 }
 
+const onSetSrc = () => {
+    return {
+        type: types.SC__AUDIO_SET_SRC,
+    }
+}
+
 export const actions = {
     onNext,
     onLoad,
+    onSetSrc,
 }
