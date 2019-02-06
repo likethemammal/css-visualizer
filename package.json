@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "NODE_ENV=storybook start-storybook -p 9001 -c .storybook"
+    "storybook": "NODE_ENV=storybook start-storybook -p 9001 -c .storybook",
+    "build:storybook": "NODE_ENV=storybook build-storybook -c .storybook -o .out"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@storybook/addon-knobs": "^4.1.6",
+    "@storybook/addon-options": "^4.1.6",
     "@storybook/addons": "^4.1.6",
     "@storybook/react": "^4.1.6",
     "react-hot-loader": "^4.6.3",
