@@ -20,6 +20,7 @@
 
 
 import { types } from './SoundCloud.actions'
+import { types as ControlsTypes } from '../Player/Controls.actions'
 
 export const initialState = {
     paginationIndex: false,
@@ -27,11 +28,21 @@ export const initialState = {
     nextHref: false,
     collection: [],
     listenedToIds: [],
-
     error: false,
 }
 
 export const reducer = {
+    [ControlsTypes.CONTROLS__SET_GENRE]: (state, action) => {
+        return {
+            ...state,
+            paginationIndex: initialState.paginationIndex,
+            currentSongId: initialState.currentSongId,
+            nextHref: initialState.nextHref,
+            collection: initialState.collection,
+            listenedToIds: initialState.listenedToIds,
+            error: initialState.error,
+        }
+    },
     [types.SC__GET_SONGS_SUCCESS]: (state, action) => {
         const { nextHref } = action
 

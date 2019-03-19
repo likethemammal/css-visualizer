@@ -20,6 +20,7 @@ import {
     nextSongId as _nextSongId,
     hasNextSong as _hasNextSong,
     hasCurrentSong as _hasCurrentSong,
+    getAPIUrl,
 } from './SoundCloud.units'
 
 export const paginationIndex = createSelector(
@@ -107,4 +108,9 @@ export const nextPaginationIndex = createSelector(
 export const limit = createSelector(
     nextPaginationIndex,
     _limit,
+)
+
+export const songUrl = createSelector(
+    nextHref,
+    getAPIUrl,
 )

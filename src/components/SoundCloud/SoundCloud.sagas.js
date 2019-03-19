@@ -1,6 +1,7 @@
 import SC from 'soundcloud'
 import { call, put, takeEvery, takeLatest, select} from 'redux-saga/effects'
 
+import { types as ControlsTypes } from '../Player/Controls.actions'
 import { types as AudioTypes } from '../Audio/Audio.actions'
 import { SC_ID } from '../../constants/app'
 
@@ -21,6 +22,7 @@ import {
     nextSongId as _nextSongId,
     collection as _collection,
     currentSongFormatted as _currentSongFormatted,
+    songUrl,
 } from './SoundCloud.selectors'
 import {
     audio as _audio,
@@ -40,20 +42,20 @@ function* onStartSoundCloud() {
 function* onGetSoundCloudSongs() {
 
     const currentGenreFormatted = yield select(_currentGenreFormatted)
-    const nextPaginationNumber = yield select(_nextPaginationIndex)
+    const nextPaginationIndex = yield select(_nextPaginationIndex)
     const limit = yield select(_limit)
-    const nextHref = yield select(_nextHref)
+    const url = yield select(songUrl)
 
-    const url = nextHref || '/tracks'
+
     const opts = {
         tags: currentGenreFormatted,
         //bug in SC sdk causes it to only return a few unless limit is set
         limit,
-        linked_partitioning: nextPaginationNumber,
+        linked_partitioning: nextPaginationIndex,
     }
 
     try {
-        const result = yield call(SC.get,
+        const { next_href, ...rest } = yield call(SC.get,
             url,
             opts,
         )
@@ -61,8 +63,8 @@ function* onGetSoundCloudSongs() {
         yield put({
             type: types.SC__GET_SONGS_SUCCESS,
             ...{
-                ...result,
-                nextHref: result.next_href,
+                ...rest,
+                nextHref: next_href,
             }
         })
     } catch (e) {
@@ -152,6 +154,7 @@ const sagas = [
     takeLatest(types.SC__GET_SONGS_SUCCESS, onAddSongsToCollection),
     takeLatest(types.SC__SET_COLLECTION, presetCurrentSong),
     takeLatest(types.SC__AUDIO_SET_SRC, onSetAudioSrc),
+    takeLatest(ControlsTypes.CONTROLS__SET_GENRE, onGetSoundCloudSongs),
 ]
 
 export default sagas

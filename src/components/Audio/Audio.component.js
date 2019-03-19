@@ -29,16 +29,25 @@ class _Audio extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.fakeTriggered && !prevProps.fakeTriggered) {
+        const {
+            currentSongId,
+            visualizerLoaded,
+            fakeTriggered,
+
+            onPlay,
+            onSetSrc,
+        } = this.props
+
+        if (fakeTriggered && !prevProps.fakeTriggered) {
             this.onPlayFaked()
         }
 
-        if (this.props.visualizerLoaded && !prevProps.visualizerLoaded) {
-            this.props.onPlay()
+        if (visualizerLoaded && !prevProps.visualizerLoaded) {
+            onPlay()
         }
 
-        if (this.props.currentSongId !== prevProps.currentSongId) {
-            this.props.onSetSrc()
+        if (currentSongId && currentSongId !== prevProps.currentSongId) {
+            onSetSrc()
         }
 
     }

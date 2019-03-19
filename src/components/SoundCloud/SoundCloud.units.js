@@ -50,7 +50,7 @@ export const currentSongFormatted = (
 ) => {
 
     if (!hasCurrentSong) {
-        return
+        return {}
     }
 
     return {
@@ -62,5 +62,34 @@ export const currentSongFormatted = (
     }
 }
 
-export const nextPaginationIndex = (paginationIndex) => paginationIndex + 1
-export const limit = (nextPaginationIndex) => (nextPaginationIndex * SONG_BATCH_SIZE) + 3
+export const nextPaginationIndex = (paginationIndex) => {
+
+    if (paginationIndex === false) {
+        return 0
+    }
+
+    return paginationIndex + 1
+}
+
+export const limit = (nextPaginationIndex) => {
+
+    const pageIndex = Math.max(nextPaginationIndex, 1)
+    const batchSize = pageIndex * SONG_BATCH_SIZE
+
+    return batchSize + 3
+}
+
+export const getAPIUrl = (nextHref) => {
+
+    console.log(nextHref)
+
+
+    if (nextHref) {
+
+        const { pathname, search } = new URL(nextHref)
+
+        return `${pathname}${search}`
+    }
+
+    return '/tracks'
+}
