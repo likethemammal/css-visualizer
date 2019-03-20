@@ -1,6 +1,8 @@
 # CSS (Animated) Music Visualizer
 
-A set of visualizers animated entirely using DOM elements and CSS3 Animations and Transforms. **No SVG, Canvas, WebGL, or plug-in**. Everything is a `div`.
+Everything is a `div`.
+
+A set of visualizers animated entirely using DOM elements and CSS3 Animations and Transforms. **No SVG, Canvas, WebGL, or plug-in**.
 
 [**Live Demo**](https://likethemammal.github.io/css-visualizer/iframe.html?id=visualizer--default)
 
@@ -12,13 +14,13 @@ A set of visualizers animated entirely using DOM elements and CSS3 Animations an
 
 Uses the Web Audio API to decode audio data.
 
-• [Soundcloud API][https://developers.soundcloud.com/]
-• [visualizer-micro][https://github.com/likethemammal/visualizer-micro]
+* [Soundcloud API](https://developers.soundcloud.com/)
+* [visualizer-micro](https://github.com/likethemammal/visualizer-micro)
 
 ## Todo:
 
-• Chromecast support (doesnt support mp3s)
-• Other visualizations
+* Chromecast support (doesnt support mp3s)
+* Other visualizations
 
 ## License
 Licensed under Apache License 2.0.

@@ -14,7 +14,7 @@ class _Audio extends Component {
             audio,
         } = this.props
 
-        audio.addEventListener('onended', onNext)
+        audio.addEventListener('ended', onNext)
 
         vm.load(audio, onVisualizerLoaded)
     }
