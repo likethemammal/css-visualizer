@@ -15,7 +15,7 @@ export const playing = (paused)  => !paused
 export const muted = ({ muted })  => muted
 
 export const volumeFormatted = (volume, muted) => {
-    return muted ? 0 : volume
+    return volume
 }
 
 

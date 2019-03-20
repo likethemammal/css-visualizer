@@ -21,11 +21,7 @@ function* onVolumeMuteToggle() {
     const audio = yield select(_audio)
     const muted = yield select(_muted)
 
-    if (muted) {
-        audio.muted = true
-    } else {
-        audio.muted = false
-    }
+    audio.muted = !muted
 
     yield put({type: types.AUDIO__AUDIO_UPDATED, audio,})
 }
