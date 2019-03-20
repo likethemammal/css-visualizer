@@ -27,6 +27,7 @@ import {
 import {
     audio as _audio,
     visualizerLoaded as _visualizerLoaded,
+    fakeTriggered as _fakeTriggered,
 } from '../Audio/Audio.selectors'
 
 
@@ -129,6 +130,7 @@ function* presetCurrentSong() {
 function* onSetAudioSrc() {
     const audio = yield select(_audio)
     const currentSongFormatted = yield select(_currentSongFormatted)
+    const fakeTriggered = yield select(_fakeTriggered)
     const visualizerLoaded = yield select(_visualizerLoaded)
 
     const { streamUrl } = currentSongFormatted
@@ -140,6 +142,12 @@ function* onSetAudioSrc() {
     yield put({type: AudioTypes.AUDIO__AUDIO_UPDATED, audio,})
 
     if (visualizerLoaded) {
+
+        if (fakeTriggered) {
+            yield put({type: AudioTypes.AUDIO__FORCE_PLAY, });
+            return
+        }
+
         yield put({type: AudioTypes.AUDIO__PLAY, });
     }
 }

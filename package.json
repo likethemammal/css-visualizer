@@ -11,15 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@storybook/addon-knobs": "^4.1.6",
-    "@storybook/addon-options": "^4.1.6",
-    "@storybook/addons": "^4.1.6",
-    "@storybook/react": "^4.1.6",
+    "@storybook/addon-knobs": "^5.0.3",
+    "@storybook/addons": "^5.0.3",
+    "@storybook/react": "^5.0.3",
     "react-hot-loader": "^4.6.3",
     "redux-devtools-extension": "^2.13.7",
-    "reselect-tools": "0.0.7",
-    "storybook-addon-redux-listener": "^0.1.7",
-    "storybook-colors-addon": "file:../../storybook-colors-addon"
+    "reselect-tools": "0.0.7"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",

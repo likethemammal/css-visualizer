@@ -1,6 +1,5 @@
-import { configure, addDecorator } from '@storybook/react'
+import { configure, addDecorator, addParameters } from '@storybook/react'
 
-import { withOptions } from '@storybook/addon-options';
 import { withKnobs } from '@storybook/addon-knobs'
 
 addDecorator(
@@ -16,16 +15,16 @@ function loadStories() {
     require('../src/components/Player/Controls.story');
 }
 
-addDecorator(
-    withOptions({
+addParameters({
+    options: {
         url: '#',
         goFullScreen: true,
         showStoriesPanel: false,
         showAddonPanel: false,
         showSearchBox: false,
         enableShortcuts: false,
-    })
-)
+    }
+})
 
 configure(loadStories, module)
 

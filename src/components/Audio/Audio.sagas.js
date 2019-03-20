@@ -45,10 +45,19 @@ function* onPlay() {
     yield put({type: types.AUDIO__AUDIO_UPDATED, audio,})
 }
 
+function* onForcePlay() {
+    const audio = yield select(_audio)
+
+    audio.play()
+
+    yield put({type: types.AUDIO__AUDIO_UPDATED, audio,})
+}
+
 const sagas = [
     takeLatest(types.AUDIO__VOLUME_MUTE_TOGGLE, onVolumeMuteToggle),
     takeLatest(types.AUDIO__VOLUME_CHANGE, onVolumeChange),
     takeLatest(types.AUDIO__PLAY, onPlay),
+    takeLatest(types.AUDIO__FORCE_PLAY, onForcePlay),
 ]
 
 export default sagas

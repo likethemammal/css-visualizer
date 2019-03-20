@@ -25,7 +25,6 @@ export const songsNotListenedToLength = (songsNotListenedTo) => songsNotListened
 export const hasNextSong = (songsNotListenedToLength) => songsNotListenedToLength > 0
 export const nextSongIndex = (songsNotListenedToLength) => Math.floor(songsNotListenedToLength * Math.random())
 export const nextSong = (hasNextSong, songsNotListenedTo, nextSongIndex, currentSongId) => {
-    console.log(hasNextSong, nextSongIndex, currentSongId)
     return hasNextSong && songsNotListenedTo[nextSongIndex]
 }
 export const nextSongId = (hasNextSong, { id }) => {
@@ -80,9 +79,6 @@ export const limit = (nextPaginationIndex) => {
 }
 
 export const getAPIUrl = (nextHref) => {
-
-    console.log(nextHref)
-
 
     if (nextHref) {
 
