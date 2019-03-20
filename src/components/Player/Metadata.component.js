@@ -1,6 +1,5 @@
 import React, {Component, createRef, useEffect, useRef, useState} from 'react'
 import { Styled } from 'styled-jss'
-import { useSpring, animated, useChain } from "react-spring"
 
 import anime from 'animejs'
 
@@ -104,7 +103,7 @@ const EXAMPLE_ALBUM = 'https://via.placeholder.com/150'
 
 const localStyled = Styled(styles)
 
-const div = localStyled(animated.div)
+const div = localStyled('div')
 
 const Circle = div({
     composes: '$circle',
@@ -201,7 +200,9 @@ class Metadata extends Component {
     render() {
 
         const {
-            percentComplete,
+            timeLeft,
+            paused,
+            ratioComplete,
             currentSongFormatted,
         } = this.props
 
@@ -223,7 +224,11 @@ class Metadata extends Component {
                 onMouseOut={this.props.setHoverInactive}
                 onMouseOver={this.props.setHoverActive}
             >
-                <Duration percentComplete={percentComplete}/>
+                <Duration
+                    paused={paused}
+                    timeLeft={timeLeft}
+                    ratioComplete={ratioComplete}
+                />
 
                 <div
                     style={styles.album}

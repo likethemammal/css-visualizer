@@ -18,6 +18,7 @@ import {
     timestamp as _timestamp,
     duration as _duration,
     currentTime as _currentTime,
+    timeLeft as _timeLeft,
 } from './Audio.units'
 
 export const timestamp = createSelector(
@@ -96,5 +97,11 @@ export const ratioComplete = createSelector(
 export const percentComplete = createSelector(
     ratioComplete,
     _percentComplete,
+)
+
+export const timeLeft = createSelector(
+    duration,
+    currentTime,
+    _timeLeft,
 )
 

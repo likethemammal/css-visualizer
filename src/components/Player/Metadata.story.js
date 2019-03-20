@@ -10,7 +10,8 @@ storiesOf('Player/Metadata', module)
     .addDecorator(withProvider)
     .add('default', () => {
         return <Metadata
-            percentComplete={number('percentComplete', 80)}
+            ratioComplete={number('ratioComplete', 0.8)}
+            timeLeft={number('timeLeft', 10000)}
             albumSrc={text('albumSrc', 'https://i1.sndcdn.com/artworks-000090489647-ikjbwo-crop.jpg')}
             artist={text('artist', 'Some artist name')}
             title={text('title', 'Some song title')}

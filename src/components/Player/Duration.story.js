@@ -12,7 +12,7 @@ storiesOf('Player/Duration', module)
             width: 150,
             height: 50,
         }}>
-        <Duration percentComplete={number('percentComplete', 30)}/>
+        <Duration timeLeft={number('timeLeft', 1000)}/>
     </div>
     })
 

@@ -1,16 +1,27 @@
-import React from 'react'
-import DurationChecker from "./DurationChecker"
+import React, {createRef, useEffect} from 'react'
 
 import colors from '../../constants/colors'
+import anime from "animejs"
 
 const localColors = {
     OVERLAY_BACKGROUND: colors.WHITE,
     BACKGROUND: colors.DARK_GREY,
 }
 
-const Duration = ({ percentComplete }) => {
+const Duration = ({ timeLeft, ratioComplete, paused }) => {
 
-    const widthPercent = percentComplete ? percentComplete : 0
+    const ref = createRef()
+    const percentLeft = 1 - ratioComplete
+    const startLeft = `-${100 * percentLeft}%`
+
+    // useEffect(() => {
+    //     const animation = anime({
+    //         targets: ref.current,
+    //         left: `0%`,
+    //         duration: timeLeft,
+    //         easing: 'linear',
+    //     })
+    // })
 
     return <div style={{
         position: 'absolute',
@@ -20,12 +31,17 @@ const Duration = ({ percentComplete }) => {
         top: 0,
         zIndex: -1
     }}>
-        <div style={{
-            width: `${widthPercent}%`,
-            background: localColors.OVERLAY_BACKGROUND,
-            opacity: 0.25,
-            height: '100%'
-        }}/>
+        <div
+            ref={ref}
+            style={{
+                width: `100%`,
+                position: 'relative',
+                left: startLeft,
+                background: localColors.OVERLAY_BACKGROUND,
+                opacity: 0.25,
+                height: '100%'
+            }}
+        />
     </div>
 }
 

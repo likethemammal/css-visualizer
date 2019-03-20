@@ -28,3 +28,7 @@ export const ratioComplete = (duration, currentTime) => {
 export const percentComplete = (ratioComplete) => {
     return ratioComplete * 100
 }
+
+export const timeLeft = (duration, currentTime) => {
+    return (duration - currentTime).toFixed(4)
+}
