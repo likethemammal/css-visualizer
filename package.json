@@ -17,13 +17,14 @@
     "@storybook/addons": "^5.0.3",
     "@storybook/react": "^5.0.3",
     "@storybook/storybook-deployer": "^2.8.1",
-    "react-hot-loader": "^4.6.3",
+    "react-hot-loader": "^4.8.0",
     "redux-devtools-extension": "^2.13.7",
     "reselect-tools": "0.0.7"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
     "@material-ui/core": "^3.9.0",
+    "animejs": "^3.0.1",
     "babel-loader": "^8.0.5",
     "chroma-js": "^2.0.2",
     "gradient-color": "^2.0.1",
@@ -31,8 +32,9 @@
     "lodash.memoize": "^4.1.2",
     "memoize": "^0.1.1",
     "randomcolor": "^0.5.3",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "react": "^16.8.4",
+    "react-anime": "^2.2.0",
+    "react-dom": "^16.8.4",
     "react-icons-kit": "^1.2.1",
     "react-idle-timer": "^4.2.1",
     "react-redux": "^6.0.0",
@@ -41,6 +43,7 @@
     "reselect": "^4.0.0",
     "soundcloud": "^3.2.2",
     "soundcloud-audio": "^1.4.0",
+    "styled-jss": "^2.2.3",
     "visualizer-micro": "^0.1.0"
   }
 }

@@ -2,11 +2,15 @@ import { types } from './Audio.actions'
 import VisualizerMicro from "visualizer-micro"
 import _ from 'lodash'
 
+const audio = new Audio()
+
+audio.volume = 0.4
+
 export const initialState = {
     visualizerLoaded: false,
     fakeTriggered: false,
     vm: new VisualizerMicro(),
-    audio: new Audio(),
+    audio,
     timestamp: Date.now()
 }
 

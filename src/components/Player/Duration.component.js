@@ -9,6 +9,9 @@ const localColors = {
 }
 
 const Duration = ({ percentComplete }) => {
+
+    const widthPercent = percentComplete ? percentComplete : 0
+
     return <div style={{
         position: 'absolute',
         width: '100%',
@@ -18,12 +21,11 @@ const Duration = ({ percentComplete }) => {
         zIndex: -1
     }}>
         <div style={{
-            width: `${percentComplete}%`,
+            width: `${widthPercent}%`,
             background: localColors.OVERLAY_BACKGROUND,
             opacity: 0.25,
             height: '100%'
         }}/>
-        <DurationChecker/>
     </div>
 }
 
