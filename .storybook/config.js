@@ -27,4 +27,6 @@ addDecorator(
     })
 )
 
-configure(loadStories, module);
+configure(loadStories, module)
+
+import './general.css'

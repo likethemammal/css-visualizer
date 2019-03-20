@@ -9,9 +9,12 @@ class _Audio extends Component {
     onAudioLoaded = () => {
         const {
             onVisualizerLoaded,
+            onNext,
             vm,
             audio,
         } = this.props
+
+        audio.addEventListener('onended', onNext)
 
         vm.load(audio, onVisualizerLoaded)
     }

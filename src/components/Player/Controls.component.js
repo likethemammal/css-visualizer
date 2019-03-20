@@ -36,7 +36,7 @@ const iconPadding = 5
 const iconPaddingVertical = iconPadding + 1
 const iconCalculatedSize = iconHeight + (iconPadding * 2)
 
-const swatchWidth = 26
+const swatchWidth = 35
 const swatchHeight = swatchWidth * (33/30)
 const swatchPadding = 5
 const swatchCalculatedSize = swatchWidth + (swatchPadding * 2)
@@ -52,6 +52,7 @@ const iconContainer = {
     '&:hover': {
         background: localColors.ICON_HOVER_BACKGROUND,
     },
+    boxSizing: 'content-box'
 }
 
 export const styles = {
