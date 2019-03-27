@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 const audio = new Audio()
 
-audio.volume = 0.4
+audio.volume = 0.3
 
 export const initialState = {
     visualizerLoaded: false,

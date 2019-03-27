@@ -20,7 +20,9 @@ export const songsNotListenedTo = (collection, listenedToIds) => {
     })
 }
 
-export const songsNotListenedToLength = (songsNotListenedTo) => songsNotListenedTo.length
+export const songsNotListenedToLength = (songsNotListenedTo) => {
+    return songsNotListenedTo.length
+}
 
 export const hasNextSong = (songsNotListenedToLength) => songsNotListenedToLength > 0
 export const nextSongIndex = (songsNotListenedToLength) => Math.floor(songsNotListenedToLength * Math.random())
@@ -57,7 +59,7 @@ export const currentSongFormatted = (
         titleName: title,
         titleUrl: permalink_url,
         artistName: user.username,
-        albumSrc: artwork_url.replace('large.jpg', 'crop.jpg'),
+        albumSrc: artwork_url && artwork_url.replace('large.jpg', 'crop.jpg'),
     }
 }
 
@@ -79,13 +81,13 @@ export const limit = (nextPaginationIndex) => {
 }
 
 export const getAPIUrl = (nextHref) => {
-
-    if (nextHref) {
-
-        const { pathname, search } = new URL(nextHref)
-
-        return `${pathname}${search}`
-    }
+    //
+    // if (nextHref) {
+    //
+    //     const { pathname, search } = new URL(nextHref)
+    //
+    //     return `${pathname}${search}`
+    // }
 
     return '/tracks'
 }

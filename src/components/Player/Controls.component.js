@@ -52,7 +52,8 @@ const iconContainer = {
     '&:hover': {
         background: localColors.ICON_HOVER_BACKGROUND,
     },
-    boxSizing: 'content-box'
+    boxSizing: 'content-box',
+    color: localColors.ICON,
 }
 
 export const styles = {

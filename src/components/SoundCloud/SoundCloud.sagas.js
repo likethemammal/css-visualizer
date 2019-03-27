@@ -47,7 +47,6 @@ function* onGetSoundCloudSongs() {
     const limit = yield select(_limit)
     const url = yield select(songUrl)
 
-
     const opts = {
         tags: currentGenreFormatted,
         //bug in SC sdk causes it to only return a few unless limit is set
@@ -63,9 +62,10 @@ function* onGetSoundCloudSongs() {
 
         yield put({
             type: types.SC__GET_SONGS_SUCCESS,
+            ...rest,
             ...{
-                ...rest,
                 nextHref: next_href,
+                paginationIndex: nextPaginationIndex,
             }
         })
     } catch (e) {
@@ -136,6 +136,7 @@ function* onSetAudioSrc() {
     const { streamUrl } = currentSongFormatted
 
     audio.pause()
+    //bug with audio src settings and then playing a new song
     audio.src = streamUrl
     audio.crossOrigin = 'anonymous'
 

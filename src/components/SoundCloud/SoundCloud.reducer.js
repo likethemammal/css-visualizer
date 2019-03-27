@@ -44,11 +44,12 @@ export const reducer = {
         }
     },
     [types.SC__GET_SONGS_SUCCESS]: (state, action) => {
-        const { nextHref } = action
+        const { nextHref, paginationIndex } = action
 
         return {
             ...state,
             nextHref,
+            paginationIndex,
             error: false,
         }
     },
