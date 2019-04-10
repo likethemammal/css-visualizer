@@ -1,8 +1,8 @@
 # CSS (Animated) Music Visualizer
 
-Everything is a `div`.
-
 A set of visualizers animated entirely using DOM elements and CSS3 Animations and Transforms. **No SVG, Canvas, WebGL, or plug-in**.
+
+Everything is a `<div>`.
 
 [**Live Demo**](https://likethemammal.github.io/css-visualizer/iframe.html?id=visualizer--default)
 
